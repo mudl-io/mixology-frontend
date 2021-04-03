@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/mixology-frontend/static/css/main.a49dac2f.chunk.css",
-    "main.js": "/mixology-frontend/static/js/main.0d527072.chunk.js",
-    "main.js.map": "/mixology-frontend/static/js/main.0d527072.chunk.js.map",
-    "runtime-main.js": "/mixology-frontend/static/js/runtime-main.a5a88427.js",
-    "runtime-main.js.map": "/mixology-frontend/static/js/runtime-main.a5a88427.js.map",
-    "static/css/2.86e65bd8.chunk.css": "/mixology-frontend/static/css/2.86e65bd8.chunk.css",
-    "static/js/2.a7bfd577.chunk.js": "/mixology-frontend/static/js/2.a7bfd577.chunk.js",
-    "static/js/2.a7bfd577.chunk.js.map": "/mixology-frontend/static/js/2.a7bfd577.chunk.js.map",
-    "static/js/3.d43190af.chunk.js": "/mixology-frontend/static/js/3.d43190af.chunk.js",
-    "static/js/3.d43190af.chunk.js.map": "/mixology-frontend/static/js/3.d43190af.chunk.js.map",
-    "index.html": "/mixology-frontend/index.html",
-    "static/css/2.86e65bd8.chunk.css.map": "/mixology-frontend/static/css/2.86e65bd8.chunk.css.map",
-    "static/css/main.a49dac2f.chunk.css.map": "/mixology-frontend/static/css/main.a49dac2f.chunk.css.map",
-    "static/js/2.a7bfd577.chunk.js.LICENSE.txt": "/mixology-frontend/static/js/2.a7bfd577.chunk.js.LICENSE.txt",
-    "static/media/UploadIcon.svg": "/mixology-frontend/static/media/UploadIcon.469126df.svg",
-    "static/media/index.scss": "/mixology-frontend/static/media/notification.c5d9251e.ttf"
+    "main.css": "/static/css/main.e509dd5d.chunk.css",
+    "main.js": "/static/js/main.a6d8dbc8.chunk.js",
+    "main.js.map": "/static/js/main.a6d8dbc8.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.32dfa851.js",
+    "runtime-main.js.map": "/static/js/runtime-main.32dfa851.js.map",
+    "static/css/2.86e65bd8.chunk.css": "/static/css/2.86e65bd8.chunk.css",
+    "static/js/2.a7bfd577.chunk.js": "/static/js/2.a7bfd577.chunk.js",
+    "static/js/2.a7bfd577.chunk.js.map": "/static/js/2.a7bfd577.chunk.js.map",
+    "static/js/3.d43190af.chunk.js": "/static/js/3.d43190af.chunk.js",
+    "static/js/3.d43190af.chunk.js.map": "/static/js/3.d43190af.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.86e65bd8.chunk.css.map": "/static/css/2.86e65bd8.chunk.css.map",
+    "static/css/main.e509dd5d.chunk.css.map": "/static/css/main.e509dd5d.chunk.css.map",
+    "static/js/2.a7bfd577.chunk.js.LICENSE.txt": "/static/js/2.a7bfd577.chunk.js.LICENSE.txt",
+    "static/media/UploadIcon.svg": "/static/media/UploadIcon.469126df.svg",
+    "static/media/index.scss": "/static/media/notification.c5d9251e.ttf"
   },
   "entrypoints": [
-    "static/js/runtime-main.a5a88427.js",
+    "static/js/runtime-main.32dfa851.js",
     "static/css/2.86e65bd8.chunk.css",
     "static/js/2.a7bfd577.chunk.js",
-    "static/css/main.a49dac2f.chunk.css",
-    "static/js/main.0d527072.chunk.js"
+    "static/css/main.e509dd5d.chunk.css",
+    "static/js/main.a6d8dbc8.chunk.js"
   ]
 }
