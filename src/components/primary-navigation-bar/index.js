@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 
 import "./styles.scss";
+import defaultImg from "../../assets/defaultimg.png";
 import axiosInstance from "../../axiosApi";
 
 // redux actions
@@ -90,7 +91,7 @@ class PrimaryNavigationBar extends React.Component {
       <div className="primary-navigation-bar">
         <nav>
           <Link className="nav-link homepage" to="/">
-            <img className="site-logo-nav" src="/defaultimg.png" />
+            <img className="site-logo-nav" src={defaultImg} />
             <span>Mixed In</span>
           </Link>
           {this.leftNavContent()}

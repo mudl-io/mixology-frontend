@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const apiLocation =
+  process.env.REACT_APP_API_LOCATION ||
+  "https://cocktail-app-test.herokuapp.com";
+
 const axiosInstance = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/",
+  baseURL: `${apiLocation}/api/`,
   timeout: 5000,
   headers: {
     Authorization: "JWT " + localStorage.getItem("access_token"),
@@ -14,6 +18,8 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     const originalRequest = error.config;
+
+    console.log(process.env);
 
     // Prevent infinite loops
     if (

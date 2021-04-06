@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import "./styles.scss";
+import defaultImg from "../../assets/defaultimg.png";
 
 /**
  *
@@ -15,6 +16,14 @@ const allIngredientsToString = (ingredients) => {
   return <p className="ingredients">{ingredientNames.join(", ")}</p>;
 };
 
+const getImage = (props) => {
+  if (props.cocktail.image) {
+    return props.cocktail.image.image;
+  }
+
+  return defaultImg;
+};
+
 const CocktailDetail = (props) => {
   return (
     <Link
@@ -22,7 +31,7 @@ const CocktailDetail = (props) => {
       to={`/cocktail/${props.cocktail.publicId}/`}
       target="_blank"
     >
-      <img src="http://localhost:8000/static/defaultimg.png" />
+      <img src={getImage(props)} />
       <div className="name">{props.cocktail.name}</div>
       <div className="ingredients-list">
         {allIngredientsToString([
