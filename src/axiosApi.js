@@ -19,8 +19,6 @@ axiosInstance.interceptors.response.use(
   (error) => {
     const originalRequest = error.config;
 
-    console.log(process.env);
-
     // Prevent infinite loops
     if (
       error.response.status === 401 &&

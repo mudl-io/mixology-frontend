@@ -1,6 +1,5 @@
 {
   "name": "frontend",
-  "homepage": "https://floating-island-47145.herokuapp.com/",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8000/",
@@ -30,13 +29,10 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "heroku-postbuild": "npm rebuild node-sass && npm run build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -58,9 +54,5 @@
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
-  },
-  "engines": {
-    "node": "14.15.5",
-    "npm": "7.5.4"
   }
 }
