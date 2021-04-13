@@ -14,6 +14,7 @@ import CreateCocktailForm from "../create-cocktail-form";
 import SavedCocktailsDisplay from "../saved-cocktails-display";
 import CreatedCocktailsDisplay from "../created-cocktails-display";
 import DynamicCocktailDisplayContainer from "../dynamic-cocktail-display-container";
+import ProfilePage from "../profile-page";
 
 class App extends React.Component {
   constructor(props) {
@@ -59,6 +60,7 @@ class App extends React.Component {
               path="/cocktail/:id"
               component={DynamicCocktailDisplayContainer}
             />
+            <Route exact path="/profile/:username" component={ProfilePage} />
           </Switch>
         </Router>
 
