@@ -1,6 +1,7 @@
 import React from "react";
 
 import "./styles.scss";
+import defaultImg from "../../assets/defaultimg.png";
 import HeartCheckbox from "../heart-checkbox";
 
 class CocktailDisplay extends React.PureComponent {
@@ -49,7 +50,7 @@ class CocktailDisplay extends React.PureComponent {
       return this.props.image.image;
     }
 
-    return "http://localhost:8000/static/defaultimg.png";
+    return defaultImg;
   };
 
   cocktailDetails = () => {

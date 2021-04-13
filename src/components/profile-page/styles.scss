@@ -1,0 +1,23 @@
+.profile-page {
+  position: relative;
+  top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .username {
+    margin-bottom: 10px;
+  }
+
+  .email {
+    margin-bottom: 10px;
+  }
+
+  .stat {
+    margin-bottom: 8px;
+
+    .stat-title {
+      font-weight: 600;
+    }
+  }
+}
