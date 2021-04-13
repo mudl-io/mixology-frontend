@@ -34,7 +34,6 @@ class ProfilePage extends React.Component {
       });
     } catch (e) {
       // if the network request fails, user the redux store's user state
-
       this.setState({
         username: this.props.user.username,
         email: this.props.user.email,
