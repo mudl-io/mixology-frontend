@@ -2,9 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Dropdown, DropdownButton } from "react-bootstrap";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import MenuOpenIcon from "@material-ui/icons/MenuOpen";
 
 import "./styles.scss";
 import axiosInstance from "../../axiosApi";
+import LeftLiquorsSidenav from "../left-liquors-sidenav";
 
 // redux actions
 import { logoutUser } from "../../features/users/usersSlice";
@@ -12,6 +16,12 @@ import { logoutUser } from "../../features/users/usersSlice";
 class PrimaryNavigationBar extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = { drawerOpen: false };
+  }
+
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
   }
 
   logout = async () => {
@@ -87,19 +97,49 @@ class PrimaryNavigationBar extends React.Component {
     return content;
   };
 
+  handleClickOutside = (event) => {
+    if (event.target.className === "liquor-type") {
+      setTimeout(() => {
+        this.setState({ drawerOpen: false });
+      }, 100);
+    }
+  };
+
+  handleDrawerOpen = () => {
+    this.setState({ drawerOpen: !this.state.drawerOpen });
+  };
+
+  drawerStateIcon = () => {
+    return this.state.drawerOpen ? <MenuOpenIcon /> : <MenuIcon />;
+  };
+
   render() {
     return (
-      <div className="primary-navigation-bar">
-        <nav>
-          <Link className="nav-link homepage" to="/">
-            <img className="site-logo-nav" src="/defaultimg.png" />
-            <span>Mixed In</span>
-          </Link>
-          {this.leftNavContent()}
-          {this.rightNavContent()}
-        </nav>
+      <div>
+        <div className="primary-navigation-bar">
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={this.handleDrawerOpen}
+            edge="start"
+          >
+            {this.drawerStateIcon()}
+          </IconButton>
+          <nav>
+            <Link className="nav-link homepage" to="/">
+              <img className="site-logo-nav" src="/defaultimg.png" />
+              <span>Mixed In</span>
+            </Link>
+            {this.leftNavContent()}
+            {this.rightNavContent()}
+          </nav>
+        </div>
+        <div>
+          <LeftLiquorsSidenav open={this.state.drawerOpen} />
+        </div>
       </div>
     );
   }
 }
+
 export default connect()(PrimaryNavigationBar);
