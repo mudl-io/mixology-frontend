@@ -4,6 +4,7 @@ import Drawer from "@material-ui/core/Drawer";
 import "./styles.scss";
 import CocktailDetail from "../cocktail-detail";
 import axiosInstance from "../../axiosApi";
+import formatIngredientsFilter from "../../helpers/format-ingredients-filters";
 
 class RightCocktailSidenav extends React.Component {
   /**
@@ -26,12 +27,8 @@ class RightCocktailSidenav extends React.Component {
         "cocktails/filtered_cocktails/",
         {
           params: {
-            liquors_filter: JSON.stringify(
-              this.props.liquors.map((liquor) => liquor.publicId)
-            ),
-            ingredients_filter: JSON.stringify(
-              this.props.ingredients.map((ingredient) => ingredient.publicId)
-            ),
+            liquors_filter: formatIngredientsFilter(this.props.liquors),
+            ingredients_filter: formatIngredientsFilter(this.props.ingredients),
           },
         }
       );

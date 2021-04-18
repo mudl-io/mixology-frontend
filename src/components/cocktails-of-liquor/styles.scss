@@ -1,0 +1,14 @@
+.cocktails-by-liquor-display {
+  position: relative;
+  top: 10%;
+  display: flex;
+  justify-content: center;
+
+  h1 {
+    text-align: center;
+  }
+
+  img {
+    border-radius: 5px;
+  }
+}
