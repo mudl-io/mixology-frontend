@@ -15,7 +15,6 @@ import SavedCocktailsDisplay from "../saved-cocktails-display";
 import CreatedCocktailsDisplay from "../created-cocktails-display";
 import DynamicCocktailDisplayContainer from "../dynamic-cocktail-display-container";
 import ProfilePage from "../profile-page";
-import CocktailsOfLiquor from "../cocktails-of-liquor";
 
 class App extends React.Component {
   constructor(props) {
@@ -62,7 +61,6 @@ class App extends React.Component {
               component={DynamicCocktailDisplayContainer}
             />
             <Route exact path="/profile/:username" component={ProfilePage} />
-            <Route exact path="/:liquorId" component={CocktailsOfLiquor} />
           </Switch>
         </Router>
 
