@@ -10,7 +10,7 @@ class CocktailsOfLiquor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { cocktails: [], title: "" };
+    this.state = { cocktails: [], title: "", showUserCreatedCocktails: false };
   }
 
   componentDidMount() {
@@ -48,12 +48,23 @@ class CocktailsOfLiquor extends React.Component {
     }
   }
 
+  handleToggle = (event, index) => {
+    this.setState({ showUserCreatedCocktails: index === 1 });
+  };
+
   render() {
+    const cocktailsToShow = this.state.showUserCreatedCocktails
+      ? _.filter(this.state.cocktails, (cocktail) => cocktail.createdBy)
+      : _.filter(this.state.cocktails, (cocktail) => !cocktail.createdBy);
+
     return (
       <div className="cocktails-by-liquor-display">
         <CocktailsList
+          cocktails={_.sortBy(cocktailsToShow, ["name"])}
+          hasToggle={true}
+          isToggled={this.state.showUserCreatedCocktails}
           title={this.state.title}
-          cocktails={_.sortBy(this.state.cocktails, ["name"])}
+          handleToggle={this.handleToggle}
         />
       </div>
     );
