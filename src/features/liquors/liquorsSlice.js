@@ -5,7 +5,7 @@ const liquorsSlice = createSlice({
   initialState: [],
   reducers: {
     didGetLiquors(state, action) {
-      state.push(...action.payload);
+      return [...action.payload];
     },
     // can "mutate" state here bc using the redux toolkit
     // which users Immer library under the hood
