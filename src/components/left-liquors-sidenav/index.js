@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Drawer from "@material-ui/core/Drawer";
+import _ from "lodash";
 
 import "./styles.scss";
 import axiosInstance from "../../axiosApi";
@@ -26,10 +27,15 @@ class LeftLiquorsSidenav extends React.Component {
   }
 
   render() {
+    const liquors = _.sortBy(
+      _.filter(this.props.liquors, (liquor) => !liquor.createdBy),
+      ["name"]
+    );
+
     return (
       <Drawer anchor="left" variant="persistent" open={this.props.open}>
         <div className="liquor-links">
-          {this.props.liquors.map((liquor) => {
+          {liquors.map((liquor) => {
             return (
               <div key={liquor.publicId}>
                 <Link className="liquor-type" to={`/${liquor.publicId}`}>
