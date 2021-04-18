@@ -48,13 +48,13 @@ class CocktailsOfLiquor extends React.Component {
         (liquor) => liquor.publicId === liquorId
       ).name;
 
-      const userCocktails = _.filter(
-        res.data,
-        (cocktail) => cocktail.createdBy
+      const userCocktails = _.sortBy(
+        _.filter(res.data, (cocktail) => cocktail.createdBy),
+        ["name"]
       );
-      const platformCocktails = _.filter(
-        res.data,
-        (cocktail) => !cocktail.createdBy
+      const platformCocktails = _.sortBy(
+        _.filter(res.data, (cocktail) => !cocktail.createdBy),
+        ["name"]
       );
 
       this.setState(
@@ -78,7 +78,7 @@ class CocktailsOfLiquor extends React.Component {
     return (
       <div className="cocktails-by-liquor-display">
         <CocktailsList
-          cocktails={_.sortBy(cocktailsToShow, ["name"])}
+          cocktails={cocktailsToShow}
           hasToggle={true}
           isToggled={this.state.showUserCreatedCocktails}
           title={this.state.title}
