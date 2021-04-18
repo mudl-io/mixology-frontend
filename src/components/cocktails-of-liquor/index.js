@@ -53,9 +53,17 @@ class CocktailsOfLiquor extends React.Component {
   };
 
   render() {
+    const userCocktails = _.filter(
+      this.state.cocktails,
+      (cocktail) => cocktail.createdBy
+    );
+    const platformCocktails = _.filter(
+      this.state.cocktails,
+      (cocktail) => !cocktail.createdBy
+    );
     const cocktailsToShow = this.state.showUserCreatedCocktails
-      ? _.filter(this.state.cocktails, (cocktail) => cocktail.createdBy)
-      : _.filter(this.state.cocktails, (cocktail) => !cocktail.createdBy);
+      ? userCocktails
+      : platformCocktails;
 
     return (
       <div className="cocktails-by-liquor-display">
