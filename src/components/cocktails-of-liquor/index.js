@@ -42,7 +42,19 @@ class CocktailsOfLiquor extends React.Component {
         (liquor) => liquor.publicId === liquorId
       ).name;
 
-      this.setState({ cocktails, title }, () => console.log(this.state));
+      const userCocktails = _.filter(
+        res.data,
+        (cocktail) => cocktail.createdBy
+      );
+      const platformCocktails = _.filter(
+        res.data,
+        (cocktail) => !cocktail.createdBy
+      );
+
+      this.setState(
+        { cocktails, title, userCocktails, platformCocktails },
+        () => console.log(this.state)
+      );
     } catch (e) {
       console.log(e);
     }
@@ -53,17 +65,9 @@ class CocktailsOfLiquor extends React.Component {
   };
 
   render() {
-    const userCocktails = _.filter(
-      this.state.cocktails,
-      (cocktail) => cocktail.createdBy
-    );
-    const platformCocktails = _.filter(
-      this.state.cocktails,
-      (cocktail) => !cocktail.createdBy
-    );
     const cocktailsToShow = this.state.showUserCreatedCocktails
-      ? userCocktails
-      : platformCocktails;
+      ? this.state.userCocktails
+      : this.state.platformCocktails;
 
     return (
       <div className="cocktails-by-liquor-display">
