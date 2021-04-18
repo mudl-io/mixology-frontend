@@ -10,7 +10,13 @@ class CocktailsOfLiquor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { cocktails: [], title: "", showUserCreatedCocktails: false };
+    this.state = {
+      cocktails: [],
+      title: "",
+      showUserCreatedCocktails: false,
+      platformCocktails: [],
+      userCocktails: [],
+    };
   }
 
   componentDidMount() {
