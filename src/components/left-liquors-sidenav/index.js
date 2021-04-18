@@ -27,7 +27,10 @@ class LeftLiquorsSidenav extends React.Component {
   }
 
   render() {
-    const liquors = _.filter(this.props.liquors, (liquor) => !liquor.createdBy);
+    const liquors = _.sortBy(
+      _.filter(this.props.liquors, (liquor) => !liquor.createdBy),
+      ["name"]
+    );
 
     return (
       <Drawer anchor="left" variant="persistent" open={this.props.open}>
