@@ -65,11 +65,11 @@ class CocktailsOfLiquor extends React.Component {
       ).name;
 
       const userCocktails = _.sortBy(
-        _.filter(data, (cocktail) => cocktail.createdBy),
+        _.filter(cocktails, (cocktail) => cocktail.createdBy),
         ["name"]
       );
       const platformCocktails = _.sortBy(
-        _.filter(data, (cocktail) => !cocktail.createdBy),
+        _.filter(cocktails, (cocktail) => !cocktail.createdBy),
         ["name"]
       );
 
