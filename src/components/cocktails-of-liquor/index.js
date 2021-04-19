@@ -28,10 +28,12 @@ class CocktailsOfLiquor extends React.Component {
     };
   }
 
+  // only fetch cocktails on initial render when there are none in redux store
   componentDidMount() {
-    this.fetchCocktails();
+    if (!this.props.cocktails) this.fetchCocktails();
   }
 
+  // make a call to fetchCocktails after selecting a different liquor while this component is rendered
   componentDidUpdate(previousProps) {
     if (
       previousProps.match.params.liquorId === this.props.match.params.liquorId
@@ -47,8 +49,6 @@ class CocktailsOfLiquor extends React.Component {
     const nextPage = this.props.nextPage;
 
     try {
-      // if no cocktails in the redux store or a user scrolls down and needs to load more cocktails
-      // make a request to the API for the next page of cocktails
       this.setState({ isLoadingMoreCocktails: true });
 
       const res = await axiosInstance.get("cocktails/filtered_cocktails/", {

@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import _ from "lodash";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 const InfiniteScroller = (props) => {
-  const loader = useRef(null);
+  const loaderComponent = useRef(null);
   const loadMore = useCallback(
     (entries) => {
       // entries are the references/DOM elements being observed by the IntersectionObserver
@@ -30,17 +29,21 @@ const InfiniteScroller = (props) => {
     const loadMoreObserver = new IntersectionObserver(loadMore, options);
 
     // make sure component containing the loader reference is properly rendered
-    if (loader && loader.current) {
-      loadMoreObserver.observe(loader.current);
+    if (loaderComponent && loaderComponent.current) {
+      loadMoreObserver.observe(loaderComponent.current);
     }
 
     // remove observer after component unmounts
-    return () => loadMoreObserver.unobserve(loader.current);
-  }, [loader, loadMore]);
+    return () => {
+      if (loaderComponent.current) {
+        loadMoreObserver.unobserve(loaderComponent.current);
+      }
+    };
+  }, [loaderComponent, loadMore]);
 
   const loadingSpinner = (canLoadMore) => {
     return (
-      <div ref={loader} className="end-scroll">
+      <div ref={loaderComponent} className="end-scroll">
         {canLoadMore && <CircularProgress />}
       </div>
     );
