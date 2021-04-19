@@ -1,3 +1,5 @@
+@import "../../utilities/variables";
+
 .cocktails-by-liquor-display {
   position: relative;
   top: 10%;
@@ -10,5 +12,13 @@
 
   img {
     border-radius: 5px;
+  }
+
+  .MuiTabs-root {
+    margin-bottom: 10px;
+
+    .PrivateTabIndicator-root-1 {
+      background-color: $coolpurp;
+    }
   }
 }

@@ -10,7 +10,13 @@ class CocktailsOfLiquor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { cocktails: [], title: "" };
+    this.state = {
+      cocktails: [],
+      title: "",
+      showUserCreatedCocktails: false,
+      platformCocktails: [],
+      userCocktails: [],
+    };
   }
 
   componentDidMount() {
@@ -42,18 +48,41 @@ class CocktailsOfLiquor extends React.Component {
         (liquor) => liquor.publicId === liquorId
       ).name;
 
-      this.setState({ cocktails, title }, () => console.log(this.state));
+      const userCocktails = _.sortBy(
+        _.filter(res.data, (cocktail) => cocktail.createdBy),
+        ["name"]
+      );
+      const platformCocktails = _.sortBy(
+        _.filter(res.data, (cocktail) => !cocktail.createdBy),
+        ["name"]
+      );
+
+      this.setState(
+        { cocktails, title, userCocktails, platformCocktails },
+        () => console.log(this.state)
+      );
     } catch (e) {
       console.log(e);
     }
   }
 
+  handleToggle = (event, index) => {
+    this.setState({ showUserCreatedCocktails: index === 1 });
+  };
+
   render() {
+    const cocktailsToShow = this.state.showUserCreatedCocktails
+      ? this.state.userCocktails
+      : this.state.platformCocktails;
+
     return (
       <div className="cocktails-by-liquor-display">
         <CocktailsList
+          cocktails={cocktailsToShow}
+          hasToggle={true}
+          isToggled={this.state.showUserCreatedCocktails}
           title={this.state.title}
-          cocktails={_.sortBy(this.state.cocktails, ["name"])}
+          handleToggle={this.handleToggle}
         />
       </div>
     );
