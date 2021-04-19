@@ -35,15 +35,18 @@ class LeftLiquorsSidenav extends React.Component {
     return (
       <Drawer anchor="left" variant="persistent" open={this.props.open}>
         <div className="liquor-links">
-          {liquors.map((liquor) => {
-            return (
-              <div key={liquor.publicId}>
-                <Link className="liquor-type" to={`/${liquor.publicId}`}>
-                  {liquor.name}
-                </Link>
-              </div>
-            );
-          })}
+          <h3 className="title">Find cocktails by liquor</h3>
+          <div>
+            {liquors.map((liquor) => {
+              return (
+                <div key={liquor.publicId}>
+                  <Link className="liquor-type" to={`/${liquor.publicId}`}>
+                    {liquor.name}
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </Drawer>
     );
