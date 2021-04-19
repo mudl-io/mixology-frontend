@@ -43,8 +43,6 @@ class CocktailsOfLiquor extends React.Component {
     try {
       let data;
 
-      console.log(this.props.cocktails[liquorId]);
-
       if (this.props.cocktails[liquorId]) {
         data = this.props.cocktails[liquorId];
       } else {
