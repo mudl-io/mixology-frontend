@@ -7,19 +7,22 @@ const cocktailsByLiquorSlice = createSlice({
     didGetCocktailsByLiquor(state, action) {
       const liquorId = action.payload.liquorId;
 
-      state[liquorId] = action.payload.cocktails;
+      state[liquorId] = { cocktails: action.payload.cocktails, nextPage: 2 };
     },
     didUpdateCocktailsByLiquor(state, action) {
       const liquorId = action.payload.liquorId;
-      let cocktails = [...action.payload.cocktails];
+      const cocktails = state[liquorId]
+        ? [...state[liquorId].cocktails, ...action.payload.cocktails]
+        : [...action.payload.cocktails];
 
-      if (state[liquorId]) cocktails = [...state[liquorId], ...cocktails];
-
-      state[liquorId] = cocktails;
+      state[liquorId] = { cocktails: cocktails, nextPage: state.page + 1 };
     },
   },
 });
 
-export const { didGetCocktailsByLiquor } = cocktailsByLiquorSlice.actions;
+export const {
+  didGetCocktailsByLiquor,
+  didUpdateCocktailsByLiquor,
+} = cocktailsByLiquorSlice.actions;
 
 export default cocktailsByLiquorSlice.reducer;
