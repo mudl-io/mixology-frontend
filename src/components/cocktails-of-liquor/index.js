@@ -19,7 +19,8 @@ class CocktailsOfLiquor extends React.Component {
     super(props);
 
     this.state = {
-      canLoadMoreCocktails: false,
+      canLoadMoreUserCocktails: false,
+      canLoadMorePlatformCocktails: false,
       isLoadingMoreCocktails: false,
       title: "",
       showUserCreatedCocktails: false,
@@ -41,10 +42,14 @@ class CocktailsOfLiquor extends React.Component {
       return;
     }
 
-    this.fetchCocktails();
+    if (!this.props.cocktails) {
+      this.fetchCocktails(); // if redux store is empty, fetch cocktails via API
+    } else {
+      this.updateState(); // else use existing state
+    }
   }
 
-  async fetchCocktails() {
+  fetchCocktails = async () => {
     const liquorId = this.props.match.params.liquorId;
     const nextPage = this.props.nextPage;
 
@@ -64,17 +69,20 @@ class CocktailsOfLiquor extends React.Component {
       this.props.dispatch(
         action({
           liquorId: liquorId,
-          cocktails: res.data,
+          cocktails: res.data.results,
         })
       );
 
-      this.updateState();
+      this.updateState(
+        res.data.userCocktailsCount,
+        res.data.platformCocktailsCount
+      );
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
-  updateState = () => {
+  updateState = (userCocktailsCount, platformCocktailsCount) => {
     const liquorId = this.props.match.params.liquorId;
     const cocktails = this.props.cocktails; // should be available via props after the dispatch call to the redux store
     const title = cocktails[0].liquors.find(
@@ -89,7 +97,9 @@ class CocktailsOfLiquor extends React.Component {
 
     this.setState({
       title,
-      canLoadMore: cocktails.length % 30 === 0,
+      canLoadMoreUserCocktails: userCocktails.length < userCocktailsCount,
+      canLoadMorePlatformCocktails:
+        platformCocktails.length < platformCocktailsCount,
       isLoadingMoreCocktails: false,
       userCocktails: userCocktails,
       platformCocktails: platformCocktails,
@@ -104,11 +114,14 @@ class CocktailsOfLiquor extends React.Component {
     const cocktailsToShow = this.state.showUserCreatedCocktails
       ? this.state.userCocktails
       : this.state.platformCocktails;
+    const canLoadMoreCocktails = this.state.showUserCreatedCocktails
+      ? this.state.canLoadMoreUserCocktails
+      : this.state.canLoadMorePlatformCocktails;
 
     return (
       <div className="cocktails-by-liquor-display">
         <InfiniteScroller
-          canLoadMore={this.state.canLoadMoreCocktails}
+          canLoadMore={canLoadMoreCocktails}
           isLoading={this.state.isLoadingMoreCocktails}
           fetchData={this.fetchCocktails}
         >

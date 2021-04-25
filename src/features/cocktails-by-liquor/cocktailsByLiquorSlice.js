@@ -12,7 +12,7 @@ const cocktailsByLiquorSlice = createSlice({
     didUpdateCocktailsByLiquor(state, action) {
       const liquorId = action.payload.liquorId;
       const cocktails = state[liquorId]
-        ? (cocktails = [...state[liquorId].cocktails, ...cocktails])
+        ? [...state[liquorId].cocktails, ...action.payload.cocktails]
         : [...action.payload.cocktails];
 
       state[liquorId] = { cocktails: cocktails, nextPage: state.page + 1 };
