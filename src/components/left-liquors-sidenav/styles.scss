@@ -1,0 +1,34 @@
+@import "../../utilities/variables";
+
+.MuiDrawer-paperAnchorLeft {
+  width: 20%;
+  text-align: left;
+  overflow-x: hidden;
+
+  &.MuiPaper-root {
+    background-color: #424242;
+  }
+
+  .liquor-links {
+    position: relative;
+    top: 6%;
+    left: 12%;
+
+    .title {
+      color: white;
+      width: 100%;
+      text-decoration: underline;
+      text-underline-offset: 10px;
+      margin-bottom: 20px;
+    }
+
+    a {
+      font-size: 25px;
+      color: white;
+    }
+
+    a:hover {
+      color: $coolpurp;
+    }
+  }
+}

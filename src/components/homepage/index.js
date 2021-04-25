@@ -42,7 +42,7 @@ class Homepage extends React.Component {
     // only make network request to get liquors and ingredients if the store is not already filled
     try {
       if (
-        this.props.ingredientOptions.length === 0 &&
+        this.props.ingredientOptions.length === 0 ||
         this.props.liquorOptions.length === 0
       ) {
         const [ingredients, liquors] = await Promise.all([
