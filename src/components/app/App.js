@@ -63,6 +63,11 @@ class App extends React.Component {
             />
             <Route exact path="/profile/:username" component={ProfilePage} />
             <Route exact path="/:liquorId" component={CocktailsOfLiquor} />
+            <Route
+              exact
+              path="/created-by/:username"
+              component={CreatedCocktailsDisplay}
+            />
           </Switch>
         </Router>
 

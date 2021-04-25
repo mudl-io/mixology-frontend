@@ -17,7 +17,12 @@ class CreatedCocktailsDisplay extends React.Component {
   async componentDidMount() {
     try {
       const createdCocktails = await axiosInstance.get(
-        "/cocktails/created_cocktails"
+        "/cocktails/created_cocktails",
+        {
+          params: {
+            username: this.props.match.params.username,
+          },
+        }
       );
 
       this.setState({ createdCocktails: createdCocktails.data });
