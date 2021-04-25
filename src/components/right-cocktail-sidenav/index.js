@@ -33,7 +33,7 @@ class RightCocktailSidenav extends React.Component {
         }
       );
 
-      this.setState({ additionalCocktails: additionalCocktails.data });
+      this.setState({ additionalCocktails: additionalCocktails.data.results });
     } catch (e) {
       console.log(e);
     }
