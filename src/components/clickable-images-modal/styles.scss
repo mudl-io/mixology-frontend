@@ -1,0 +1,27 @@
+.clickable-images-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .content {
+    outline: none;
+
+    .MuiSvgIcon-root {
+      cursor: pointer;
+    }
+
+    img {
+      height: 720px;
+      width: 720px;
+      border-radius: 35px;
+    }
+
+    .hide {
+      visibility: hide;
+    }
+
+    .visible {
+      visibility: visible;
+    }
+  }
+}

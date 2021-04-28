@@ -44,4 +44,4 @@ const ImageUploadModal = (props) => {
   );
 };
 
-export default ImageUploadModal;
+export default React.memo(ImageUploadModal);

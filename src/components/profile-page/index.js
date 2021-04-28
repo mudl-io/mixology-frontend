@@ -1,12 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+import Tooltip from "@material-ui/core/Tooltip";
 import { NotificationManager } from "react-notifications";
+import _ from "lodash";
 
 import "./styles.scss";
 import axiosInstance from "../../axiosApi";
 import defaultProfilePic from "../../assets/cocktail-silhouette.png";
 import ImageUploadModal from "../image-upload-modal";
+import ClickableImagesModal from "../clickable-images-modal";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -17,8 +20,10 @@ class ProfilePage extends React.Component {
       createdCocktailsCount: 0,
       email: "",
       imageSelected: false,
+      profilePictures: [],
       profilePictureToUpload: null,
       savedCocktailsCount: 0,
+      showPicturesModal: false,
       showUploader: false,
       username: "",
       viewedCocktailsCount: 0,
@@ -27,19 +32,27 @@ class ProfilePage extends React.Component {
 
   async componentDidMount() {
     try {
-      const response = await axiosInstance.get("/user/detail/", {
-        params: {
-          username: this.props.match.params.username,
-        },
-      });
+      const [userData, profilePicturesData] = await Promise.all([
+        axiosInstance.get("/user/detail/", {
+          params: {
+            username: this.props.match.params.username,
+          },
+        }),
+        axiosInstance.get("/profile_pictures/"),
+      ]);
+
+      const profilePictures = _.sortBy(profilePicturesData.data, ["is_active"])
+        .reverse()
+        .map((img) => img.image);
 
       this.setState({
-        createdCocktailsCount: response.data.createdCocktailsCount,
-        email: response.data.email,
-        activeProfilePicture: response.data.activeProfilePicture.image,
-        savedCocktailsCount: response.data.savedCocktailsCount,
-        username: response.data.username,
-        viewedCocktailsCount: response.data.viewedCocktailsCount,
+        activeProfilePicture: userData.data.activeProfilePicture.image,
+        createdCocktailsCount: userData.data.createdCocktailsCount,
+        email: userData.data.email,
+        profilePictures: profilePictures,
+        savedCocktailsCount: userData.data.savedCocktailsCount,
+        username: userData.data.username,
+        viewedCocktailsCount: userData.data.viewedCocktailsCount,
       });
     } catch (e) {
       // if the network request fails, user the redux store's user state
@@ -91,7 +104,12 @@ class ProfilePage extends React.Component {
     });
   };
 
-  toggleShowUploader = () => {
+  toggleShowAllProfilePictures = () => {
+    this.setState({ showPicturesModal: !this.state.showPicturesModal });
+  };
+
+  toggleShowUploader = (e) => {
+    e.preventDefault(); // prevent toggleShowAllProfilePictures from being run since these elements overlap
     this.setState({ showUploader: !this.state.showUploader });
   };
 
@@ -103,9 +121,12 @@ class ProfilePage extends React.Component {
             <img
               className="profile-picture"
               src={this.state.activeProfilePicture || defaultProfilePic}
+              onClick={this.toggleShowAllProfilePictures}
             />
-            <div className="upload-icon">
-              <AddAPhotoIcon onClick={this.toggleShowUploader} />
+            <div className="upload-icon" onClick={this.toggleShowUploader}>
+              <Tooltip title="Upload a new profile picture" placement="top">
+                <AddAPhotoIcon />
+              </Tooltip>
             </div>
           </div>
           <div className="username">
@@ -142,6 +163,14 @@ class ProfilePage extends React.Component {
           uploadImage={this.handleUploadProfilePicture}
           saveImage={this.handleSaveProfilePicture}
         />
+
+        {this.state.profilePictures && (
+          <ClickableImagesModal
+            images={this.state.profilePictures}
+            open={this.state.showPicturesModal}
+            handleClose={this.toggleShowAllProfilePictures}
+          />
+        )}
       </div>
     );
   }
