@@ -41,9 +41,9 @@ class ProfilePage extends React.Component {
         axiosInstance.get("/profile_pictures/"),
       ]);
 
-      const profilePictures = _.sortBy(profilePicturesData.data, ["is_active"])
-        .reverse()
-        .map((img) => img.image);
+      const profilePictures = _.sortBy(profilePicturesData.data, [
+        "is_active",
+      ]).map((img) => img.image);
 
       this.setState({
         activeProfilePicture: userData.data.activeProfilePicture.image,
