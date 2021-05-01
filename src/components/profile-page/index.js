@@ -41,14 +41,19 @@ class ProfilePage extends React.Component {
         axiosInstance.get("/profile_pictures/"),
       ]);
 
-      const profilePictures = _.sortBy(profilePicturesData.data, [
-        "is_active",
-      ]).map((img) => img.image);
+      const activeProfilePic = _.remove(
+        profilePicturesData.data,
+        (img) => img.isActive
+      );
+
+      const sortedImages = activeProfilePic.concat(profilePicturesData.data);
+      const profilePictures = sortedImages.map((img) => img.image);
 
       this.setState({
         activeProfilePicture: userData.data.activeProfilePicture.image,
         createdCocktailsCount: userData.data.createdCocktailsCount,
         email: userData.data.email,
+        profilePicturesWithMetadata: profilePicturesData.data,
         profilePictures: profilePictures,
         savedCocktailsCount: userData.data.savedCocktailsCount,
         username: userData.data.username,
@@ -84,7 +89,6 @@ class ProfilePage extends React.Component {
           2000
         );
       } catch (e) {
-        console.log(e);
         NotificationManager.error(
           "Error uploading profile picture. Please try again or refresh the page",
           "Upload failure",
@@ -95,6 +99,29 @@ class ProfilePage extends React.Component {
       }
     } else {
       NotificationManager.error("No image selected", "Upload failure", 2000);
+    }
+  };
+
+  handleActiveImageUpdate = (image) => async () => {
+    const newActiveImg = this.state.profilePicturesWithMetadata.find(
+      (img) => img.image === image
+    );
+
+    if (newActiveImg) {
+      try {
+        const res = await axiosInstance.patch(
+          `/profile_pictures/${newActiveImg.publicId}/`,
+          { isActive: true }
+        );
+
+        this.setState({ activeProfilePicture: newActiveImg.image });
+      } catch (e) {
+        NotificationManager.error(
+          "Error updating your active profile picture",
+          "Profile picture update error",
+          2000
+        );
+      }
     }
   };
 
@@ -167,8 +194,11 @@ class ProfilePage extends React.Component {
         {this.state.profilePictures && (
           <ClickableImagesModal
             images={_.uniq(this.state.profilePictures)}
+            canUpdate={true}
             open={this.state.showPicturesModal}
+            updateText="Set as active profile picture"
             handleClose={this.toggleShowAllProfilePictures}
+            handleUpdate={this.handleActiveImageUpdate}
           />
         )}
       </div>

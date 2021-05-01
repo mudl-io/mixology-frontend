@@ -64,6 +64,14 @@ const ClickableImagesModal = (props) => {
             onClick={nextImage(1)}
           />
         )}
+        {props.canUpdate && (
+          <div
+            className="set-active-text"
+            onClick={props.handleUpdate(images[index])}
+          >
+            {props.updateText}
+          </div>
+        )}
       </div>
     </Modal>
   );
