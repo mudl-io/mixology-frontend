@@ -166,7 +166,7 @@ class ProfilePage extends React.Component {
 
         {this.state.profilePictures && (
           <ClickableImagesModal
-            images={this.state.profilePictures}
+            images={_.uniq(this.state.profilePictures)}
             open={this.state.showPicturesModal}
             handleClose={this.toggleShowAllProfilePictures}
           />

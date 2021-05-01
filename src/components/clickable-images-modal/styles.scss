@@ -16,12 +16,22 @@
       border-radius: 35px;
     }
 
-    .hide {
-      visibility: hide;
-    }
-
     .visible {
       visibility: visible;
+    }
+
+    .hide {
+      visibility: hidden;
+    }
+
+    .MuiCircularProgress-root {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+    }
+
+    .arrow {
+      font-size: 3.1875rem;
     }
   }
 }

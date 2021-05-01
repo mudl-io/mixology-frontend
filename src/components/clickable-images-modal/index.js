@@ -1,20 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Modal from "@material-ui/core/Modal";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 import "./styles.scss";
 
 const ClickableImagesModal = (props) => {
   const [isLoading, setLoading] = useState(false);
+  const [imgClass, setImgClass] = useState("visible");
   const [index, changeIndex] = useState(0);
   const images = props.images;
 
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForwards, setCanGoForwards] = useState(images);
 
-  const didLoad = () => setLoading(false);
+  const didLoad = useCallback(() => {
+    setLoading(false);
+    setImgClass("visible");
+  }, [isLoading]);
+
+  const handleClose = () => {
+    changeIndex(0);
+    setCanGoBack(false);
+    setCanGoForwards(images);
+    props.handleClose();
+  };
 
   const nextImage = (value) => (e) => {
     if (index === 0 && value === -1) {
@@ -23,8 +34,9 @@ const ClickableImagesModal = (props) => {
       return;
     } else {
       setLoading(true);
-      setCanGoBack(index > 0);
-      setCanGoForwards(index < images.length);
+      setImgClass("hide");
+      setCanGoBack(index + value > 0);
+      setCanGoForwards(index + value < images.length - 1);
       changeIndex(index + value);
     }
   };
@@ -33,25 +45,21 @@ const ClickableImagesModal = (props) => {
     <Modal
       className="clickable-images-modal"
       open={props.open}
-      onClose={props.handleClose}
+      onClose={handleClose}
     >
       <div className="content">
         {canGoBack && (
-          <ArrowBackIosIcon
-            className="back-arrow"
+          <NavigateBeforeIcon
+            className="arrow"
             fontSize="large"
             onClick={nextImage(-1)}
           />
         )}
         {isLoading && <CircularProgress />}
-        <img
-          className={isLoading ? "visible" : "hide"}
-          src={images[index]}
-          onLoad={didLoad}
-        />
+        <img className={imgClass} src={images[index]} onLoad={didLoad} />
         {canGoForwards && (
-          <ArrowForwardIosIcon
-            className="forwards-arrow"
+          <NavigateNextIcon
+            className="arrow"
             fontSize="large"
             onClick={nextImage(1)}
           />
