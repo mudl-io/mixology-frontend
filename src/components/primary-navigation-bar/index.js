@@ -35,6 +35,8 @@ class PrimaryNavigationBar extends React.Component {
       axiosInstance.defaults.headers["Authorization"] = null;
 
       this.props.dispatch(logoutUser());
+
+      window.location.href = "/login/";
     } catch (e) {
       console.log(e);
     } finally {
