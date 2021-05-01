@@ -84,6 +84,7 @@ class ProfilePage extends React.Component {
           2000
         );
       } catch (e) {
+        console.log(e);
         NotificationManager.error(
           "Error uploading profile picture. Please try again or refresh the page",
           "Upload failure",
@@ -108,8 +109,7 @@ class ProfilePage extends React.Component {
     this.setState({ showPicturesModal: !this.state.showPicturesModal });
   };
 
-  toggleShowUploader = (e) => {
-    e.preventDefault(); // prevent toggleShowAllProfilePictures from being run since these elements overlap
+  toggleShowUploader = () => {
     this.setState({ showUploader: !this.state.showUploader });
   };
 
