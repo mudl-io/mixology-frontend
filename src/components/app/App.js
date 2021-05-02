@@ -68,6 +68,11 @@ class App extends React.Component {
               path="/created-by/:username"
               component={CreatedCocktailsDisplay}
             />
+            <Route
+              exact
+              path="/cocktail/:id/edit"
+              component={CreateCocktailForm}
+            />
           </Switch>
         </Router>
 

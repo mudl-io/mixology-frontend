@@ -25,7 +25,7 @@ class CocktailDisplay extends React.PureComponent {
       return (
         <ul className="ingredients-list">
           {ingredients.map((ingredient) => (
-            <li key={`${ingredient.public_id}-${ingredient.name}`}>
+            <li key={`${ingredient.publicId}-${ingredient.name}`}>
               <span>
                 {ingredient.name} - {ingredient.amount} {ingredient.unit}
               </span>
@@ -77,6 +77,11 @@ class CocktailDisplay extends React.PureComponent {
           </span>
           {this.createdBy()}
         </div>
+        {this.props.userCanEdit && (
+          <div className="edit-text">
+            <Link to={`edit/`}>Edit</Link>
+          </div>
+        )}
         <div>
           <h3 className="header">Description</h3>
           <p className="content">{this.props.description}</p>

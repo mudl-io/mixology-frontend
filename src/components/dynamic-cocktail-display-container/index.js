@@ -41,16 +41,18 @@ class DynamicCocktailDisplayContainer extends React.Component {
     this.setState({
       cocktail: displayCocktail,
       cocktailId: cocktailId,
-      name: displayCocktail.name,
-      description: displayCocktail.description,
       complexity: displayCocktail.complexity,
-      image: displayCocktail.image,
       createdBy: displayCocktail.createdBy,
-      instructions: displayCocktail.instructions,
-      liquors: displayCocktail.liquors,
+      description: displayCocktail.description,
+      image: displayCocktail.image,
       ingredients: displayCocktail.ingredients,
+      instructions: displayCocktail.instructions,
       isSaved: displayCocktail.isSaved,
+      liquors: displayCocktail.liquors,
+      name: displayCocktail.name,
       timesSaved: displayCocktail.timesSaved,
+      userCanEdit:
+        displayCocktail.createdBy.username === this.props.currentUser.username,
     });
   }
 
@@ -85,6 +87,7 @@ class DynamicCocktailDisplayContainer extends React.Component {
     return (
       <div className="dynamic-cocktail-container">
         <CocktailDisplay
+          cocktailId={this.state.cocktailId}
           name={this.state.name}
           description={this.state.description}
           complexity={this.state.complexity}
@@ -95,6 +98,7 @@ class DynamicCocktailDisplayContainer extends React.Component {
           createdBy={this.state.createdBy}
           isSaved={this.state.isSaved}
           timesSaved={this.state.timesSaved}
+          userCanEdit={this.state.userCanEdit}
           toggleSaveCocktail={this.toggleSaveCocktail}
         />
       </div>
@@ -104,7 +108,8 @@ class DynamicCocktailDisplayContainer extends React.Component {
 
 const mapStateToProps = (state) => {
   const savedCocktails = state.savedCocktails;
-  return { savedCocktails: savedCocktails };
+  const { user } = state.users;
+  return { savedCocktails: savedCocktails, currentUser: user };
 };
 
 export default connect(mapStateToProps)(DynamicCocktailDisplayContainer);

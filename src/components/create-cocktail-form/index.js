@@ -34,18 +34,30 @@ class CreateCocktailForm extends React.Component {
       instructions: "",
       selectedIngredients: [],
       selectedLiquors: [],
+      isEditedCocktail: false,
       isPrivate: false,
       cocktailNameValid: true,
       selectedLiquorsAreValid: true,
       selectedIngredientsAreValid: true,
       complexityClass: {},
       instructionsValid: true,
+      submitButtonText: "Create Cocktail",
       submittedForm: false,
       errorMessageActive: false,
     };
   }
 
   async componentDidMount() {
+    const isEdit = this.props.location.pathname.indexOf("edit") > -1;
+
+    if (isEdit) {
+      const cocktailId = this.props.match.params.id;
+      const res = await axiosInstance.get(`/cocktails/${cocktailId}`);
+      const cocktail = res.data;
+
+      this.setEditingState(cocktail);
+    }
+
     // only make network request to get liquors and ingredients if the store is not already filled
     try {
       if (
@@ -72,6 +84,7 @@ class CreateCocktailForm extends React.Component {
   };
 
   handleSelect = (name) => async (selectedOptions, selectType) => {
+    console.log(selectedOptions);
     if (selectType.action === "create-option") {
       const optionToCreate = _.find(selectedOptions, { __isNew__: true });
 
@@ -216,6 +229,30 @@ class CreateCocktailForm extends React.Component {
     this.setState({ isPrivate: !this.state.isPrivate });
   };
 
+  createCocktail = () => {
+    return axiosInstance.post("/cocktails/", {
+      name: this.state.cocktailName,
+      description: this.state.description,
+      complexity: this.state.complexity,
+      instructions: this.state.instructions,
+      liquors: this.state.selectedLiquors,
+      ingredients: this.state.selectedIngredients,
+      isPrivate: this.state.isPrivate,
+    });
+  };
+
+  updateCocktail = () => {
+    return axiosInstance.put(`/cocktails/${this.state.cocktailId}/`, {
+      name: this.state.cocktailName,
+      description: this.state.description,
+      complexity: this.state.complexity,
+      instructions: this.state.instructions,
+      liquors: this.state.selectedLiquors,
+      ingredients: this.state.selectedIngredients,
+      isPrivate: this.state.isPrivate,
+    });
+  };
+
   handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -224,15 +261,9 @@ class CreateCocktailForm extends React.Component {
     if (isValid) {
       let response;
       try {
-        response = await axiosInstance.post("/cocktails/", {
-          name: this.state.cocktailName,
-          description: this.state.description,
-          complexity: this.state.complexity,
-          instructions: this.state.instructions,
-          liquors: this.state.selectedLiquors,
-          ingredients: this.state.selectedIngredients,
-          isPrivate: this.state.isPrivate,
-        });
+        response = this.state.isEditedCocktail
+          ? await this.updateCocktail()
+          : await this.createCocktail();
 
         const imageResponse = this.uploadCocktailImage(response.data);
 
@@ -339,6 +370,23 @@ class CreateCocktailForm extends React.Component {
     }
   };
 
+  setEditingState = (cocktail) => {
+    console.log(cocktail);
+    this.setState({
+      cocktailId: cocktail.publicId,
+      cocktailImg: cocktail.image,
+      cocktailName: cocktail.name,
+      complexity: cocktail.complexity,
+      description: cocktail.description,
+      instructions: cocktail.instructions,
+      isEditedCocktail: true,
+      isPrivate: cocktail.isPrivate,
+      selectedIngredients: cocktail.ingredients,
+      selectedLiquors: cocktail.liquors,
+      submitButtonText: "Update Cocktail",
+    });
+  };
+
   render() {
     return (
       <div className="create-cocktail-container">
@@ -361,6 +409,9 @@ class CreateCocktailForm extends React.Component {
               options={this.props.liquorOptions}
               optionName="selectedLiquors"
               error={!this.state.selectedLiquorsAreValid}
+              selectedOptions={this.state.selectedLiquors.map((liquor) => {
+                return { value: liquor, label: liquor.name };
+              })}
               handleSelect={this.handleSelect}
             />
           </label>
@@ -380,6 +431,11 @@ class CreateCocktailForm extends React.Component {
               options={this.props.ingredientOptions}
               optionName="selectedIngredients"
               error={!this.state.selectedIngredientsAreValid}
+              selectedOptions={this.state.selectedIngredients.map(
+                (ingredient) => {
+                  return { value: ingredient, label: ingredient.name };
+                }
+              )}
               handleSelect={this.handleSelect}
             />
           </label>
@@ -416,6 +472,7 @@ class CreateCocktailForm extends React.Component {
               styles={this.state.complexityClass}
               name="Complexity"
               options={this.complexityOptions()}
+              value={this.state.complexity}
               onChange={this.handleSelectComplexity}
             />
             <HelpIcon
@@ -442,7 +499,7 @@ class CreateCocktailForm extends React.Component {
           <input
             className="create-cocktail-submit-button"
             type="submit"
-            value="Create Cocktail"
+            value={this.state.submitButtonText}
           />
         </form>
 
