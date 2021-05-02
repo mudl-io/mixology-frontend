@@ -265,7 +265,7 @@ class CreateCocktailForm extends React.Component {
           ? await this.updateCocktail()
           : await this.createCocktail();
 
-        const imageResponse = this.uploadCocktailImage(response.data);
+        if (this.state.cocktailImg) this.uploadCocktailImage(response.data);
 
         NotificationManager.success(
           'Your cocktail was successfully created! You can now view this in the "Created Cocktails" section in your profile.',
@@ -344,7 +344,11 @@ class CreateCocktailForm extends React.Component {
 
   shouldRedirect = () => {
     if (this.state.submittedForm) {
-      return <Redirect to={{ pathname: "/" }} />;
+      return this.state.isEditedCocktail ? (
+        <Redirect to={{ pathname: `/cocktail/${this.state.cocktailId}/` }} />
+      ) : (
+        <Redirect to={{ pathname: "/" }} />
+      );
     }
   };
 
@@ -374,7 +378,6 @@ class CreateCocktailForm extends React.Component {
     console.log(cocktail);
     this.setState({
       cocktailId: cocktail.publicId,
-      cocktailImg: cocktail.image,
       cocktailName: cocktail.name,
       complexity: cocktail.complexity,
       description: cocktail.description,
