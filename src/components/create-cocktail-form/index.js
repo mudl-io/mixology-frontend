@@ -509,7 +509,10 @@ class CreateCocktailForm extends React.Component {
               styles={this.state.complexityClass}
               name="Complexity"
               options={this.complexityOptions()}
-              value={this.state.complexity}
+              value={{
+                value: this.state.complexity,
+                label: this.state.complexity,
+              }}
               onChange={this.handleSelectComplexity}
             />
             <HelpIcon
