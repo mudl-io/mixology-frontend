@@ -77,6 +77,35 @@ class CreateCocktailForm extends React.Component {
     }
   }
 
+  // if a cocktail is being editing and then "Create a Cocktail" is clicked on
+  // we need to clear the existing state
+  componentDidUpdate(previousProps) {
+    if (
+      this.props.location.pathname.indexOf("edit") < 0 &&
+      previousProps.location.pathname.indexOf("edit") > -1
+    ) {
+      this.setState({
+        cocktailName: "",
+        cocktailImg: null,
+        description: "",
+        complexity: 0,
+        instructions: "",
+        selectedIngredients: [],
+        selectedLiquors: [],
+        isEditedCocktail: false,
+        isPrivate: false,
+        cocktailNameValid: true,
+        selectedLiquorsAreValid: true,
+        selectedIngredientsAreValid: true,
+        complexityClass: {},
+        instructionsValid: true,
+        submitButtonText: "Create Cocktail",
+        submittedForm: false,
+        errorMessageActive: false,
+      });
+    }
+  }
+
   handleChange = (event) => {
     const isEmpty = event.target.value.trim().length === 0;
     const key = event.target.name + "Valid";
