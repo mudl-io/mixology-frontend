@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { NotificationManager } from "react-notifications";
 
 import { didSaveCocktail } from "../../features/saved-cocktails/savedCocktailsSlice";
 import { didUnsaveCocktail } from "../../features/saved-cocktails/savedCocktailsSlice";
@@ -52,9 +53,30 @@ class DynamicCocktailDisplayContainer extends React.Component {
       name: displayCocktail.name,
       timesSaved: displayCocktail.timesSaved,
       userCanEdit:
+        displayCocktail.createdBy &&
         displayCocktail.createdBy.username === this.props.currentUser.username,
     });
   }
+
+  deleteCocktail = async () => {
+    try {
+      await axiosInstance.delete(`/cocktails/${this.state.cocktailId}/`);
+
+      NotificationManager.success(
+        "Successfully deleted your cocktail",
+        "Deletion Success",
+        2000
+      );
+
+      this.props.history.push("/created-cocktails/");
+    } catch (e) {
+      NotificationManager.success(
+        "Failed to delete your cocktail",
+        "Deletion Failure",
+        2000
+      );
+    }
+  };
 
   toggleSaveCocktail = async () => {
     try {
@@ -99,6 +121,7 @@ class DynamicCocktailDisplayContainer extends React.Component {
           isSaved={this.state.isSaved}
           timesSaved={this.state.timesSaved}
           userCanEdit={this.state.userCanEdit}
+          deleteCocktail={this.deleteCocktail}
           toggleSaveCocktail={this.toggleSaveCocktail}
         />
       </div>

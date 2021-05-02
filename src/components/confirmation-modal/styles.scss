@@ -1,0 +1,32 @@
+.confirmation-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .contents {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    width: 400px;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: white;
+    outline: none;
+
+    .button {
+      margin: 30px 10px;
+      font-weight: 600;
+
+      &.deletion {
+        background-color: #e81759;
+      }
+
+      &.confirmation {
+        background-color: #2386dc;
+      }
+    }
+  }
+}

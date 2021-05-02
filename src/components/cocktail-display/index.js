@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import "./styles.scss";
 import defaultImg from "../../assets/defaultimg.png";
 import HeartCheckbox from "../heart-checkbox";
+import ConfirmationModal from "../confirmation-modal";
 
 class CocktailDisplay extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       image: "",
+      showDeleteConfirmation: false,
     };
   }
 
@@ -56,6 +58,12 @@ class CocktailDisplay extends React.PureComponent {
     return defaultImg;
   };
 
+  toggleConfirmDelete = () => {
+    this.setState({
+      showDeleteConfirmation: !this.state.showDeleteConfirmation,
+    });
+  };
+
   cocktailDetails = () => {
     return (
       <div className="cocktail-details">
@@ -80,6 +88,9 @@ class CocktailDisplay extends React.PureComponent {
         {this.props.userCanEdit && (
           <div className="edit-text">
             <Link to={`edit/`}>Edit</Link>
+            <span className="delete-text" onClick={this.toggleConfirmDelete}>
+              Delete
+            </span>
           </div>
         )}
         <div>
@@ -94,6 +105,16 @@ class CocktailDisplay extends React.PureComponent {
           <h3 className="header">Instructions</h3>
           <p className="content">{this.props.instructions}</p>
         </div>
+
+        <ConfirmationModal
+          cancelText="Cancel"
+          confirmClass="deletion"
+          confirmText="Delete"
+          open={this.state.showDeleteConfirmation}
+          question="Are you sure you want to delete this cocktail?"
+          handleConfirm={this.props.deleteCocktail}
+          handleClose={this.toggleConfirmDelete}
+        />
       </div>
     );
   };
