@@ -32,6 +32,7 @@ const dropdown = (props) => {
         }}
         name={props.name}
         options={buildOptions(props.options)}
+        value={props.selectedOptions}
         isMulti
         onChange={props.handleSelect(props.optionName)}
       />
@@ -53,6 +54,7 @@ const dropdown = (props) => {
         }}
         name={props.name}
         options={buildOptions(props.options)}
+        value={props.selectedOptions}
         isMulti
         onChange={props.handleSelect(props.optionName)}
       />

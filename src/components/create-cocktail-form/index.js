@@ -34,18 +34,30 @@ class CreateCocktailForm extends React.Component {
       instructions: "",
       selectedIngredients: [],
       selectedLiquors: [],
+      isEditedCocktail: false,
       isPrivate: false,
       cocktailNameValid: true,
       selectedLiquorsAreValid: true,
       selectedIngredientsAreValid: true,
       complexityClass: {},
       instructionsValid: true,
+      submitButtonText: "Create Cocktail",
       submittedForm: false,
       errorMessageActive: false,
     };
   }
 
   async componentDidMount() {
+    const isEdit = this.props.location.pathname.indexOf("edit") > -1;
+
+    if (isEdit) {
+      const cocktailId = this.props.match.params.id;
+      const res = await axiosInstance.get(`/cocktails/${cocktailId}`);
+      const cocktail = res.data;
+
+      this.setEditingState(cocktail);
+    }
+
     // only make network request to get liquors and ingredients if the store is not already filled
     try {
       if (
@@ -62,6 +74,35 @@ class CreateCocktailForm extends React.Component {
       }
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  // if a cocktail is being editing and then "Create a Cocktail" is clicked on
+  // we need to clear the existing state
+  componentDidUpdate(previousProps) {
+    if (
+      this.props.location.pathname.indexOf("edit") < 0 &&
+      previousProps.location.pathname.indexOf("edit") > -1
+    ) {
+      this.setState({
+        cocktailName: "",
+        cocktailImg: null,
+        description: "",
+        complexity: 0,
+        instructions: "",
+        selectedIngredients: [],
+        selectedLiquors: [],
+        isEditedCocktail: false,
+        isPrivate: false,
+        cocktailNameValid: true,
+        selectedLiquorsAreValid: true,
+        selectedIngredientsAreValid: true,
+        complexityClass: {},
+        instructionsValid: true,
+        submitButtonText: "Create Cocktail",
+        submittedForm: false,
+        errorMessageActive: false,
+      });
     }
   }
 
@@ -216,6 +257,14 @@ class CreateCocktailForm extends React.Component {
     this.setState({ isPrivate: !this.state.isPrivate });
   };
 
+  createCocktail = (body) => {
+    return axiosInstance.post("/cocktails/", body);
+  };
+
+  updateCocktail = (body) => {
+    return axiosInstance.put(`/cocktails/${this.state.cocktailId}/`, body);
+  };
+
   handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -224,7 +273,7 @@ class CreateCocktailForm extends React.Component {
     if (isValid) {
       let response;
       try {
-        response = await axiosInstance.post("/cocktails/", {
+        const body = {
           name: this.state.cocktailName,
           description: this.state.description,
           complexity: this.state.complexity,
@@ -232,9 +281,13 @@ class CreateCocktailForm extends React.Component {
           liquors: this.state.selectedLiquors,
           ingredients: this.state.selectedIngredients,
           isPrivate: this.state.isPrivate,
-        });
+        };
 
-        const imageResponse = this.uploadCocktailImage(response.data);
+        response = this.state.isEditedCocktail
+          ? await this.updateCocktail(body)
+          : await this.createCocktail(body);
+
+        if (this.state.cocktailImg) this.uploadCocktailImage(response.data);
 
         NotificationManager.success(
           'Your cocktail was successfully created! You can now view this in the "Created Cocktails" section in your profile.',
@@ -313,7 +366,11 @@ class CreateCocktailForm extends React.Component {
 
   shouldRedirect = () => {
     if (this.state.submittedForm) {
-      return <Redirect to={{ pathname: "/" }} />;
+      return this.state.isEditedCocktail ? (
+        <Redirect to={{ pathname: `/cocktail/${this.state.cocktailId}/` }} />
+      ) : (
+        <Redirect to={{ pathname: "/" }} />
+      );
     }
   };
 
@@ -329,7 +386,20 @@ class CreateCocktailForm extends React.Component {
     axiosInstance.defaults.headers["Content-Type"] = "multipart/form-data";
 
     try {
-      const res = await axiosInstance.post("/cocktail_images/", imageData);
+      let res;
+
+      if (this.state.isEditedCocktail && cocktail.image) {
+        const imageId = cocktail.image.publicId;
+
+        // update existing image
+        res = await axiosInstance.put(
+          `/cocktail_images/${imageId}/`,
+          imageData
+        );
+      } else {
+        // create new image
+        res = await axiosInstance.post("/cocktail_images/", imageData);
+      }
 
       return res;
     } catch (e) {
@@ -337,6 +407,21 @@ class CreateCocktailForm extends React.Component {
     } finally {
       axiosInstance.defaults.headers["Content-Type"] = "application/json";
     }
+  };
+
+  setEditingState = (cocktail) => {
+    this.setState({
+      cocktailId: cocktail.publicId,
+      cocktailName: cocktail.name,
+      complexity: cocktail.complexity,
+      description: cocktail.description,
+      instructions: cocktail.instructions,
+      isEditedCocktail: true,
+      isPrivate: cocktail.isPrivate,
+      selectedIngredients: cocktail.ingredients,
+      selectedLiquors: cocktail.liquors,
+      submitButtonText: "Update Cocktail",
+    });
   };
 
   render() {
@@ -361,6 +446,9 @@ class CreateCocktailForm extends React.Component {
               options={this.props.liquorOptions}
               optionName="selectedLiquors"
               error={!this.state.selectedLiquorsAreValid}
+              selectedOptions={this.state.selectedLiquors.map((liquor) => {
+                return { value: liquor, label: liquor.name };
+              })}
               handleSelect={this.handleSelect}
             />
           </label>
@@ -380,6 +468,11 @@ class CreateCocktailForm extends React.Component {
               options={this.props.ingredientOptions}
               optionName="selectedIngredients"
               error={!this.state.selectedIngredientsAreValid}
+              selectedOptions={this.state.selectedIngredients.map(
+                (ingredient) => {
+                  return { value: ingredient, label: ingredient.name };
+                }
+              )}
               handleSelect={this.handleSelect}
             />
           </label>
@@ -416,6 +509,10 @@ class CreateCocktailForm extends React.Component {
               styles={this.state.complexityClass}
               name="Complexity"
               options={this.complexityOptions()}
+              value={{
+                value: this.state.complexity,
+                label: this.state.complexity,
+              }}
               onChange={this.handleSelectComplexity}
             />
             <HelpIcon
@@ -442,7 +539,7 @@ class CreateCocktailForm extends React.Component {
           <input
             className="create-cocktail-submit-button"
             type="submit"
-            value="Create Cocktail"
+            value={this.state.submitButtonText}
           />
         </form>
 
