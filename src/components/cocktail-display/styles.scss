@@ -53,4 +53,14 @@
     text-align: center;
     margin-top: 7px;
   }
+
+  .delete-text {
+    margin-left: 30px;
+    color: red;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
