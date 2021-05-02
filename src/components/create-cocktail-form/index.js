@@ -84,7 +84,6 @@ class CreateCocktailForm extends React.Component {
   };
 
   handleSelect = (name) => async (selectedOptions, selectType) => {
-    console.log(selectedOptions);
     if (selectType.action === "create-option") {
       const optionToCreate = _.find(selectedOptions, { __isNew__: true });
 
@@ -229,28 +228,12 @@ class CreateCocktailForm extends React.Component {
     this.setState({ isPrivate: !this.state.isPrivate });
   };
 
-  createCocktail = () => {
-    return axiosInstance.post("/cocktails/", {
-      name: this.state.cocktailName,
-      description: this.state.description,
-      complexity: this.state.complexity,
-      instructions: this.state.instructions,
-      liquors: this.state.selectedLiquors,
-      ingredients: this.state.selectedIngredients,
-      isPrivate: this.state.isPrivate,
-    });
+  createCocktail = (body) => {
+    return axiosInstance.post("/cocktails/", body);
   };
 
-  updateCocktail = () => {
-    return axiosInstance.put(`/cocktails/${this.state.cocktailId}/`, {
-      name: this.state.cocktailName,
-      description: this.state.description,
-      complexity: this.state.complexity,
-      instructions: this.state.instructions,
-      liquors: this.state.selectedLiquors,
-      ingredients: this.state.selectedIngredients,
-      isPrivate: this.state.isPrivate,
-    });
+  updateCocktail = (body) => {
+    return axiosInstance.put(`/cocktails/${this.state.cocktailId}/`, body);
   };
 
   handleSubmit = async (event) => {
@@ -261,9 +244,19 @@ class CreateCocktailForm extends React.Component {
     if (isValid) {
       let response;
       try {
+        const body = {
+          name: this.state.cocktailName,
+          description: this.state.description,
+          complexity: this.state.complexity,
+          instructions: this.state.instructions,
+          liquors: this.state.selectedLiquors,
+          ingredients: this.state.selectedIngredients,
+          isPrivate: this.state.isPrivate,
+        };
+
         response = this.state.isEditedCocktail
-          ? await this.updateCocktail()
-          : await this.createCocktail();
+          ? await this.updateCocktail(body)
+          : await this.createCocktail(body);
 
         if (this.state.cocktailImg) this.uploadCocktailImage(response.data);
 
