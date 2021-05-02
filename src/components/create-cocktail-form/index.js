@@ -364,7 +364,20 @@ class CreateCocktailForm extends React.Component {
     axiosInstance.defaults.headers["Content-Type"] = "multipart/form-data";
 
     try {
-      const res = await axiosInstance.post("/cocktail_images/", imageData);
+      let res;
+
+      if (this.state.isEditedCocktail && cocktail.image) {
+        const imageId = cocktail.image.publicId;
+
+        // update existing image
+        res = await axiosInstance.put(
+          `/cocktail_images/${imageId}/`,
+          imageData
+        );
+      } else {
+        // create new image
+        res = await axiosInstance.post("/cocktail_images/", imageData);
+      }
 
       return res;
     } catch (e) {
@@ -375,7 +388,6 @@ class CreateCocktailForm extends React.Component {
   };
 
   setEditingState = (cocktail) => {
-    console.log(cocktail);
     this.setState({
       cocktailId: cocktail.publicId,
       cocktailName: cocktail.name,
