@@ -14,4 +14,12 @@
   img {
     border-radius: 5px;
   }
+
+  .cocktail-detail {
+    color: white;
+
+    &:hover {
+      color: darken(#cae4f1, 20%);
+    }
+  }
 }
