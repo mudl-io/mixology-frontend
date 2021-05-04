@@ -1,6 +1,10 @@
 .MuiDrawer-paperAnchorRight {
   width: 21%;
 
+  &.MuiPaper-root {
+    background-color: #424242;
+  }
+
   .cocktails-list {
     position: relative;
     top: 7%;
