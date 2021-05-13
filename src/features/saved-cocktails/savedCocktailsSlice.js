@@ -4,20 +4,44 @@ const savedCocktailsSlice = createSlice({
   name: "savedCocktails",
   initialState: [],
   reducers: {
-    didGetCocktails(state, action) {
-      return [...action.payload];
+    didGetSavedCocktails(state, action) {
+      return {
+        savedCocktails: [...action.payload.cocktails],
+        canLoadMore: action.payload.canLoadMore,
+        nextPage: 2,
+      };
+    },
+    didUpdateSavedCocktails(state, action) {
+      return {
+        savedCocktails: [...state.savedCocktails, ...action.payload.cocktails],
+        canLoadMore: action.payload.canLoadMore,
+        nextPage: state.nextPage + 1,
+      };
     },
     didSaveCocktail(state, action) {
-      return [...state, action.payload];
+      const savedCocktails = state.savedCocktails
+        ? [...state.savedCocktails, action.payload]
+        : [action.payload];
+
+      return {
+        savedCocktails: savedCocktails,
+        canLoadMore: state.canLoadMore,
+        nextPage: state.nextPage,
+      };
     },
     didUnsaveCocktail(state, action) {
-      return state.filter((cocktail) => cocktail.publicId !== action.payload);
+      if (!state.savedCocktails) return;
+
+      state.savedCocktails = state.savedCocktails.filter(
+        (cocktail) => cocktail.publicId !== action.payload
+      );
     },
   },
 });
 
 export const {
-  didGetCocktails,
+  didGetSavedCocktails,
+  didUpdateSavedCocktails,
   didSaveCocktail,
   didUnsaveCocktail,
 } = savedCocktailsSlice.actions;
