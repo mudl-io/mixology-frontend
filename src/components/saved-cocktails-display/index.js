@@ -26,23 +26,26 @@ class SavedCocktailsDisplay extends React.Component {
   fetchSavedCocktails = async () => {
     const nextPage = this.props.nextPage;
 
-    this.setState({ isLoading: true });
+    try {
+      this.setState({ isLoading: true });
 
-    const res = await axiosInstance.get("/cocktails/saved_cocktails", {
-      params: { page: nextPage },
-    });
+      const res = await axiosInstance.get("/cocktails/saved_cocktails", {
+        params: { page: nextPage },
+      });
 
-    const savedCocktails = res.data.results;
-    const canLoadMore = !!res.data.next;
+      const savedCocktails = res.data.results;
+      const canLoadMore = !!res.data.next;
 
-    const action =
-      nextPage === 1 ? didGetSavedCocktails : didUpdateSavedCocktails;
+      const action =
+        nextPage === 1 ? didGetSavedCocktails : didUpdateSavedCocktails;
 
-    this.props.dispatch(
-      action({ cocktails: savedCocktails, canLoadMore: canLoadMore })
-    );
-
-    this.setState({ isLoading: false });
+      this.props.dispatch(
+        action({ cocktails: savedCocktails, canLoadMore: canLoadMore })
+      );
+    } catch (e) {
+    } finally {
+      this.setState({ isLoading: false });
+    }
   };
 
   render() {
@@ -55,7 +58,7 @@ class SavedCocktailsDisplay extends React.Component {
         >
           <CocktailsList
             title={"Saved Cocktails"}
-            cocktails={this.props.savedCocktails || []}
+            cocktails={this.props.savedCocktails}
           />
         </InfiniteScroller>
       </div>
@@ -65,15 +68,12 @@ class SavedCocktailsDisplay extends React.Component {
 
 const mapStateToProps = (state) => {
   const data = state.savedCocktails;
-  const { savedCocktails, nextPage } = data;
-  let { canLoadMore } = data;
-
-  canLoadMore = nextPage === 1 ? true : canLoadMore;
+  const { savedCocktails, nextPage, canLoadMore } = data;
 
   return {
     savedCocktails: savedCocktails,
     canLoadMore: canLoadMore,
-    nextPage: nextPage ? nextPage : 1,
+    nextPage: nextPage,
   };
 };
 

@@ -2,32 +2,23 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const savedCocktailsSlice = createSlice({
   name: "savedCocktails",
-  initialState: [],
+  initialState: { savedCocktails: [], nextPage: 1, canLoadMore: false },
   reducers: {
     didGetSavedCocktails(state, action) {
-      return {
-        savedCocktails: [...action.payload.cocktails],
-        canLoadMore: action.payload.canLoadMore,
-        nextPage: 2,
-      };
+      state.savedCocktails = [...action.payload.cocktails];
+      state.canLoadMore = action.payload.canLoadMore;
+      state.nextPage = 2;
     },
     didUpdateSavedCocktails(state, action) {
-      return {
-        savedCocktails: [...state.savedCocktails, ...action.payload.cocktails],
-        canLoadMore: action.payload.canLoadMore,
-        nextPage: state.nextPage + 1,
-      };
+      state.savedCocktails = [
+        ...state.savedCocktails,
+        ...action.payload.cocktails,
+      ];
+      state.canLoadMore = action.payload.canLoadMore;
+      state.nextPage = state.nextPage + 1;
     },
     didSaveCocktail(state, action) {
-      const savedCocktails = state.savedCocktails
-        ? [...state.savedCocktails, action.payload]
-        : [action.payload];
-
-      return {
-        savedCocktails: savedCocktails,
-        canLoadMore: state.canLoadMore,
-        nextPage: state.nextPage,
-      };
+      state.savedCocktails.push(action.payload);
     },
     didUnsaveCocktail(state, action) {
       if (!state.savedCocktails) return;
