@@ -22,12 +22,11 @@ axiosInstance.interceptors.response.use(
     // Prevent infinite loops
     if (
       error.response.status === 401 &&
-      originalRequest.url === "/token/refresh/"
+      originalRequest.url.indexOf("/token/refresh/") > -1
     ) {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refesh_token");
       localStorage.removeItem("user");
-      window.location.href = "/login/";
       return Promise.reject(error);
     }
 
@@ -36,6 +35,8 @@ axiosInstance.interceptors.response.use(
       error.response.statusText === "Unauthorized"
     ) {
       const refresh_token = localStorage.getItem("refresh_token");
+
+      if (!refresh_token) return;
 
       return axiosInstance
         .post("/token/refresh/", { refresh: refresh_token })
