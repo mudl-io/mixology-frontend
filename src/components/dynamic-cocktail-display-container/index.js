@@ -130,7 +130,7 @@ class DynamicCocktailDisplayContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const savedCocktails = state.savedCocktails;
+  const savedCocktails = state.savedCocktails.savedCocktails;
   const { user } = state.users;
   return { savedCocktails: savedCocktails, currentUser: user };
 };
