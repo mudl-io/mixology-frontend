@@ -5,6 +5,7 @@ import { NotificationManager } from "react-notifications";
 
 import axiosInstance from "../../axiosApi";
 import history from "../../history";
+import LoadingScreen from "../loading-screen";
 import "./styles.scss";
 
 class ResetPasswordForm extends React.Component {
@@ -15,6 +16,7 @@ class ResetPasswordForm extends React.Component {
       email: "",
       hasSubmittedEmail: false,
       hasSubmittedVerificationCode: false,
+      isLoading: false,
       matchingPassword: "",
       newPassword: "",
       verificationCode: "",
@@ -46,6 +48,7 @@ class ResetPasswordForm extends React.Component {
     }
 
     try {
+      this.setState({ isLoading: true });
       const res = await axiosInstance.post(
         "/password_reset/send_verification_code_email/",
         {
@@ -58,6 +61,8 @@ class ResetPasswordForm extends React.Component {
       this.setState({ hasSubmittedEmail: true });
     } catch (e) {
       console.log(e);
+    } finally {
+      this.setState({ isLoading: false });
     }
   };
 
@@ -114,6 +119,8 @@ class ResetPasswordForm extends React.Component {
     }
 
     try {
+      this.setState({ isLoading: true });
+
       const res = await axiosInstance.post("/password_reset/verify_code/", {
         email: this.state.email,
         verificationCode: this.state.verificationCode,
@@ -128,6 +135,8 @@ class ResetPasswordForm extends React.Component {
         "Verification Code Invalid",
         5000
       );
+    } finally {
+      this.setState({ isLoading: false });
     }
 
     this.setState({ hasSubmittedVerificationCode: true });
@@ -135,14 +144,15 @@ class ResetPasswordForm extends React.Component {
 
   inputBlock = (params) => {
     const { label, name, onSubmit } = params;
+    const informationHeader = {
+      verificationCode: "Please check your email for a verification code.",
+      email:
+        "Please enter your email that you would like use to send a verification code to.",
+    };
 
     return (
       <div>
-        {name === "verificationCode" && (
-          <div className="verification-code-text">
-            Please check your email for a verification code
-          </div>
-        )}
+        <div className="sub-text">{informationHeader[name]}</div>
         <TextField
           required
           className={this.state.isValidEmail ? "invalid" : ""}
@@ -229,6 +239,7 @@ class ResetPasswordForm extends React.Component {
       <div className="reset-password-container">
         <h2>Reset Password</h2>
         {this.innerContents()}
+        <LoadingScreen isOpen={this.state.isLoading} />
       </div>
     );
   }
