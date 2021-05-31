@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import _ from "lodash";
 
 import "./styles.scss";
 import defaultImg from "../../assets/defaultimg.png";
@@ -41,10 +42,23 @@ class CocktailDisplay extends React.PureComponent {
   createdBy = () => {
     if (this.props.createdBy) {
       const createdBy = this.props.createdBy.username;
+      const profilePicture = _.get(
+        this.props.createdBy,
+        "activeProfilePicture.image"
+      );
 
       return (
         <span className="complexity stat">
-          Created By: <Link to={`/created-by/${createdBy}`}>{createdBy}</Link>
+          Created By:{" "}
+          <Link to={`/created-by/${createdBy}`}>
+            {profilePicture && (
+              <img
+                classname="created-by-profile-picture"
+                src={profilePicture}
+              />
+            )}
+            {createdBy}
+          </Link>
         </span>
       );
     }
