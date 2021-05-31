@@ -163,6 +163,7 @@ class ResetPasswordForm extends React.Component {
             className={this.state.isValidEmail ? "invalid" : ""}
             label="Enter New Password"
             name="newPassword"
+            type="password"
             variant="outlined"
             onChange={this.handleChange}
           />
@@ -174,6 +175,7 @@ class ResetPasswordForm extends React.Component {
             className={this.state.isValidEmail ? "invalid" : ""}
             label="Re-enter password to verify"
             name="matchingPassword"
+            type="password"
             variant="outlined"
             onChange={this.handleChange}
           />
