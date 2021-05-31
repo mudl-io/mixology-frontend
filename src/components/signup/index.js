@@ -34,19 +34,37 @@ class Signup extends React.Component {
     this.setState({ hasAttemptedSubmit: true });
 
     try {
-      const response = await axiosInstance.post("/user/create/", {
-        username: this.state.username,
-        email: this.state.email,
-        password: this.state.password,
-      });
+      const profileCreationResponse = await axiosInstance.post(
+        "/user/create/",
+        {
+          username: this.state.username,
+          email: this.state.email,
+          password: this.state.password,
+        }
+      );
 
-      if (response.status === 207) {
-        NotificationManager.error(response.data, "Signup Error", 3000);
+      if (profileCreationResponse.status === 207) {
+        NotificationManager.error(
+          profileCreationResponse.data,
+          "Signup Error",
+          3000
+        );
         return;
       }
 
-      this.props.dispatch(loginUser(response.data));
-      return response;
+      this.props.dispatch(loginUser(profileCreationResponse.data));
+
+      const tokenObtainResponse = await axiosInstance.post("/token/obtain/", {
+        username: this.state.username,
+        password: this.state.password,
+      });
+
+      axiosInstance.defaults.headers["Authorization"] =
+        "JWT " + tokenObtainResponse.data.access;
+      localStorage.setItem("access_token", tokenObtainResponse.data.access);
+      localStorage.setItem("refresh_token", tokenObtainResponse.data.refresh);
+
+      return profileCreationResponse;
     } catch (e) {
       console.log(e);
     }
