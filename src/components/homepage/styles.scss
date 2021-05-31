@@ -65,5 +65,9 @@
     cursor: pointer;
     color: rgb(6, 69, 173);
     margin-bottom: 20px;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
