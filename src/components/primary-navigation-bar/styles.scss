@@ -23,12 +23,17 @@
 
       &.homepage {
         display: flex;
-        width: 110px;
+        width: 100px;
+        font-size: 19px;
       }
     }
 
     .site-logo-nav {
       height: 64%;
+    }
+
+    .logo-text {
+      font-family: "Parisienne";
     }
 
     .cocktail-options-buttons {

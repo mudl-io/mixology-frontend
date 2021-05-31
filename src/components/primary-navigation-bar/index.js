@@ -130,7 +130,7 @@ class PrimaryNavigationBar extends React.Component {
           <nav>
             <Link className="nav-link homepage" to="/">
               <img className="site-logo-nav" src="/defaultimg.png" />
-              <span>Cocktail</span>
+              <span className="logo-text">Cocktail</span>
             </Link>
             {this.leftNavContent()}
             {this.rightNavContent()}
