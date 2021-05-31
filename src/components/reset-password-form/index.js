@@ -6,7 +6,6 @@ import { NotificationManager } from "react-notifications";
 import axiosInstance from "../../axiosApi";
 import history from "../../history";
 import "./styles.scss";
-import { ErrorRounded } from "@material-ui/icons";
 
 class ResetPasswordForm extends React.Component {
   constructor(props) {
@@ -64,7 +63,20 @@ class ResetPasswordForm extends React.Component {
 
   submitNewPassword = async () => {
     if (!this.passwordsMatch()) {
-      NotificationManager.error("The entered passwords do not match", 5000);
+      NotificationManager.error(
+        "The entered passwords do not match",
+        "Password Invalid",
+        5000
+      );
+      return;
+    }
+
+    if (this.state.newPassword.trim().length < 8) {
+      NotificationManager.error(
+        "Please make sure your password is at least 8 characters long",
+        "Password Invalid",
+        5000
+      );
       return;
     }
 
@@ -215,7 +227,7 @@ class ResetPasswordForm extends React.Component {
   render() {
     return (
       <div className="reset-password-container">
-        <h3>Reset Password</h3>
+        <h2>Reset Password</h2>
         {this.innerContents()}
       </div>
     );
