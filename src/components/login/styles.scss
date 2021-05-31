@@ -19,6 +19,17 @@
       }
     }
 
+    .forgot-password-text {
+      margin-bottom: 10px;
+      font-size: 11px;
+      color: blue;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
     .signup-submit-button {
       height: 35px;
       border-radius: 3px;

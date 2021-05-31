@@ -1,0 +1,40 @@
+@import "../../utilities/variables";
+
+.reset-password-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 10%;
+  width: 50%;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+
+  h3 {
+    margin-bottom: 10px;
+  }
+
+  .MuiOutlinedInput-root {
+    width: 500px;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .button {
+    width: 200px;
+    margin-top: 10px;
+    color: white;
+    background-color: $coolpurp;
+  }
+
+  .verification-code-text {
+    margin-bottom: 20px;
+  }
+
+  .second-password-input {
+    margin-top: 25px;
+  }
+}

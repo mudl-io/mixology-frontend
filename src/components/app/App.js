@@ -17,6 +17,7 @@ import DynamicCocktailDisplayContainer from "../dynamic-cocktail-display-contain
 import ProfilePage from "../profile-page";
 import CocktailsOfLiquor from "../cocktails-of-liquor";
 import CocktailsByUser from "../cocktails-by-user";
+import ResetPasswordForm from "../reset-password-form";
 
 class App extends React.Component {
   constructor(props) {
@@ -42,6 +43,11 @@ class App extends React.Component {
             <Route exact path="/signup/">
               {this.props.user ? <Redirect to="/" /> : <Signup />}
             </Route>
+            <Route
+              exact
+              path="/reset-password/"
+              component={ResetPasswordForm}
+            />
             <Route
               exact
               path="/create-cocktail/"

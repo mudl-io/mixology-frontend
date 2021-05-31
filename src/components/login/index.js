@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { NotificationManager } from "react-notifications";
+import history from "../../history";
 
 import "./styles.scss";
 import axiosInstance from "../../axiosApi";
@@ -55,6 +56,10 @@ class Login extends React.Component {
     }
   };
 
+  redirectToForgotPassword = () => {
+    history.push("/reset-password/");
+  };
+
   render() {
     return (
       <div className="login-form-container">
@@ -78,6 +83,12 @@ class Login extends React.Component {
               onChange={this.handleChange}
             />
           </label>
+          <div
+            className="forgot-password-text"
+            onClick={this.redirectToForgotPassword}
+          >
+            Forgot Password?
+          </div>
           <input
             className="signup-submit-button"
             type="submit"
