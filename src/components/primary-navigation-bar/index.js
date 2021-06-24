@@ -5,10 +5,13 @@ import { Dropdown, DropdownButton } from "react-bootstrap";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOpenIcon from "@material-ui/icons/MenuOpen";
+import _ from "lodash";
 
 import "./styles.scss";
+import history from "../../history";
 import axiosInstance from "../../axiosApi";
 import LeftLiquorsSidenav from "../left-liquors-sidenav";
+import SearchBar from "../search-bar";
 
 // redux actions
 import { logoutUser } from "../../features/users/usersSlice";
@@ -111,6 +114,36 @@ class PrimaryNavigationBar extends React.Component {
     this.setState({ drawerOpen: !this.state.drawerOpen });
   };
 
+  handleSearchBarChange = (inputValue) => {
+    return inputValue.trim();
+  };
+
+  handleSearchSelect = (selectedValue) => {
+    const cocktailId = _.get(selectedValue, "value.publicId");
+
+    if (cocktailId) {
+      history.push(`/cocktail/${cocktailId}/`);
+    }
+  };
+
+  getSearchResults = async (inputValue) => {
+    try {
+      const searchRes = await axiosInstance.get("cocktails/search/", {
+        params: {
+          search_value: inputValue,
+        },
+      });
+
+      const results = searchRes.data.map((cocktail) => {
+        return { value: cocktail, label: cocktail.name };
+      });
+
+      return results;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   drawerStateIcon = () => {
     return this.state.drawerOpen ? <MenuOpenIcon /> : <MenuIcon />;
   };
@@ -127,14 +160,20 @@ class PrimaryNavigationBar extends React.Component {
           >
             {this.drawerStateIcon()}
           </IconButton>
-          <nav>
+          <nav className="left-nav">
             <Link className="nav-link homepage" to="/">
               <img className="site-logo-nav" src="/defaultimg.png" />
               <span className="logo-text">Cocktail</span>
             </Link>
             {this.leftNavContent()}
-            {this.rightNavContent()}
           </nav>
+          <SearchBar
+            placeholder="Search for a cocktail"
+            loadOptions={this.getSearchResults}
+            onInputChange={this.handleSearchBarChange}
+            handleSelect={this.handleSearchSelect}
+          />
+          <nav className="right-nav">{this.rightNavContent()}</nav>
         </div>
         <div>
           <LeftLiquorsSidenav open={this.state.drawerOpen} />

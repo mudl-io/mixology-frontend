@@ -6,7 +6,7 @@
   top: 0;
   display: flex;
   width: 100%;
-  height: 45px;
+  height: 60px;
   background-color: $coolpurp;
 
   .MuiIconButton-root {
@@ -18,7 +18,9 @@
 
     .nav-link {
       color: lavender;
-      padding: 10px 10px 0 10px;
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
       text-decoration: none;
 
       &.homepage {
@@ -42,6 +44,7 @@
 
     .user-options-dropdown {
       position: absolute;
+      top: 10px;
       right: 0;
     }
 
@@ -59,5 +62,18 @@
       right: 11px;
       -webkit-text-stroke: 0.1px;
     }
+  }
+
+  .left-nav {
+    width: 25%;
+  }
+
+  .right-nav {
+    width: 27%;
+  }
+
+  .search-bar {
+    width: 500px;
+    margin: auto;
   }
 }
