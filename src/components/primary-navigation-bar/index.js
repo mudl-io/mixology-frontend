@@ -127,6 +127,8 @@ class PrimaryNavigationBar extends React.Component {
   };
 
   getSearchResults = async (inputValue) => {
+    if (inputValue.length < 3) return;
+
     try {
       const searchRes = await axiosInstance.get("cocktails/search/", {
         params: {
