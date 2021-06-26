@@ -16,7 +16,6 @@ import CreatedCocktailsDisplay from "../created-cocktails-display";
 import DynamicCocktailDisplayContainer from "../dynamic-cocktail-display-container";
 import ProfilePage from "../profile-page";
 import CocktailsOfLiquor from "../cocktails-of-liquor";
-import CocktailsByUser from "../cocktails-by-user";
 import ResetPasswordForm from "../reset-password-form";
 
 class App extends React.Component {
@@ -80,11 +79,6 @@ class App extends React.Component {
             />
             {this.profileRoutes()}
             <Route exact path="/:liquorId" component={CocktailsOfLiquor} />
-            <Route
-              exact
-              path="/created-by/:username"
-              component={CocktailsByUser}
-            />
             <Route
               exact
               path="/cocktail/:id/edit"

@@ -2,27 +2,30 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const createdCocktailsSlice = createSlice({
   name: "createdCocktails",
-  initialState: { createdCocktails: [], nextPage: 1, canLoadMore: false },
+  initialState: { createdCocktails: [], canLoadMore: false, nextPage: 1 },
   reducers: {
     didGetCreatedCocktails(state, action) {
-      state.createdCocktails = [...action.payload.cocktails];
-      state.canLoadMore = action.payload.canLoadMore;
-      state.nextPage = 2;
+      const user = action.payload.user;
+      state[user] = state[user] ? state[user] : {};
+
+      state[user].createdCocktails = [...action.payload.cocktails];
+      state[user].canLoadMore = action.payload.canLoadMore;
+      state[user].nextPage = 2;
     },
     didUpdateCreatedCocktails(state, action) {
-      state.createdCocktails = [
-        ...state.createdCocktails,
+      const user = action.payload.user;
+
+      state[user].createdCocktails = [
+        ...state[user].createdCocktails,
         ...action.payload.cocktails,
       ];
-      state.canLoadMore = action.payload.canLoadMore;
-      state.nextPage = state.nextPage + 1;
+      state[user].canLoadMore = action.payload.canLoadMore;
+      state[user].nextPage = state[user].nextPage + 1;
     },
   },
 });
 
-export const {
-  didGetCreatedCocktails,
-  didUpdateCreatedCocktails,
-} = createdCocktailsSlice.actions;
+export const { didGetCreatedCocktails, didUpdateCreatedCocktails } =
+  createdCocktailsSlice.actions;
 
 export default createdCocktailsSlice.reducer;

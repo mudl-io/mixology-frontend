@@ -19,8 +19,16 @@ class CreatedCocktailsDisplay extends React.Component {
     this.state = { isLoading: false };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     this.fetchCreatedCocktails();
+  }
+
+  componentDidUpdate(previousProps) {
+    if (
+      this.props.match.params.username !== previousProps.match.params.username
+    ) {
+      this.fetchCreatedCocktails();
+    }
   }
 
   fetchCreatedCocktails = async () => {
@@ -29,11 +37,13 @@ class CreatedCocktailsDisplay extends React.Component {
     try {
       this.setState({ isLoading: true });
 
-      const res = await axiosInstance.get("/cocktails/created_cocktails", {
-        params: { page: nextPage },
+      const res = await axiosInstance.get("/cocktails/", {
+        params: {
+          action: "created_cocktails",
+          username: this.props.match.params.username,
+          page: nextPage,
+        },
       });
-
-      console.log(res);
 
       const createdCocktails = res.data.results;
       const canLoadMore = !!res.data.next;
@@ -42,7 +52,11 @@ class CreatedCocktailsDisplay extends React.Component {
         nextPage === 1 ? didGetCreatedCocktails : didUpdateCreatedCocktails;
 
       this.props.dispatch(
-        action({ cocktails: createdCocktails, canLoadMore: canLoadMore })
+        action({
+          user: this.props.match.params.username,
+          cocktails: createdCocktails,
+          canLoadMore: canLoadMore,
+        })
       );
     } catch (e) {
     } finally {
@@ -68,9 +82,10 @@ class CreatedCocktailsDisplay extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const data = state.createdCocktails;
-  const { createdCocktails, nextPage, canLoadMore } = data;
+const mapStateToProps = (state, ownProps) => {
+  const data = state.createdCocktails[ownProps.match.params.username];
+  const { createdCocktails, canLoadMore, nextPage } =
+    data || state.createdCocktails;
 
   return {
     createdCocktails: createdCocktails,

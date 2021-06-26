@@ -50,7 +50,7 @@ class CocktailDisplay extends React.PureComponent {
       return (
         <span className="complexity stat">
           Created By:{" "}
-          <Link to={`/created-by/${createdBy}`}>
+          <Link to={`/${createdBy}/created-cocktails/`}>
             {profilePicture && (
               <img
                 classname="created-by-profile-picture"
