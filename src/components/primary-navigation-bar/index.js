@@ -136,13 +136,16 @@ class PrimaryNavigationBar extends React.Component {
     if (inputValue.length < 3) return;
 
     try {
-      const searchRes = await axiosInstance.get("cocktails/search/", {
+      const searchRes = await axiosInstance.get("/cocktails/", {
         params: {
+          action: "search",
           search_value: inputValue,
         },
       });
 
-      const results = searchRes.data.map((cocktail) => {
+      const searchData = _.get(searchRes, "data.results") || [];
+
+      const results = searchData.map((cocktail) => {
         return { value: cocktail, label: cocktail.name };
       });
 
