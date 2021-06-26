@@ -40,7 +40,10 @@ class LeftLiquorsSidenav extends React.Component {
             {liquors.map((liquor) => {
               return (
                 <div key={liquor.publicId}>
-                  <Link className="liquor-type" to={`/${liquor.publicId}`}>
+                  <Link
+                    className="liquor-type"
+                    to={`/cocktails/${liquor.publicId}`}
+                  >
                     {liquor.name}
                   </Link>
                 </div>

@@ -23,26 +23,6 @@ class App extends React.Component {
     super(props);
   }
 
-  profileRoutes = () => {
-    return (
-      <Switch>
-        <Route path="/:username">
-          <Route
-            exact
-            path="/:username/saved-cocktails"
-            component={SavedCocktailsDisplay}
-          />
-          <Route
-            exact
-            path="/:username/created-cocktails"
-            component={CreatedCocktailsDisplay}
-          />
-          <Route exact path="/:username" component={ProfilePage} />
-        </Route>
-      </Switch>
-    );
-  };
-
   render() {
     return (
       <div className="app-container">
@@ -77,12 +57,26 @@ class App extends React.Component {
               path="/cocktail/:id"
               component={DynamicCocktailDisplayContainer}
             />
-            {this.profileRoutes()}
-            <Route exact path="/:liquorId" component={CocktailsOfLiquor} />
             <Route
               exact
               path="/cocktail/:id/edit"
               component={CreateCocktailForm}
+            />
+            <Route
+              exact
+              path="/cocktails/:liquorId"
+              component={CocktailsOfLiquor}
+            />
+            <Route exact path="/user/:username" component={ProfilePage} />
+            <Route
+              exact
+              path="/user/:username/saved-cocktails"
+              component={SavedCocktailsDisplay}
+            />
+            <Route
+              exact
+              path="/user/:username/created-cocktails"
+              component={CreatedCocktailsDisplay}
             />
             <Route path="*">
               <Redirect to="/" />
