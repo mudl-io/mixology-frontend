@@ -73,13 +73,19 @@ class PrimaryNavigationBar extends React.Component {
           variant="Secondary"
           title={this.props.user.username}
         >
-          <Dropdown.Item as={Link} to={`/profile/${this.props.user.username}`}>
+          <Dropdown.Item as={Link} to={`/${this.props.user.username}`}>
             Profile
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to={"/saved-cocktails/"}>
+          <Dropdown.Item
+            as={Link}
+            to={`/${this.props.user.username}/saved-cocktails`}
+          >
             Saved Cocktails
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to={"/created-cocktails/"}>
+          <Dropdown.Item
+            as={Link}
+            to={`/${this.props.user.username}/created-cocktails`}
+          >
             Created Cocktails
           </Dropdown.Item>
           <Dropdown.Divider />
