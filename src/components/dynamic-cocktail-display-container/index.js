@@ -26,7 +26,17 @@ class DynamicCocktailDisplayContainer extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getCocktail();
+  }
+
+  componentDidUpdate(previousProps) {
+    if (previousProps.match.params.id !== this.props.match.params.id) {
+      this.getCocktail();
+    }
+  }
+
+  getCocktail = async () => {
     const cocktailId = this.props.match.params.id;
 
     // try to see if cocktail is in redux store before making a network request
@@ -56,7 +66,7 @@ class DynamicCocktailDisplayContainer extends React.Component {
         displayCocktail.createdBy &&
         displayCocktail.createdBy.username === this.props.currentUser.username,
     });
-  }
+  };
 
   deleteCocktail = async () => {
     try {
