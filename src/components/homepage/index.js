@@ -105,9 +105,7 @@ class Homepage extends React.Component {
           error: "",
         });
 
-        axiosInstance.post("cocktails/viewed_cocktail/", {
-          public_id: cocktail.publicId,
-        });
+        axiosInstance.post(`cocktails/${cocktail.publicId}/viewed_cocktail/`);
       }
     } catch (e) {
       this.setState({
@@ -128,26 +126,18 @@ class Homepage extends React.Component {
     }
 
     try {
-      if (!this.state.isSaved) {
-        await axiosInstance.post("/cocktails/save_cocktail/", {
-          public_id: this.state.cocktailId,
-        });
+      await axiosInstance.post(
+        `/cocktails/${this.state.cocktailId}/save_cocktail/`
+      );
+      const amtChange = !this.state.isSaved ? 1 : -1;
+      const action = !this.state.isSaved ? didSaveCocktail : didUnsaveCocktail;
 
-        this.setState({ isSaved: true, timesSaved: this.state.timesSaved + 1 });
+      this.setState({
+        isSaved: !this.state.isSaved,
+        timesSaved: this.state.timesSaved + amtChange,
+      });
 
-        this.props.dispatch(didSaveCocktail(this.state.cocktail));
-      } else {
-        await axiosInstance.post("/cocktails/unsave_cocktail/", {
-          public_id: this.state.cocktailId,
-        });
-
-        this.setState({
-          isSaved: false,
-          timesSaved: this.state.timesSaved - 1,
-        });
-
-        this.props.dispatch(didUnsaveCocktail(this.state.cocktailId));
-      }
+      this.props.dispatch(action(this.state.cocktail));
     } catch (e) {
       console.log(e);
     }

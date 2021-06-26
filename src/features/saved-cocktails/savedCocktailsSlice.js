@@ -24,7 +24,7 @@ const savedCocktailsSlice = createSlice({
       if (!state.savedCocktails) return;
 
       state.savedCocktails = state.savedCocktails.filter(
-        (cocktail) => cocktail.publicId !== action.payload
+        (cocktail) => cocktail.publicId !== action.payload.publicId
       );
     },
   },
