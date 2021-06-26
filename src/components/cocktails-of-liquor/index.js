@@ -3,7 +3,7 @@ import _ from "lodash";
 import { connect } from "react-redux";
 
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import CocktailsList from "../cocktails-list";
 import InfiniteScroller from "../infinite-scroller";
 import formatIngredientsFilter from "../../helpers/format-ingredients-filters";

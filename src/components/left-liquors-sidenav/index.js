@@ -5,7 +5,7 @@ import Drawer from "@material-ui/core/Drawer";
 import _ from "lodash";
 
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 
 // redux actions
 import { didGetLiquors } from "../../features/liquors/liquorsSlice";

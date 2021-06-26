@@ -12,7 +12,7 @@ import { didSaveCocktail } from "../../features/saved-cocktails/savedCocktailsSl
 import { didUnsaveCocktail } from "../../features/saved-cocktails/savedCocktailsSlice";
 
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import CocktailDisplay from "../cocktail-display";
 import ListDropdown from "../list-dropdown";
 import RightCocktailSidenav from "../right-cocktail-sidenav";

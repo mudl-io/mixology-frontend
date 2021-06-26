@@ -6,7 +6,7 @@ import { NotificationManager } from "react-notifications";
 import _ from "lodash";
 
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance, axiosImageInstance } from "../../axiosApi";
 import defaultProfilePic from "../../assets/cocktail-silhouette.png";
 import ImageUploadModal from "../image-upload-modal";
 import ClickableImagesModal from "../clickable-images-modal";
@@ -31,6 +31,18 @@ class ProfilePage extends React.Component {
   }
 
   async componentDidMount() {
+    this.getProfileInfo();
+  }
+
+  componentDidUpdate(previousProps) {
+    if (
+      previousProps.match.params.username !== this.props.match.params.username
+    ) {
+      this.getProfileInfo();
+    }
+  }
+
+  getProfileInfo = async () => {
     try {
       const [userData, profilePicturesData] = await Promise.all([
         axiosInstance.get("/user/detail/", {
@@ -50,7 +62,10 @@ class ProfilePage extends React.Component {
       const profilePictures = sortedImages.map((img) => img.image);
 
       this.setState({
-        activeProfilePicture: userData.data.activeProfilePicture.image,
+        activeProfilePicture: _.get(
+          userData,
+          "data.activeProfilePicture.image"
+        ),
         createdCocktailsCount: userData.data.createdCocktailsCount,
         email: userData.data.email,
         profilePicturesWithMetadata: profilePicturesData.data,
@@ -66,16 +81,18 @@ class ProfilePage extends React.Component {
         email: this.props.user.email,
       });
     }
-  }
+  };
 
   handleSaveProfilePicture = async () => {
     if (this.state.profilePictureToUpload) {
       const imageData = new FormData();
       imageData.append("image", this.state.profilePictureToUpload);
-      axiosInstance.defaults.headers["Content-Type"] = "multipart/form-data";
 
       try {
-        const res = await axiosInstance.post("/profile_pictures/", imageData);
+        const res = await axiosImageInstance.post(
+          "/profile_pictures/",
+          imageData
+        );
 
         this.setState({
           activeProfilePicture: res.data.image,
@@ -94,8 +111,6 @@ class ProfilePage extends React.Component {
           "Upload failure",
           2000
         );
-      } finally {
-        axiosInstance.defaults.headers["Content-Type"] = "application/json";
       }
     } else {
       NotificationManager.error("No image selected", "Upload failure", 2000);
@@ -109,7 +124,7 @@ class ProfilePage extends React.Component {
 
     if (newActiveImg) {
       try {
-        const res = await axiosInstance.patch(
+        await axiosInstance.patch(
           `/profile_pictures/${newActiveImg.publicId}/`,
           { isActive: true }
         );
@@ -161,10 +176,12 @@ class ProfilePage extends React.Component {
             <div>{this.state.username}</div>
           </div>
 
-          <div className="email">
-            <h3>Email:</h3>
-            <div>{this.state.email}</div>
-          </div>
+          {this.props.user.username === this.props.match.params.username && (
+            <div className="email">
+              <h3>Email:</h3>
+              <div>{this.state.email}</div>
+            </div>
+          )}
 
           <div className="profile-stats">
             <div className="stat">

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import _ from "lodash";
 
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import {
   didGetCreatedCocktails,
   didUpdateCreatedCocktails,

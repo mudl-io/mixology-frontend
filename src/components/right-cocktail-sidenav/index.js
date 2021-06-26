@@ -3,7 +3,7 @@ import Drawer from "@material-ui/core/Drawer";
 
 import "./styles.scss";
 import CocktailDetail from "../cocktail-detail";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import formatIngredientsFilter from "../../helpers/format-ingredients-filters";
 
 class RightCocktailSidenav extends React.Component {

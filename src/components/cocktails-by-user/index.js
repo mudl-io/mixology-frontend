@@ -3,7 +3,7 @@ import _ from "lodash";
 import { NotificationManager } from "react-notifications";
 
 import "../created-cocktails-display/styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 
 import CocktailsList from "../cocktails-list";
 

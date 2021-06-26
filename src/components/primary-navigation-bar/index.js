@@ -9,7 +9,7 @@ import _ from "lodash";
 
 import "./styles.scss";
 import history from "../../history";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import LeftLiquorsSidenav from "../left-liquors-sidenav";
 import SearchBar from "../search-bar";
 
