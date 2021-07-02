@@ -1,14 +1,24 @@
 @import "../../utilities/variables";
 
 .login-form-container {
-  position: absolute;
-  top: 25%;
-  left: 33%;
-  width: 30%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 90vh;
+  width: 100%;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    text-align: left;
+    width: 30%;
+  }
 
   .login-form {
     display: flex;
     flex-direction: column;
+    width: 30%;
 
     .MuiFormControl-root {
       width: 100%;

@@ -5,7 +5,7 @@ import Drawer from "@material-ui/core/Drawer";
 import _ from "lodash";
 
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 
 // redux actions
 import { didGetLiquors } from "../../features/liquors/liquorsSlice";
@@ -40,7 +40,10 @@ class LeftLiquorsSidenav extends React.Component {
             {liquors.map((liquor) => {
               return (
                 <div key={liquor.publicId}>
-                  <Link className="liquor-type" to={`/${liquor.publicId}`}>
+                  <Link
+                    className="liquor-type"
+                    to={`/cocktails/${liquor.publicId}`}
+                  >
                     {liquor.name}
                   </Link>
                 </div>

@@ -18,7 +18,7 @@ import {
 } from "../../features/liquors/liquorsSlice";
 
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance, axiosImageInstance } from "../../axiosApi";
 import HelpIcon from "../help-icon";
 import ListDropdown from "../list-dropdown";
 import AmountsInput from "../amounts-input";
@@ -383,7 +383,6 @@ class CreateCocktailForm extends React.Component {
     imageData.append("image", this.state.cocktailImg);
     imageData.append("name", this.state.cocktailImg.name);
     imageData.append("cocktail_id", cocktail.publicId);
-    axiosInstance.defaults.headers["Content-Type"] = "multipart/form-data";
 
     try {
       let res;
@@ -392,20 +391,18 @@ class CreateCocktailForm extends React.Component {
         const imageId = cocktail.image.publicId;
 
         // update existing image
-        res = await axiosInstance.put(
+        res = await axiosImageInstance.put(
           `/cocktail_images/${imageId}/`,
           imageData
         );
       } else {
         // create new image
-        res = await axiosInstance.post("/cocktail_images/", imageData);
+        res = await axiosImageInstance.post("/cocktail_images/", imageData);
       }
 
       return res;
     } catch (e) {
       console.log(e);
-    } finally {
-      axiosInstance.defaults.headers["Content-Type"] = "application/json";
     }
   };
 

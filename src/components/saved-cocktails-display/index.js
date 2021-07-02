@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import _ from "lodash";
 
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import {
   didGetSavedCocktails,
   didUpdateSavedCocktails,
@@ -29,8 +29,12 @@ class SavedCocktailsDisplay extends React.Component {
     try {
       this.setState({ isLoading: true });
 
-      const res = await axiosInstance.get("/cocktails/saved_cocktails", {
-        params: { page: nextPage },
+      const res = await axiosInstance.get("/cocktails/", {
+        params: {
+          action: "saved_cocktails",
+          username: this.props.match.params.username,
+          page: nextPage,
+        },
       });
 
       const savedCocktails = res.data.results;

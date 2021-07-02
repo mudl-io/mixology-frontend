@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 import { NotificationManager } from "react-notifications";
 
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import history from "../../history";
 import LoadingScreen from "../loading-screen";
 import "./styles.scss";

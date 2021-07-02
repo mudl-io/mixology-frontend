@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 
 import history from "../../history";
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 
 // redux actions
 import { loginUser } from "../../features/users/usersSlice";

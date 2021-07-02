@@ -16,7 +16,6 @@ import CreatedCocktailsDisplay from "../created-cocktails-display";
 import DynamicCocktailDisplayContainer from "../dynamic-cocktail-display-container";
 import ProfilePage from "../profile-page";
 import CocktailsOfLiquor from "../cocktails-of-liquor";
-import CocktailsByUser from "../cocktails-by-user";
 import ResetPasswordForm from "../reset-password-form";
 
 class App extends React.Component {
@@ -55,31 +54,33 @@ class App extends React.Component {
             />
             <Route
               exact
-              path="/saved-cocktails/"
-              component={SavedCocktailsDisplay}
-            />
-            <Route
-              exact
-              path="/created-cocktails/"
-              component={CreatedCocktailsDisplay}
-            />
-            <Route
-              exact
               path="/cocktail/:id"
               component={DynamicCocktailDisplayContainer}
-            />
-            <Route exact path="/profile/:username" component={ProfilePage} />
-            <Route exact path="/:liquorId" component={CocktailsOfLiquor} />
-            <Route
-              exact
-              path="/created-by/:username"
-              component={CocktailsByUser}
             />
             <Route
               exact
               path="/cocktail/:id/edit"
               component={CreateCocktailForm}
             />
+            <Route
+              exact
+              path="/cocktails/:liquorId"
+              component={CocktailsOfLiquor}
+            />
+            <Route exact path="/user/:username" component={ProfilePage} />
+            <Route
+              exact
+              path="/user/:username/saved-cocktails"
+              component={SavedCocktailsDisplay}
+            />
+            <Route
+              exact
+              path="/user/:username/created-cocktails"
+              component={CreatedCocktailsDisplay}
+            />
+            <Route path="*">
+              <Redirect to="/" />
+            </Route>
           </Switch>
         </Router>
 

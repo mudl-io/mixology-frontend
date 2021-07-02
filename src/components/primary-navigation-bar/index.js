@@ -9,7 +9,7 @@ import _ from "lodash";
 
 import "./styles.scss";
 import history from "../../history";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import LeftLiquorsSidenav from "../left-liquors-sidenav";
 import SearchBar from "../search-bar";
 
@@ -73,13 +73,19 @@ class PrimaryNavigationBar extends React.Component {
           variant="Secondary"
           title={this.props.user.username}
         >
-          <Dropdown.Item as={Link} to={`/profile/${this.props.user.username}`}>
+          <Dropdown.Item as={Link} to={`/user/${this.props.user.username}`}>
             Profile
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to={"/saved-cocktails/"}>
+          <Dropdown.Item
+            as={Link}
+            to={`/user/${this.props.user.username}/saved-cocktails`}
+          >
             Saved Cocktails
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to={"/created-cocktails/"}>
+          <Dropdown.Item
+            as={Link}
+            to={`/user/${this.props.user.username}/created-cocktails`}
+          >
             Created Cocktails
           </Dropdown.Item>
           <Dropdown.Divider />
@@ -130,13 +136,16 @@ class PrimaryNavigationBar extends React.Component {
     if (inputValue.length < 3) return;
 
     try {
-      const searchRes = await axiosInstance.get("cocktails/search/", {
+      const searchRes = await axiosInstance.get("/cocktails/", {
         params: {
+          action: "search",
           search_value: inputValue,
         },
       });
 
-      const results = searchRes.data.map((cocktail) => {
+      const searchData = _.get(searchRes, "data.results") || [];
+
+      const results = searchData.map((cocktail) => {
         return { value: cocktail, label: cocktail.name };
       });
 

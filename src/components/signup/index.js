@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import { NotificationManager } from "react-notifications";
 
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import "./styles.scss";
 
 // redux actions
