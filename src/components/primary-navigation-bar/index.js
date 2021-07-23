@@ -20,7 +20,11 @@ class PrimaryNavigationBar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { drawerOpen: false };
+    this.state = {
+      drawerOpen: false,
+      pauseSearchTimer: null,
+      searchResults: [],
+    };
   }
 
   componentDidMount() {
@@ -132,6 +136,22 @@ class PrimaryNavigationBar extends React.Component {
     }
   };
 
+  callSearch = (inputValue) => {
+    clearTimeout(this.state.pauseSearchTimer);
+
+    this.setState({
+      pauseSearchTimer: setTimeout(() => {
+        this.getSearchResults(inputValue);
+      }, 300),
+    });
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(this.state.searchResults);
+      }, 400);
+    });
+  };
+
   getSearchResults = async (inputValue) => {
     if (inputValue.length < 3) return;
 
@@ -145,11 +165,11 @@ class PrimaryNavigationBar extends React.Component {
 
       const searchData = _.get(searchRes, "data.results") || [];
 
-      const results = searchData.map((cocktail) => {
+      const searchResults = searchData.map((cocktail) => {
         return { value: cocktail, label: cocktail.name };
       });
 
-      return results;
+      this.setState({ searchResults });
     } catch (e) {
       console.log(e);
     }
@@ -180,7 +200,7 @@ class PrimaryNavigationBar extends React.Component {
           </nav>
           <SearchBar
             placeholder="Search for a cocktail"
-            loadOptions={this.getSearchResults}
+            loadOptions={this.callSearch}
             onInputChange={this.handleSearchBarChange}
             handleSelect={this.handleSearchSelect}
           />
