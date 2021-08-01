@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { NotificationManager } from "react-notifications";
+// import { NotificationManager } from "react-notifications";
 
 import { didSaveCocktail } from "../../features/saved-cocktails/savedCocktailsSlice";
 import { didUnsaveCocktail } from "../../features/saved-cocktails/savedCocktailsSlice";
@@ -72,19 +72,19 @@ class DynamicCocktailDisplayContainer extends React.Component {
     try {
       await axiosInstance.delete(`/cocktails/${this.state.cocktailId}/`);
 
-      NotificationManager.success(
-        "Successfully deleted your cocktail",
-        "Deletion Success",
-        2000
-      );
+      // NotificationManager.success(
+      //   "Successfully deleted your cocktail",
+      //   "Deletion Success",
+      //   2000
+      // );
 
       this.props.history.push("/created-cocktails/");
     } catch (e) {
-      NotificationManager.success(
-        "Failed to delete your cocktail",
-        "Deletion Failure",
-        2000
-      );
+      // NotificationManager.success(
+      //   "Failed to delete your cocktail",
+      //   "Deletion Failure",
+      //   2000
+      // );
     }
   };
 

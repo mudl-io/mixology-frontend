@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
-import { NotificationManager } from "react-notifications";
+// import { NotificationManager } from "react-notifications";
 
 import { axiosInstance } from "../../axiosApi";
 import "./styles.scss";
@@ -44,11 +44,11 @@ class Signup extends React.Component {
       );
 
       if (profileCreationResponse.status === 207) {
-        NotificationManager.error(
-          profileCreationResponse.data,
-          "Signup Error",
-          3000
-        );
+        // NotificationManager.error(
+        //   profileCreationResponse.data,
+        //   "Signup Error",
+        //   3000
+        // );
         return;
       }
 

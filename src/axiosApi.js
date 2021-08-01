@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiLocation =
-  process.env.REACT_APP_API_LOCATION ||
+  import.meta.env.VITE_API_LOCATION ||
   "https://cocktail-app-test.herokuapp.com";
 
 const axiosInstance = axios.create({

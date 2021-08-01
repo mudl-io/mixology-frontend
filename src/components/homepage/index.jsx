@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import Checkbox from "@material-ui/core/Checkbox";
-import { NotificationManager } from "react-notifications";
+// import { NotificationManager } from "react-notifications";
 import Tooltip from "@material-ui/core/Tooltip";
 
 // redux actions
@@ -76,11 +76,11 @@ class Homepage extends React.Component {
       });
 
       if (res.status === 204) {
-        NotificationManager.warning(
-          "Unfortunately, we were unable to find an exact match for you based on your filters. Try adjusting your filters or checking off the exact match button.",
-          "No Cocktail Found",
-          5000
-        );
+        // NotificationManager.warning(
+        //   "Unfortunately, we were unable to find an exact match for you based on your filters. Try adjusting your filters or checking off the exact match button.",
+        //   "No Cocktail Found",
+        //   5000
+        // );
       } else {
         const cocktail = res.data;
 
@@ -116,11 +116,11 @@ class Homepage extends React.Component {
 
   toggleSaveCocktail = async () => {
     if (!this.props.isSignedIn) {
-      NotificationManager.warning(
-        "Please login or create an account in order to save cocktails!",
-        "Cannot Save",
-        3000
-      );
+      // NotificationManager.warning(
+      //   "Please login or create an account in order to save cocktails!",
+      //   "Cannot Save",
+      //   3000
+      // );
 
       return;
     }

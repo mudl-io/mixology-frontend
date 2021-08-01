@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ImageUploader from "react-images-upload";
+// import ImageUploader from "react-images-upload";
 import Modal from "@material-ui/core/Modal";
 import { Button } from "@material-ui/core";
 
@@ -20,7 +20,7 @@ const ImageUploadModal = (props) => {
       onClose={props.handleClose}
     >
       <div className="content">
-        <ImageUploader
+        {/* <ImageUploader
           buttonText={props.buttonText}
           onChange={onChangeImage(props.uploadImage)}
           imageExtension={[".jpg", ".png"]}
@@ -29,7 +29,7 @@ const ImageUploadModal = (props) => {
           withIcon={true}
           withLabel={false}
           withPreview={true}
-        />
+        /> */}
         {imageSelected && (
           <Button
             variant="contained"

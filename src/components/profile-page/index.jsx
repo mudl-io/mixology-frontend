@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import Tooltip from "@material-ui/core/Tooltip";
-import { NotificationManager } from "react-notifications";
+// import { NotificationManager } from "react-notifications";
 import _ from "lodash";
 
 import "./styles.scss";
@@ -100,20 +100,20 @@ class ProfilePage extends React.Component {
 
         this.toggleShowUploader();
 
-        NotificationManager.success(
-          "Profile picture successfully uploaded",
-          "Upload Success",
-          2000
-        );
+        // NotificationManager.success(
+        //   "Profile picture successfully uploaded",
+        //   "Upload Success",
+        //   2000
+        // );
       } catch (e) {
-        NotificationManager.error(
-          "Error uploading profile picture. Please try again or refresh the page",
-          "Upload failure",
-          2000
-        );
+        // NotificationManager.error(
+        //   "Error uploading profile picture. Please try again or refresh the page",
+        //   "Upload failure",
+        //   2000
+        // );
       }
     } else {
-      NotificationManager.error("No image selected", "Upload failure", 2000);
+      // NotificationManager.error("No image selected", "Upload failure", 2000);
     }
   };
 
@@ -131,11 +131,11 @@ class ProfilePage extends React.Component {
 
         this.setState({ activeProfilePicture: newActiveImg.image });
       } catch (e) {
-        NotificationManager.error(
-          "Error updating your active profile picture",
-          "Profile picture update error",
-          2000
-        );
+        // NotificationManager.error(
+        //   "Error updating your active profile picture",
+        //   "Profile picture update error",
+        //   2000
+        // );
       }
     }
   };

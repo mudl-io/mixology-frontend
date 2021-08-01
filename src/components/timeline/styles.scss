@@ -1,0 +1,25 @@
+.timeline-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: absolute;
+  width: 100vw;
+  top: 45px;
+
+  .timeline {
+    position: absolute;
+    top: 80px;
+    overflow: hidden;
+    width: 70vw;
+    min-height: 88vh;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    .create-post-button {
+      position: absolute;
+      left: 0;
+    }
+  }
+}

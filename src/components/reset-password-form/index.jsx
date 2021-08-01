@@ -1,7 +1,7 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
-import { NotificationManager } from "react-notifications";
+// import { NotificationManager } from "react-notifications";
 
 import { axiosInstance } from "../../axiosApi";
 import history from "../../history";
@@ -39,11 +39,11 @@ class ResetPasswordForm extends React.Component {
 
   submitEmail = async () => {
     if (!this.emailIsValid()) {
-      NotificationManager.error(
-        "Your entered email address is of an invalid format",
-        "Invalid email address",
-        5000
-      );
+      // NotificationManager.error(
+      //   "Your entered email address is of an invalid format",
+      //   "Invalid email address",
+      //   5000
+      // );
       return;
     }
 
@@ -68,20 +68,20 @@ class ResetPasswordForm extends React.Component {
 
   submitNewPassword = async () => {
     if (!this.passwordsMatch()) {
-      NotificationManager.error(
-        "The entered passwords do not match",
-        "Password Invalid",
-        5000
-      );
+      // NotificationManager.error(
+      //   "The entered passwords do not match",
+      //   "Password Invalid",
+      //   5000
+      // );
       return;
     }
 
     if (this.state.newPassword.trim().length < 8) {
-      NotificationManager.error(
-        "Please make sure your password is at least 8 characters long",
-        "Password Invalid",
-        5000
-      );
+      // NotificationManager.error(
+      //   "Please make sure your password is at least 8 characters long",
+      //   "Password Invalid",
+      //   5000
+      // );
       return;
     }
 
@@ -93,11 +93,11 @@ class ResetPasswordForm extends React.Component {
 
       if (res.status !== 200) throw new Error();
 
-      NotificationManager.success(
-        "Password successfully changed!",
-        "Password Change Success",
-        3000
-      );
+      // NotificationManager.success(
+      //   "Password successfully changed!",
+      //   "Password Change Success",
+      //   3000
+      // );
       history.push("/login/");
     } catch (e) {
       NotificationManager.error(
@@ -110,11 +110,11 @@ class ResetPasswordForm extends React.Component {
 
   submitVerificationCode = async () => {
     if (this.state.verificationCode.trim().length === 0) {
-      NotificationManager.error(
-        "Please enter a verification code",
-        "Verification Code Error",
-        5000
-      );
+      // NotificationManager.error(
+      //   "Please enter a verification code",
+      //   "Verification Code Error",
+      //   5000
+      // );
       return;
     }
 
@@ -130,11 +130,11 @@ class ResetPasswordForm extends React.Component {
 
       this.setState({ hasSubmittedVerificationCode: true });
     } catch (e) {
-      NotificationManager.error(
-        "Verification code does not match, please check your email and try again.",
-        "Verification Code Invalid",
-        5000
-      );
+      // NotificationManager.error(
+      //   "Verification code does not match, please check your email and try again.",
+      //   "Verification Code Invalid",
+      //   5000
+      // );
     } finally {
       this.setState({ isLoading: false });
     }

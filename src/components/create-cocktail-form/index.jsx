@@ -1,9 +1,9 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import Select from "react-select";
-import { NotificationManager } from "react-notifications";
+// import { NotificationManager } from "react-notifications";
 import Checkbox from "@material-ui/core/Checkbox";
-import ImageUploader from "react-images-upload";
+// import ImageUploader from "react-images-upload";
 import { connect } from "react-redux";
 import _ from "lodash";
 
@@ -178,19 +178,19 @@ class CreateCocktailForm extends React.Component {
         this.props.dispatch(didCreateIngredient(createdOption));
       }
 
-      NotificationManager.success(
-        "Successfully created your ingredient!",
-        "Creation Success",
-        2000
-      );
+      // NotificationManager.success(
+      //   "Successfully created your ingredient!",
+      //   "Creation Success",
+      //   2000
+      // );
 
       return createdOption;
     } catch (e) {
-      NotificationManager.error(
-        "There was an error creating your ingredient. Please try again or refresh the page.",
-        "Creation Error",
-        2000
-      );
+      // NotificationManager.error(
+      //   "There was an error creating your ingredient. Please try again or refresh the page.",
+      //   "Creation Error",
+      //   2000
+      // );
     }
   };
 
@@ -289,20 +289,20 @@ class CreateCocktailForm extends React.Component {
 
         if (this.state.cocktailImg) this.uploadCocktailImage(response.data);
 
-        NotificationManager.success(
-          'Your cocktail was successfully created! You can now view this in the "Created Cocktails" section in your profile.',
-          "Cocktail Submitted",
-          2000
-        );
+        // NotificationManager.success(
+        //   'Your cocktail was successfully created! You can now view this in the "Created Cocktails" section in your profile.',
+        //   "Cocktail Submitted",
+        //   2000
+        // );
         setTimeout(() => {
           this.setState({ submittedForm: true });
         }, 2000);
       } catch (error) {
-        NotificationManager.error(
-          "There was an error creating your cocktail, please try resubmitting or refreshing the page.",
-          "Creation Error",
-          2000
-        );
+        // NotificationManager.error(
+        //   "There was an error creating your cocktail, please try resubmitting or refreshing the page.",
+        //   "Creation Error",
+        //   2000
+        // );
         throw error;
       } finally {
         return response;
@@ -310,12 +310,12 @@ class CreateCocktailForm extends React.Component {
     } else {
       if (!this.state.errorMessageActive) {
         this.setState({ errorMessageActive: true });
-        NotificationManager.error(
-          "Please fill out all required inputs in order to create your cocktail",
-          "Invalid Input",
-          2000,
-          () => this.setState({ errorMessageActive: false })
-        );
+        // NotificationManager.error(
+        //   "Please fill out all required inputs in order to create your cocktail",
+        //   "Invalid Input",
+        //   2000,
+        //   () => this.setState({ errorMessageActive: false })
+        // );
 
         setTimeout(() => {
           this.setState({ errorMessageActive: false });
@@ -517,7 +517,7 @@ class CreateCocktailForm extends React.Component {
               placement="top"
             />
           </label>
-          <ImageUploader
+          {/* <ImageUploader
             buttonText="Upload Cocktail Image"
             onChange={this.onUploadImage}
             imgExtension={[".jpg", ".gif", ".png", ".gif"]}
@@ -525,7 +525,7 @@ class CreateCocktailForm extends React.Component {
             singleImage={true}
             withIcon={true}
             withPreview={true}
-          />
+          /> */}
           <div className="private-cocktail-checkbox">
             <Checkbox
               checked={this.state.isPrivate}

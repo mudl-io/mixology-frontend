@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { NotificationManager } from "react-notifications";
+// import { NotificationManager } from "react-notifications";
 import TextField from "@material-ui/core/TextField";
 
 import history from "../../history";
@@ -31,11 +31,11 @@ class Login extends React.Component {
       });
 
       if (!response) {
-        NotificationManager.error(
-          "There was an error logging you in. Please make sure your username and password are correct.",
-          "Login Error",
-          3000
-        );
+        // NotificationManager.error(
+        //   "There was an error logging you in. Please make sure your username and password are correct.",
+        //   "Login Error",
+        //   3000
+        // );
         return;
       }
 
