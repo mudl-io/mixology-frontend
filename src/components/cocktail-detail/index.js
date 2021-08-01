@@ -31,7 +31,7 @@ const CocktailDetail = (props) => {
       to={`/cocktail/${props.cocktail.publicId}/`}
       target="_blank"
     >
-      <img src={getImage(props)} />
+      <img src={getImage(props)} alt="" />
       <div className="name">{props.cocktail.name}</div>
       <div className="ingredients-list">
         {allIngredientsToString([

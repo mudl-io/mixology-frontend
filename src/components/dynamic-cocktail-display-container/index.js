@@ -64,6 +64,7 @@ class DynamicCocktailDisplayContainer extends React.Component {
       timesSaved: displayCocktail.timesSaved,
       userCanEdit:
         displayCocktail.createdBy &&
+        this.props.currentUser &&
         displayCocktail.createdBy.username === this.props.currentUser.username,
     });
   };

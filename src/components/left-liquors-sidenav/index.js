@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Drawer from "@material-ui/core/Drawer";
-import _ from "lodash";
+import { filter, sortBy } from "lodash";
 
 import "./styles.scss";
 import { axiosInstance } from "../../axiosApi";
@@ -11,10 +11,6 @@ import { axiosInstance } from "../../axiosApi";
 import { didGetLiquors } from "../../features/liquors/liquorsSlice";
 
 class LeftLiquorsSidenav extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   async componentDidMount() {
     if (this.props.liquors.length === 0) {
       try {
@@ -27,8 +23,8 @@ class LeftLiquorsSidenav extends React.Component {
   }
 
   render() {
-    const liquors = _.sortBy(
-      _.filter(this.props.liquors, (liquor) => !liquor.createdBy),
+    const liquors = sortBy(
+      filter(this.props.liquors, (liquor) => !liquor.createdBy),
       ["name"]
     );
 

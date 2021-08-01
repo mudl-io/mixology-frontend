@@ -1,14 +1,14 @@
 import React from "react";
 import Select from "react-select";
 import CreatableSelect from "react-select/creatable";
-import _ from "lodash";
+import { startCase } from "lodash";
 
 const buildOptions = (options) => {
   if (options.length > 0) {
     return options.map((option) => {
       return {
         value: option,
-        label: _.startCase(option.name),
+        label: startCase(option.name),
       };
     });
   }

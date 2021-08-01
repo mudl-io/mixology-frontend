@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import Tooltip from "@material-ui/core/Tooltip";
 import { NotificationManager } from "react-notifications";
-import _ from "lodash";
+import { get, remove, uniq } from "lodash";
 
 import "./styles.scss";
 import { axiosInstance, axiosImageInstance } from "../../axiosApi";
@@ -53,7 +53,7 @@ class ProfilePage extends React.Component {
         axiosInstance.get("/profile_pictures/"),
       ]);
 
-      const activeProfilePic = _.remove(
+      const activeProfilePic = remove(
         profilePicturesData.data,
         (img) => img.isActive
       );
@@ -62,10 +62,7 @@ class ProfilePage extends React.Component {
       const profilePictures = sortedImages.map((img) => img.image);
 
       this.setState({
-        activeProfilePicture: _.get(
-          userData,
-          "data.activeProfilePicture.image"
-        ),
+        activeProfilePicture: get(userData, "data.activeProfilePicture.image"),
         createdCocktailsCount: userData.data.createdCocktailsCount,
         email: userData.data.email,
         profilePicturesWithMetadata: profilePicturesData.data,
@@ -163,6 +160,7 @@ class ProfilePage extends React.Component {
             <img
               className="profile-picture"
               src={this.state.activeProfilePicture || defaultProfilePic}
+              alt=""
               onClick={this.toggleShowAllProfilePictures}
             />
             <div className="upload-icon" onClick={this.toggleShowUploader}>
@@ -210,7 +208,7 @@ class ProfilePage extends React.Component {
 
         {this.state.profilePictures && (
           <ClickableImagesModal
-            images={_.uniq(this.state.profilePictures)}
+            images={uniq(this.state.profilePictures)}
             canUpdate={true}
             open={this.state.showPicturesModal}
             updateText="Set as active profile picture"
