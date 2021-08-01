@@ -7,4 +7,12 @@
   height: 45vh;
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 0 8px 0 rgba(0, 0, 0, 0.2);
+
+  .inputs-container {
+    display: grid;
+    grid-template-columns: 70%;
+    grid-gap: 20%;
+    justify-content: center;
+    padding-top: 35px;
+  }
 }
