@@ -1,5 +1,4 @@
 import AsyncSelect from "react-select/async";
-import _ from "lodash";
 
 const SearchBar = (props) => {
   return (

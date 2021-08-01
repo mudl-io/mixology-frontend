@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import _ from "lodash";
+import { get } from "lodash";
 
 import "./styles.scss";
 import defaultImg from "../../assets/defaultimg.png";
@@ -42,7 +42,7 @@ class CocktailDisplay extends React.PureComponent {
   createdBy = () => {
     if (this.props.createdBy) {
       const createdBy = this.props.createdBy.username;
-      const profilePicture = _.get(
+      const profilePicture = get(
         this.props.createdBy,
         "activeProfilePicture.image"
       );
@@ -55,6 +55,7 @@ class CocktailDisplay extends React.PureComponent {
               <img
                 classname="created-by-profile-picture"
                 src={profilePicture}
+                alt=""
               />
             )}
             {createdBy}
@@ -82,7 +83,7 @@ class CocktailDisplay extends React.PureComponent {
     return (
       <div className="cocktail-details">
         <div className="img-and-stats">
-          <img src={this.getImage()} />
+          <img src={this.getImage()} alt="" />
           <h2>{this.props.name}</h2>
           <span className="heart-checkbox">
             <HeartCheckbox

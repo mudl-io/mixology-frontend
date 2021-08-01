@@ -1,5 +1,5 @@
 import React from "react";
-import _ from "lodash";
+import { filter } from "lodash";
 import { connect } from "react-redux";
 
 import "./styles.scss";
@@ -89,8 +89,8 @@ class CocktailsOfLiquor extends React.Component {
       (liquor) => liquor.publicId === liquorId
     ).name;
 
-    const userCocktails = _.filter(cocktails, (cocktail) => cocktail.createdBy);
-    const platformCocktails = _.filter(
+    const userCocktails = filter(cocktails, (cocktail) => cocktail.createdBy);
+    const platformCocktails = filter(
       cocktails,
       (cocktail) => !cocktail.createdBy
     );

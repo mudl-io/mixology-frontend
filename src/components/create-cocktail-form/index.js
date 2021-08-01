@@ -5,7 +5,7 @@ import { NotificationManager } from "react-notifications";
 import Checkbox from "@material-ui/core/Checkbox";
 import ImageUploader from "react-images-upload";
 import { connect } from "react-redux";
-import _ from "lodash";
+import { find, sortBy, uniqBy } from "lodash";
 
 // redux actions
 import {
@@ -114,11 +114,11 @@ class CreateCocktailForm extends React.Component {
 
   handleSelect = (name) => async (selectedOptions, selectType) => {
     if (selectType.action === "create-option") {
-      const optionToCreate = _.find(selectedOptions, { __isNew__: true });
+      const optionToCreate = find(selectedOptions, { __isNew__: true });
 
       const newOption = await this.createNewOption(name, optionToCreate.label);
       const index = selectedOptions.findIndex(
-        (option) => option.__isNew__ == true
+        (option) => option.__isNew__ === true
       );
       selectedOptions[index].value = newOption;
       selectedOptions[index].__isNew__ = false;
@@ -127,7 +127,7 @@ class CreateCocktailForm extends React.Component {
     const values = selectedOptions.map((option) => {
       let value = option.value;
 
-      const existingValue = _.find(this.state[name], (item) => {
+      const existingValue = find(this.state[name], (item) => {
         return item.publicId === value.publicId;
       });
 
@@ -221,14 +221,14 @@ class CreateCocktailForm extends React.Component {
    * then updates it's unit or amount property to the selected value
    */
   updateProperty = (itemId, property) => (event) => {
-    const updatedIngredient = _.find(
+    const updatedIngredient = find(
       this.state.selectedIngredients,
       (ingredient) => {
         return ingredient.publicId === itemId;
       }
     );
 
-    const updatedLiquor = _.find(this.state.selectedLiquors, (liquor) => {
+    const updatedLiquor = find(this.state.selectedLiquors, (liquor) => {
       return liquor.publicId === itemId;
     });
 
@@ -549,8 +549,8 @@ class CreateCocktailForm extends React.Component {
 const mapStateToProps = (state) => {
   const { liquors, ingredients } = state;
   return {
-    liquorOptions: _.sortBy(_.uniqBy(liquors, "name"), "name"),
-    ingredientOptions: _.sortBy(_.uniqBy(ingredients, "name"), "name"),
+    liquorOptions: sortBy(uniqBy(liquors, "name"), "name"),
+    ingredientOptions: sortBy(uniqBy(ingredients, "name"), "name"),
   };
 };
 

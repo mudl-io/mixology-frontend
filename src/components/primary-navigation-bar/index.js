@@ -5,7 +5,7 @@ import { Dropdown, DropdownButton } from "react-bootstrap";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import MenuOpenIcon from "@material-ui/icons/MenuOpen";
-import _ from "lodash";
+import { get } from "lodash";
 
 import "./styles.scss";
 import history from "../../history";
@@ -129,7 +129,7 @@ class PrimaryNavigationBar extends React.Component {
   };
 
   handleSearchSelect = (selectedValue) => {
-    const cocktailId = _.get(selectedValue, "value.publicId");
+    const cocktailId = get(selectedValue, "value.publicId");
 
     if (cocktailId) {
       history.push(`/cocktail/${cocktailId}/`);
@@ -163,7 +163,7 @@ class PrimaryNavigationBar extends React.Component {
         },
       });
 
-      const searchData = _.get(searchRes, "data.results") || [];
+      const searchData = get(searchRes, "data.results") || [];
 
       const searchResults = searchData.map((cocktail) => {
         return { value: cocktail, label: cocktail.name };
@@ -193,7 +193,7 @@ class PrimaryNavigationBar extends React.Component {
           </IconButton>
           <nav className="left-nav">
             <Link className="nav-link homepage" to="/">
-              <img className="site-logo-nav" src="/defaultimg.png" />
+              <img className="site-logo-nav" src="/defaultimg.png" alt="" />
               <span className="logo-text">Cocktail</span>
             </Link>
             {this.leftNavContent()}
