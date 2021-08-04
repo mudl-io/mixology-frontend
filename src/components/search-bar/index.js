@@ -5,6 +5,7 @@ const SearchBar = (props) => {
     <div className="search-bar">
       <AsyncSelect
         cacheOptions
+        styles={props.styles}
         placeholder={props.placeholder || "Search..."}
         loadOptions={props.loadOptions}
         onInputChange={props.handleChange}
