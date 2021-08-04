@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@material-ui/core";
+import { motion, AnimatePresence } from "framer-motion";
 
 import "./styles.scss";
 import PostCreateForm from "../post-create-form";
@@ -27,9 +28,20 @@ class Timeline extends React.Component {
             Create Post
           </Button>
 
-          {this.state.showPostCreateForm && (
-            <PostCreateForm onClose={this.toggleShowPostCreate} />
-          )}
+          <AnimatePresence>
+            {this.state.showPostCreateForm && (
+              <motion.div
+                animate={{ x: 25, y: 75 }}
+                transition={{
+                  x: { type: "spring", stiffness: 50 },
+                  default: { duration: 0.4 },
+                }}
+                exit={{ opacity: 0 }}
+              >
+                <PostCreateForm onClose={this.toggleShowPostCreate} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     );
