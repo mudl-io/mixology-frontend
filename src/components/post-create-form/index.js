@@ -65,6 +65,12 @@ const PostCreateForm = (props) => {
         cocktail_id: selectedCocktailId,
       });
 
+      NotificationManager.success(
+        "Your post was successfully created! Your followers should see it shortly.",
+        "Creation Success",
+        2000
+      );
+
       props.onClose();
     } catch (e) {
       NotificationManager.error(
