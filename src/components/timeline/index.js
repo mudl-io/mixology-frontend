@@ -12,7 +12,7 @@ class Timeline extends React.Component {
   }
 
   toggleShowPostCreate = () => {
-    this.setState({ showPostCreateForm: true });
+    this.setState({ showPostCreateForm: !this.state.showPostCreateForm });
   };
 
   render() {
@@ -27,7 +27,9 @@ class Timeline extends React.Component {
             Create Post
           </Button>
 
-          {this.state.showPostCreateForm && <PostCreateForm />}
+          {this.state.showPostCreateForm && (
+            <PostCreateForm onClose={this.toggleShowPostCreate} />
+          )}
         </div>
       </div>
     );

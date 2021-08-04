@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 import { useSelector } from "react-redux";
@@ -14,8 +14,26 @@ const PostCreateForm = (props) => {
   const [description, setDescription] = useState("");
   const [selectedCocktailId, setSelectedCocktailId] = useState(null);
   const user = useSelector((state) => state.users.user);
+  const componentRef = useRef(null);
+
+  // attach onClick listener in a componentDidMount and componentDidUnmount fashion
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside, false);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside, false);
+    };
+  }, []);
+
+  const handleClickOutside = (event) => {
+    if (componentRef.current && !componentRef.current.contains(event.target)) {
+      props.onClose();
+    }
+  };
 
   const searchCreatedCocktails = async (queryTerm) => {
+    if (queryTerm.length < 3) return;
+
     const searchRes = await axiosInstance.get("/cocktails/", {
       params: {
         action: "search",
@@ -46,6 +64,8 @@ const PostCreateForm = (props) => {
         description,
         cocktail_id: selectedCocktailId,
       });
+
+      props.onClose();
     } catch (e) {
       NotificationManager.error(
         "There was an error submitting your post, please sure you fill out at least one of the fields!",
@@ -64,7 +84,7 @@ const PostCreateForm = (props) => {
   };
 
   return (
-    <div className="post-create-form">
+    <div className="post-create-form" ref={componentRef}>
       <div className="inputs-container">
         <TextField
           label="Title"
