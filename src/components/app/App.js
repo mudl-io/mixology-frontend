@@ -6,7 +6,7 @@ import { NotificationContainer } from "react-notifications";
 import "./App.scss";
 import history from "../../history";
 
-import RandomCocktailContainer from "../random-cocktail-container";
+import Homepage from "../homepage";
 import Login from "../login";
 import Signup from "../signup";
 import PrimaryNavigationBar from "../primary-navigation-bar";
@@ -17,7 +17,6 @@ import DynamicCocktailDisplayContainer from "../dynamic-cocktail-display-contain
 import ProfilePage from "../profile-page";
 import CocktailsOfLiquor from "../cocktails-of-liquor";
 import ResetPasswordForm from "../reset-password-form";
-import Timeline from "../timeline";
 
 class App extends React.Component {
   render() {
@@ -26,16 +25,11 @@ class App extends React.Component {
         <Router history={history}>
           <PrimaryNavigationBar user={this.props.user} />
           <Switch>
-            <Route exact path="/">
-              {this.props.user ? <Timeline /> : <Redirect to="/login/" />}
-            </Route>
             <Route
               exact
-              path="/random/"
+              path="/"
               component={() => (
-                <RandomCocktailContainer
-                  isSignedIn={this.props.user ? true : false}
-                />
+                <Homepage isSignedIn={this.props.user ? true : false} />
               )}
             />
             <Route exact path="/login/">

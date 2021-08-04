@@ -56,8 +56,7 @@
     ]
   },
   "devDependencies": {
-    "dotenv": "^8.2.0",
-    "framer-motion": "^4.1.17"
+    "dotenv": "^8.2.0"
   },
   "engines": {
     "node": "14.15.5",
