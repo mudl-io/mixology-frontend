@@ -23,7 +23,7 @@ const PostCreateForm = (props) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside, false);
     };
-  }, []);
+  });
 
   const handleClickOutside = (event) => {
     if (componentRef.current && !componentRef.current.contains(event.target)) {
@@ -87,6 +87,7 @@ const PostCreateForm = (props) => {
     <div className="post-create-form" ref={componentRef}>
       <div className="inputs-container">
         <TextField
+          className="title input"
           label="Title"
           name="postTitle"
           value={title}
@@ -95,16 +96,21 @@ const PostCreateForm = (props) => {
         />
         <TextField
           multiline
+          className="description input"
           label="Description"
           name="description"
           value={description}
           variant="outlined"
-          minRows={4}
-          maxRows={4}
+          minRows={5}
+          maxRows={5}
           onChange={(event) => setDescription(event.target.value)}
         />
         <SearchBar
-          placeholder="Add one of your cocktails"
+          placeholder="Add a cocktail"
+          styles={{
+            container: (provided) => ({ ...provided, height: 56 }),
+            control: (provided) => ({ ...provided, height: 56 }),
+          }}
           loadOptions={(queryTerm) => searchCreatedCocktails(queryTerm)}
           handleSelect={(selectedCocktail) =>
             setSelectedCocktailId(selectedCocktail.value.publicId)

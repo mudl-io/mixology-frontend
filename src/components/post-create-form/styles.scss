@@ -11,8 +11,21 @@
   .inputs-container {
     display: grid;
     grid-template-columns: 70%;
-    grid-gap: 20%;
+    grid-gap: 10%;
     justify-content: center;
-    padding-top: 35px;
+    padding-top: 55px;
+
+    .input label {
+      font-family: "Roboto Condensed";
+    }
+
+    .post-submit-button {
+      height: 40px;
+      color: white;
+      font-weight: 600;
+      background-color: $coolpurp;
+      font-family: "Roboto Condensed";
+      letter-spacing: 2px;
+    }
   }
 }
