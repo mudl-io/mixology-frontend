@@ -38,12 +38,27 @@
   .cocktail-container {
     .cocktail-clickable-name {
       cursor: pointer;
-      text-decoration: underline;
       color: blue;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     .cocktail-details {
       margin: auto;
+    }
+
+    .hide-text {
+      float: right;
+      margin-right: 25px;
+      color: blue;
+      cursor: pointer;
+      margin-top: 10px;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 

@@ -72,7 +72,14 @@ const PostDisplay = ({
               {cocktail.name}
             </div>
           )}
-          {showCocktail && formatCocktailDisplay(cocktail)}
+          {showCocktail && (
+            <div>
+              <div className="hide-text" onClick={() => setShowCocktail(false)}>
+                Hide
+              </div>
+              {formatCocktailDisplay(cocktail)}
+            </div>
+          )}
         </div>
       )}
     </div>
