@@ -69,9 +69,7 @@ class App extends React.Component {
               path="/cocktails/:liquorId"
               component={CocktailsOfLiquor}
             />
-            <Route exact path="/user/:username">
-              {!this.props.user ? <Redirect to="/" /> : <ProfilePage />}
-            </Route>
+            <Route exact path="/user/:username" component={ProfilePage} />
             <Route
               exact
               path="/user/:username/saved-cocktails"
