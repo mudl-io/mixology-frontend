@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { get } from "lodash";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 import "./styles.scss";
 import ProfileIcon from "../profile-icon";
@@ -74,10 +75,23 @@ const PostDisplay = ({
           )}
           {showCocktail && (
             <div>
-              <div className="hide-text" onClick={() => setShowCocktail(false)}>
-                Hide
-              </div>
-              {formatCocktailDisplay(cocktail)}
+              <AnimatePresence>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ ease: [0.17, 0.67, 0.83, 0.67] }}
+                  exit={{ opacity: 0 }}
+                >
+                  <div
+                    className="hide-text"
+                    onClick={() => setShowCocktail(false)}
+                  >
+                    Hide
+                  </div>
+
+                  {formatCocktailDisplay(cocktail)}
+                </motion.div>
+              </AnimatePresence>
             </div>
           )}
         </div>
