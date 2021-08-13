@@ -35,6 +35,18 @@
     margin-bottom: 10px;
   }
 
+  .cocktail-container {
+    .cocktail-clickable-name {
+      cursor: pointer;
+      text-decoration: underline;
+      color: blue;
+    }
+
+    .cocktail-details {
+      margin: auto;
+    }
+  }
+
   .created-at-container,
   .description {
     margin-left: 26px;

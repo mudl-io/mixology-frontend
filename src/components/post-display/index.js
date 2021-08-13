@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { get } from "lodash";
 import { Link } from "react-router-dom";
 
 import "./styles.scss";
 import ProfileIcon from "../profile-icon";
+import CocktailDisplay from "../cocktail-display";
 
 const PostDisplay = ({
   cocktail = {},
@@ -12,7 +14,26 @@ const PostDisplay = ({
   title = "",
   postId = "",
 }) => {
+  const [showCocktail, setShowCocktail] = useState(false);
   const profilePicture = get(postedBy, "activeProfilePicture.image");
+
+  const formatCocktailDisplay = (cocktail) => {
+    return (
+      <CocktailDisplay
+        cocktailId={cocktail.id}
+        name={cocktail.name}
+        description={cocktail.description}
+        complexity={cocktail.complexity}
+        image={cocktail.image}
+        ingredients={cocktail.ingredients}
+        liquors={cocktail.liquors}
+        instructions={cocktail.instructions}
+        createdBy={cocktail.createdBy}
+        isSaved={cocktail.isSaved}
+        timesSaved={cocktail.timesSaved}
+      />
+    );
+  };
 
   const formatDate = (date) => {
     const ms = Date.parse(date);
@@ -41,9 +62,19 @@ const PostDisplay = ({
 
       {description && <div className="description">{description}</div>}
 
-      <div className="cocktail-container">
-        {cocktail && <div className="cocktail">{get(cocktail, "name")}</div>}
-      </div>
+      {cocktail && (
+        <div className="cocktail-container">
+          {!showCocktail && (
+            <div
+              className="cocktail-clickable-name"
+              onClick={() => setShowCocktail(true)}
+            >
+              {cocktail.name}
+            </div>
+          )}
+          {showCocktail && formatCocktailDisplay(cocktail)}
+        </div>
+      )}
     </div>
   );
 };
