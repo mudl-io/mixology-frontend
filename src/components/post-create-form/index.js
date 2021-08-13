@@ -68,7 +68,7 @@ const PostCreateForm = (props) => {
       NotificationManager.success(
         "Your post was successfully created! Your followers should see it shortly.",
         "Creation Success",
-        2000
+        4000
       );
 
       props.onClose();
@@ -76,7 +76,7 @@ const PostCreateForm = (props) => {
       NotificationManager.error(
         "There was an error submitting your post, please sure you fill out at least one of the fields!",
         "Creation Error",
-        2000
+        5000
       );
     }
   };

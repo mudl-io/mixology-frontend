@@ -13,15 +13,15 @@
   .timeline {
     position: absolute;
     top: 80px;
-    overflow: hidden;
     width: 70vw;
     min-height: 88vh;
     padding-left: 10px;
     padding-right: 10px;
+    overflow: scroll;
 
     .create-post-button {
-      position: absolute;
-      left: 0;
+      position: fixed;
+      left: 10%;
       height: 40px;
       width: 130px;
       font-weight: 600;
@@ -32,7 +32,8 @@
     }
 
     .animation-container {
-      position: relative;
+      position: fixed;
+      width: 100%;
       z-index: 1;
     }
 
