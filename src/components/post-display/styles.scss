@@ -1,3 +1,5 @@
+@import "../../utilities/variables";
+
 .post-display {
   display: grid;
   place-self: center;
@@ -19,6 +21,11 @@
     .profile-icon {
       margin-right: 5px;
     }
+
+    .posted-by {
+      font-weight: 600;
+      color: darken($coolpurp, 20%);
+    }
   }
 
   .created-at-container {
@@ -38,7 +45,7 @@
   .cocktail-container {
     .cocktail-clickable-name {
       cursor: pointer;
-      color: blue;
+      color: darken($coolpurp, 20%);
 
       &:hover {
         text-decoration: underline;
@@ -46,13 +53,22 @@
     }
 
     .cocktail-details {
+      width: 100%;
       margin: auto;
+
+      a {
+        color: darken($coolpurp, 20%);
+
+        .profile-icon {
+          margin-right: 5px;
+        }
+      }
     }
 
     .hide-text {
       float: right;
       margin-right: 25px;
-      color: blue;
+      color: darken($coolpurp, 20%);
       cursor: pointer;
       margin-top: 10px;
 
