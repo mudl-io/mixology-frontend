@@ -1,0 +1,42 @@
+.post-display {
+  display: grid;
+  place-self: center;
+  width: 80%;
+  padding: 10px;
+  background: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 0 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+
+  .title {
+    font-size: 25px;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+
+  .profile-container {
+    display: flex;
+
+    .profile-icon {
+      margin-right: 5px;
+    }
+  }
+
+  .created-at-container {
+    display: flex;
+
+    .created-at {
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+  }
+
+  .description {
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  .created-at-container,
+  .description {
+    margin-left: 26px;
+  }
+}
