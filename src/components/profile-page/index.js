@@ -14,6 +14,7 @@ import defaultProfilePic from "../../assets/cocktail-silhouette.png";
 import ImageUploadModal from "../image-upload-modal";
 import ClickableImagesModal from "../clickable-images-modal";
 import CocktailsList from "../cocktails-list";
+import PostDisplay from "../post-display";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class ProfilePage extends React.Component {
       showEditProfile: false,
       profileDescription: "",
       mostLikedCocktails: [],
+      posts: [],
     };
   }
 
@@ -63,21 +65,25 @@ class ProfilePage extends React.Component {
 
   getProfileInfo = async () => {
     try {
-      const [userData, profilePicturesData, cocktailData] = await Promise.all([
-        axiosInstance.get("/user/detail/", {
-          params: {
-            username: this.props.match.params.username,
-          },
-        }),
-        axiosInstance.get("/profile_pictures/"),
-        axiosInstance.get("/cocktails/", {
-          params: {
-            action: "most_liked",
-            username: this.props.match.params.username,
-            limit: 10,
-          },
-        }),
-      ]);
+      const [userData, profilePicturesData, cocktailData, postData] =
+        await Promise.all([
+          axiosInstance.get("/user/detail/", {
+            params: {
+              username: this.props.match.params.username,
+            },
+          }),
+          axiosInstance.get("/profile_pictures/"),
+          axiosInstance.get("/cocktails/", {
+            params: {
+              action: "most_liked",
+              username: this.props.match.params.username,
+              limit: 5,
+            },
+          }),
+          axiosInstance.get("/posts/", {
+            params: { username: this.props.match.params.username },
+          }),
+        ]);
 
       const activeProfilePic = remove(
         profilePicturesData.data,
@@ -101,6 +107,7 @@ class ProfilePage extends React.Component {
         followersCount: userData.data.followersCount,
         followingCount: userData.data.followingCount,
         mostLikedCocktails: get(cocktailData, "data.results"),
+        posts: get(postData, "data.results"),
       });
     } catch (e) {
       console.log(e);
@@ -250,14 +257,38 @@ class ProfilePage extends React.Component {
   };
 
   mostLikedCocktailsList = () => {
+    const redirectToCreatedCocktails = () =>
+      history.push(
+        `/user/${get(this.props, "match.params.username")}/created-cocktails/`
+      );
+
     return (
       <div className="created-cocktails-container">
         <CocktailsList
           title="Most liked cocktails"
           cocktails={this.state.mostLikedCocktails}
         />
+        <div className="view-more-text" onClick={redirectToCreatedCocktails}>
+          View More
+        </div>
       </div>
     );
+  };
+
+  postList = () => {
+    return this.state.posts.map((post) => {
+      return (
+        <PostDisplay
+          cocktail={post.cocktail}
+          createdAt={post.createdAt}
+          description={post.description}
+          postedBy={post.postedBy}
+          title={post.title}
+          postId={post.publicId}
+          key={post.publicId}
+        />
+      );
+    });
   };
 
   render() {
@@ -339,6 +370,8 @@ class ProfilePage extends React.Component {
             {this.mostLikedCocktailsList()}
           </div>
         </div>
+
+        <div className="user-posts-container">{this.postList()}</div>
 
         <ImageUploadModal
           buttonText={"Upload a new profile picture"}

@@ -2,12 +2,19 @@
 
 .profile-page {
   display: grid;
-  grid-template-columns: 25% 40% 37%;
+  grid-template-columns: 25% 50% 25%;
   position: relative;
-  top: 10%;
+  top: 4.5%;
   margin: 10px;
 
   .profile-content {
+    height: fit-content;
+    position: sticky;
+    left: 0;
+    top: 7%;
+    overflow: hidden;
+    padding: 10px;
+
     .edit-icon-container {
       text-align: right;
       position: relative;
@@ -158,6 +165,30 @@
         img {
           border-radius: 5px;
         }
+      }
+
+      .view-more-text {
+        text-align: center;
+        color: darken($coolpurp, 20%);
+
+        &:hover {
+          cursor: pointer;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .user-posts-container {
+    display: grid;
+    grid-gap: 20px;
+    margin-top: 6%;
+
+    .post-display {
+      width: 75%;
+
+      .cocktail-clickable-name {
+        text-align: center;
       }
     }
   }
