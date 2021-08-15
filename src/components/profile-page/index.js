@@ -13,6 +13,7 @@ import { axiosInstance, axiosImageInstance } from "../../axiosApi";
 import defaultProfilePic from "../../assets/cocktail-silhouette.png";
 import ImageUploadModal from "../image-upload-modal";
 import ClickableImagesModal from "../clickable-images-modal";
+import CocktailsList from "../cocktails-list";
 
 class ProfilePage extends React.Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class ProfilePage extends React.Component {
       viewedCocktailsCount: 0,
       showEditProfile: false,
       profileDescription: "",
+      mostLikedCocktails: [],
     };
   }
 
@@ -52,15 +54,29 @@ class ProfilePage extends React.Component {
     }
   }
 
+  isCurrentUser = () => {
+    return (
+      get(this.props, "user.username") ===
+      get(this.props, "match.params.username")
+    );
+  };
+
   getProfileInfo = async () => {
     try {
-      const [userData, profilePicturesData] = await Promise.all([
+      const [userData, profilePicturesData, cocktailData] = await Promise.all([
         axiosInstance.get("/user/detail/", {
           params: {
             username: this.props.match.params.username,
           },
         }),
         axiosInstance.get("/profile_pictures/"),
+        axiosInstance.get("/cocktails/", {
+          params: {
+            action: "most_liked",
+            username: this.props.match.params.username,
+            limit: 10,
+          },
+        }),
       ]);
 
       const activeProfilePic = remove(
@@ -81,6 +97,10 @@ class ProfilePage extends React.Component {
         username: userData.data.username,
         viewedCocktailsCount: userData.data.viewedCocktailsCount,
         profileDescription: userData.data.profileDescription,
+        isFollowed: userData.data.isFollowed,
+        followersCount: userData.data.followersCount,
+        followingCount: userData.data.followingCount,
+        mostLikedCocktails: get(cocktailData, "data.results"),
       });
     } catch (e) {
       console.log(e);
@@ -185,6 +205,16 @@ class ProfilePage extends React.Component {
     }
   };
 
+  followUser = async () => {
+    const username = get(this.props, "match.params.username");
+
+    try {
+      await axiosInstance.post(`users/${username}/follow/`);
+
+      this.setState({ isFollowed: !this.state.isFollowed });
+    } catch (e) {}
+  };
+
   descriptionElement = () => {
     if (this.state.showEditProfile) {
       return (
@@ -219,6 +249,17 @@ class ProfilePage extends React.Component {
     }
   };
 
+  mostLikedCocktailsList = () => {
+    return (
+      <div className="created-cocktails-container">
+        <CocktailsList
+          title="Most liked cocktails"
+          cocktails={this.state.mostLikedCocktails}
+        />
+      </div>
+    );
+  };
+
   render() {
     if (!this.props.user) {
       history.push("/");
@@ -226,28 +267,34 @@ class ProfilePage extends React.Component {
 
     return (
       <div className="profile-page">
-        <div className="inner-content">
-          <div onClick={this.toggleEditProfile}>
-            {this.props.user.username ===
-              get(this.props, "match.params.username") && (
-              <EditIcon className="edit-icon" />
-            )}
+        <div className="profile-content">
+          <div className="edit-icon-container" onClick={this.toggleEditProfile}>
+            {this.isCurrentUser() && <EditIcon className="edit-icon" />}
           </div>
 
-          <div className="profile-card">
-            <div className="profile-image-and-uploader">
-              <img
-                className="profile-picture"
-                src={this.state.activeProfilePicture || defaultProfilePic}
-                alt=""
-                onClick={this.toggleShowAllProfilePictures}
-              />
-              <div className="upload-icon" onClick={this.toggleShowUploader}>
-                <Tooltip title="Upload a new profile picture" placement="top">
-                  <AddAPhotoIcon />
-                </Tooltip>
+          <div className="profile-card container">
+            <div className="profile-image-follow-column">
+              <div className="profile-image-and-uploader">
+                <img
+                  className="profile-picture"
+                  src={this.state.activeProfilePicture || defaultProfilePic}
+                  alt=""
+                  onClick={this.toggleShowAllProfilePictures}
+                />
+                <div className="upload-icon" onClick={this.toggleShowUploader}>
+                  <Tooltip title="Upload a new profile picture" placement="top">
+                    <AddAPhotoIcon />
+                  </Tooltip>
+                </div>
               </div>
+
+              {!this.isCurrentUser() && (
+                <span className="follow-button" onClick={this.followUser}>
+                  {this.state.isFollowed ? "Follow" : "Unfollow"}
+                </span>
+              )}
             </div>
+
             <div className="profile-name-and-description">
               <div className="username">
                 <div>{this.state.username}</div>
@@ -258,22 +305,38 @@ class ProfilePage extends React.Component {
             </div>
           </div>
 
-          <div className="profile-stats">
-            <div className="stat">
-              <span className="stat-title">Liked Cocktails: </span>
-              <span>{this.state.savedCocktailsCount}</span>
-            </div>
-            <div className="stat">
-              <span className="stat-title">Created Cocktails: </span>
-              <span>{this.state.createdCocktailsCount}</span>
-            </div>
-            {this.props.user.username ===
-              get(this.props, "match.params.username") && (
+          <div className="profile-stats container">
+            <div className="followers-stats">
               <div className="stat">
-                <span className="stat-title">Viewed Cocktails: </span>
-                <span>{this.state.viewedCocktailsCount}</span>
+                <span className="stat-title">Followers: </span>
+                <span>{this.state.followersCount}</span>
               </div>
-            )}
+              <div className="stat">
+                <span className="stat-title">Following: </span>
+                <span>{this.state.followingCount}</span>
+              </div>
+            </div>
+
+            <div className="cocktail-stats">
+              <div className="stat">
+                <span className="stat-title">Liked Cocktails: </span>
+                <span>{this.state.savedCocktailsCount}</span>
+              </div>
+              <div className="stat">
+                <span className="stat-title">Created Cocktails: </span>
+                <span>{this.state.createdCocktailsCount}</span>
+              </div>
+              {this.isCurrentUser() && (
+                <div className="stat">
+                  <span className="stat-title">Viewed Cocktails: </span>
+                  <span>{this.state.viewedCocktailsCount}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="most-liked-cocktails container">
+            {this.mostLikedCocktailsList()}
           </div>
         </div>
 
