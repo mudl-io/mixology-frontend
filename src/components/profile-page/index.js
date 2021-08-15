@@ -5,6 +5,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
 import { NotificationManager } from "react-notifications";
 import { get, remove, uniq } from "lodash";
+import TextField from "@material-ui/core/TextField";
 
 import "./styles.scss";
 import history from "../../history";
@@ -30,6 +31,7 @@ class ProfilePage extends React.Component {
       username: "",
       viewedCocktailsCount: 0,
       showEditProfile: false,
+      profileDescription: "",
     };
   }
 
@@ -147,6 +149,10 @@ class ProfilePage extends React.Component {
     }
   };
 
+  handleProfileDescriptionChange = (event) => {
+    this.setState({ profileDescription: event.target.value });
+  };
+
   handleUploadProfilePicture = (profilePicture) => {
     this.setState({
       profilePictureToUpload: profilePicture[0],
@@ -166,6 +172,53 @@ class ProfilePage extends React.Component {
     this.setState({ showUploader: !this.state.showUploader });
   };
 
+  saveProfileChanges = async () => {
+    const username = this.props.user.username;
+
+    try {
+      await axiosInstance.patch(`users/${username}/`, {
+        profileDescription: this.state.profileDescription,
+      });
+    } catch (e) {
+    } finally {
+      this.toggleEditProfile();
+    }
+  };
+
+  descriptionElement = () => {
+    if (this.state.showEditProfile) {
+      return (
+        <div className="description-display edit">
+          <TextField
+            multiline
+            className="profile-description-editor"
+            label="Profile Description"
+            minRows={5}
+            maxRows={5}
+            name="profileDescription"
+            value={this.state.profileDescription}
+            variant="outlined"
+            onChange={this.handleProfileDescriptionChange}
+          />
+          <div className="save-cancel-buttons">
+            <div className="cancel button" onClick={this.toggleEditProfile}>
+              Cancel
+            </div>
+            <div className="save button" onClick={this.saveProfileChanges}>
+              Save
+            </div>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="description-display">
+          {this.state.profileDescription}
+        </div>
+      );
+    }
+  };
+
   render() {
     if (!this.props.user) {
       history.push("/");
@@ -175,7 +228,10 @@ class ProfilePage extends React.Component {
       <div className="profile-page">
         <div className="inner-content">
           <div onClick={this.toggleEditProfile}>
-            <EditIcon className="edit-icon" />
+            {this.props.user.username ===
+              get(this.props, "match.params.username") && (
+              <EditIcon className="edit-icon" />
+            )}
           </div>
 
           <div className="profile-card">
@@ -197,9 +253,7 @@ class ProfilePage extends React.Component {
                 <div>{this.state.username}</div>
               </div>
               <div className="profile-description">
-                <div className="description-display">
-                  {this.state.profileDescription}
-                </div>
+                {this.descriptionElement()}
               </div>
             </div>
           </div>

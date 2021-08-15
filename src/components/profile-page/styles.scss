@@ -70,9 +70,34 @@
           .description-display {
             height: 100%;
             width: 90%;
-            border: 1px solid lightgrey;
-            border-radius: 10px;
             margin-left: 4%;
+
+            &.edit {
+              .profile-description-editor {
+                width: 100%;
+              }
+
+              .save-cancel-buttons {
+                display: flex;
+                justify-content: flex-end;
+                margin-right: 10px;
+
+                .cancel {
+                  color: darken(red, 10%);
+                }
+
+                .save {
+                  text-align: right;
+                  color: darken($coolpurp, 20%);
+                  margin-left: 15px;
+                }
+
+                .button:hover {
+                  text-decoration: underline;
+                  cursor: pointer;
+                }
+              }
+            }
           }
         }
       }
