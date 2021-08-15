@@ -3,11 +3,9 @@
 .post-create-form {
   width: 60%;
   max-width: 500px;
-  overflow: scroll;
-  position: sticky;
-  top: 68px;
-  left: 35px;
   height: 45vh;
+  overflow: scroll;
+  background: white;
   border-radius: 15px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 0 8px 0 rgba(0, 0, 0, 0.2);
   -ms-overflow-style: none; /* IE and Edge */

@@ -6,6 +6,7 @@ import { NotificationManager } from "react-notifications";
 import { get, remove, uniq } from "lodash";
 
 import "./styles.scss";
+import history from "../../history";
 import { axiosInstance, axiosImageInstance } from "../../axiosApi";
 import defaultProfilePic from "../../assets/cocktail-silhouette.png";
 import ImageUploadModal from "../image-upload-modal";
@@ -35,8 +36,13 @@ class ProfilePage extends React.Component {
   }
 
   componentDidUpdate(previousProps) {
+    if (!get(this.props, "match.params.username")) {
+      history.push("/");
+    }
+
     if (
-      previousProps.match.params.username !== this.props.match.params.username
+      get(previousProps, "match.params.username") !==
+      get(this.props, "match.params.username")
     ) {
       this.getProfileInfo();
     }
@@ -72,6 +78,7 @@ class ProfilePage extends React.Component {
         viewedCocktailsCount: userData.data.viewedCocktailsCount,
       });
     } catch (e) {
+      console.log(e);
       // if the network request fails, user the redux store's user state
       this.setState({
         username: this.props.user.username,
@@ -153,6 +160,10 @@ class ProfilePage extends React.Component {
   };
 
   render() {
+    if (!this.props.user) {
+      history.push("/");
+    }
+
     return (
       <div className="profile-page">
         <div className="inner-content">
@@ -174,7 +185,8 @@ class ProfilePage extends React.Component {
             <div>{this.state.username}</div>
           </div>
 
-          {this.props.user.username === this.props.match.params.username && (
+          {this.props.user.username ===
+            get(this.props, "match.params.username") && (
             <div className="email">
               <h3>Email:</h3>
               <div>{this.state.email}</div>

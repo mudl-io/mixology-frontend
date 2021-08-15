@@ -13,22 +13,35 @@
   .timeline {
     position: absolute;
     top: 80px;
-    overflow: hidden;
     width: 70vw;
     min-height: 88vh;
     padding-left: 10px;
     padding-right: 10px;
+    overflow: scroll;
 
     .create-post-button {
-      position: absolute;
-      left: 0;
+      position: fixed;
+      left: 10%;
       height: 40px;
       width: 130px;
       font-weight: 600;
       font-family: "Roboto Condensed";
       letter-spacing: 2px;
       text-transform: none;
-      z-index: 9999;
+    }
+
+    .animation-container {
+      position: fixed;
+      width: 100%;
+      z-index: 1;
+    }
+
+    .posts-list {
+      position: absolute;
+      top: 65px;
+      width: 100%;
+      display: grid;
+      grid-gap: 50px;
     }
   }
 }
