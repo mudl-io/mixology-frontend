@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
+import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
 import { NotificationManager } from "react-notifications";
 import { get, remove, uniq } from "lodash";
@@ -28,6 +29,7 @@ class ProfilePage extends React.Component {
       showUploader: false,
       username: "",
       viewedCocktailsCount: 0,
+      showEditProfile: false,
     };
   }
 
@@ -76,6 +78,7 @@ class ProfilePage extends React.Component {
         savedCocktailsCount: userData.data.savedCocktailsCount,
         username: userData.data.username,
         viewedCocktailsCount: userData.data.viewedCocktailsCount,
+        profileDescription: userData.data.profileDescription,
       });
     } catch (e) {
       console.log(e);
@@ -151,6 +154,10 @@ class ProfilePage extends React.Component {
     });
   };
 
+  toggleEditProfile = () => {
+    this.setState({ showEditProfile: !this.state.showEditProfile });
+  };
+
   toggleShowAllProfilePictures = () => {
     this.setState({ showPicturesModal: !this.state.showPicturesModal });
   };
@@ -167,31 +174,35 @@ class ProfilePage extends React.Component {
     return (
       <div className="profile-page">
         <div className="inner-content">
-          <div className="profile-image-and-uploader">
-            <img
-              className="profile-picture"
-              src={this.state.activeProfilePicture || defaultProfilePic}
-              alt=""
-              onClick={this.toggleShowAllProfilePictures}
-            />
-            <div className="upload-icon" onClick={this.toggleShowUploader}>
-              <Tooltip title="Upload a new profile picture" placement="top">
-                <AddAPhotoIcon />
-              </Tooltip>
-            </div>
-          </div>
-          <div className="username">
-            <h3>Username:</h3>
-            <div>{this.state.username}</div>
+          <div onClick={this.toggleEditProfile}>
+            <EditIcon className="edit-icon" />
           </div>
 
-          {this.props.user.username ===
-            get(this.props, "match.params.username") && (
-            <div className="email">
-              <h3>Email:</h3>
-              <div>{this.state.email}</div>
+          <div className="profile-card">
+            <div className="profile-image-and-uploader">
+              <img
+                className="profile-picture"
+                src={this.state.activeProfilePicture || defaultProfilePic}
+                alt=""
+                onClick={this.toggleShowAllProfilePictures}
+              />
+              <div className="upload-icon" onClick={this.toggleShowUploader}>
+                <Tooltip title="Upload a new profile picture" placement="top">
+                  <AddAPhotoIcon />
+                </Tooltip>
+              </div>
             </div>
-          )}
+            <div className="profile-name-and-description">
+              <div className="username">
+                <div>{this.state.username}</div>
+              </div>
+              <div className="profile-description">
+                <div className="description-display">
+                  {this.state.profileDescription}
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className="profile-stats">
             <div className="stat">
@@ -202,10 +213,13 @@ class ProfilePage extends React.Component {
               <span className="stat-title">Created Cocktails: </span>
               <span>{this.state.createdCocktailsCount}</span>
             </div>
-            <div className="stat">
-              <span className="stat-title">Viewed Cocktails: </span>
-              <span>{this.state.viewedCocktailsCount}</span>
-            </div>
+            {this.props.user.username ===
+              get(this.props, "match.params.username") && (
+              <div className="stat">
+                <span className="stat-title">Viewed Cocktails: </span>
+                <span>{this.state.viewedCocktailsCount}</span>
+              </div>
+            )}
           </div>
         </div>
 
