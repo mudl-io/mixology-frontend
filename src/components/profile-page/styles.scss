@@ -7,173 +7,186 @@
   top: 4.5%;
   margin: 10px;
 
-  .profile-content {
-    height: fit-content;
-    position: sticky;
-    left: 0;
-    top: 7%;
-    overflow: hidden;
-    padding: 10px;
+  .profile-content-wrapper {
+    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.2);
+    border-right: 1px solid lightgrey;
+    margin: 0 -25px 0 -25px;
+    padding: 0 25px 0 25px;
 
-    .edit-icon-container {
-      text-align: right;
-      position: relative;
-      top: 34px;
-      right: 12px;
+    .profile-content {
+      height: fit-content;
+      position: sticky;
+      left: 0;
+      top: 7%;
+      overflow: hidden;
+      padding: 10px;
 
-      .edit-icon {
-        cursor: pointer;
+      .edit-icon-container {
+        text-align: right;
+        position: relative;
+        top: 34px;
+        right: 12px;
 
-        &:hover {
-          color: $coolpurp;
+        .edit-icon {
+          cursor: pointer;
+
+          &:hover {
+            color: $coolpurp;
+          }
         }
       }
-    }
 
-    .container {
-      background: white;
-      padding: 10px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 0 8px 0 rgba(0, 0, 0, 0.2);
-    }
+      .container {
+        background: white;
+        padding: 10px;
+        border-bottom: 1px solid lightgrey;
+        // border-radius: 10px;
+        // border: 2px solid lightgray;
+        // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 0 8px 0 rgba(0, 0, 0, 0.2);
+      }
 
-    .profile-card {
-      display: grid;
-      grid-template-columns: 37% 63%;
+      .profile-card {
+        display: grid;
+        grid-template-columns: 37% 63%;
 
-      .profile-image-follow-column {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        .profile-image-follow-column {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
 
-        .profile-image-and-uploader {
-          height: 185px;
-          width: fit-content;
+          .profile-image-and-uploader {
+            height: 185px;
+            width: fit-content;
 
-          .profile-picture {
-            margin-bottom: 15px;
-            border-radius: 100%;
-            max-height: 165px;
-            min-width: 165px;
-            cursor: pointer;
+            .profile-picture {
+              margin-bottom: 15px;
+              border-radius: 100%;
+              max-height: 165px;
+              min-width: 165px;
+              cursor: pointer;
+
+              &.disabled {
+                cursor: default;
+              }
+            }
+
+            .upload-icon {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              top: -57px;
+              right: -120px;
+              border-radius: 22px;
+              width: 40px;
+              height: 40px;
+              color: white;
+              background-color: darkgrey;
+              cursor: pointer;
+
+              &:hover {
+                color: $coolpurp;
+              }
+            }
           }
 
-          .upload-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            top: -57px;
-            right: -120px;
-            border-radius: 22px;
-            width: 40px;
-            height: 40px;
-            color: white;
-            background-color: darkgrey;
-            cursor: pointer;
+          .follow-button {
+            min-width: 80px;
+            padding: 5px 10px;
+            border: 2px solid $coolpurp;
+            border-radius: 15px;
+            text-align: center;
 
             &:hover {
-              color: $coolpurp;
+              cursor: pointer;
+              color: white;
+              background: $coolpurp;
             }
           }
         }
 
-        .follow-button {
-          min-width: 80px;
-          padding: 5px 10px;
-          border: 2px solid $coolpurp;
-          border-radius: 15px;
+        .profile-name-and-description {
+          display: grid;
+          grid-template-rows: 33% 67%;
+
+          .username {
+            display: flex;
+            align-items: center;
+            font-size: 35px;
+            margin-left: 11px;
+          }
+
+          .profile-description {
+            .description-display {
+              height: 100%;
+              width: 90%;
+              margin-left: 4%;
+
+              &.edit {
+                .profile-description-editor {
+                  width: 100%;
+                }
+
+                .save-cancel-buttons {
+                  display: flex;
+                  justify-content: flex-end;
+                  margin-right: 10px;
+
+                  .cancel {
+                    color: darken(red, 10%);
+                  }
+
+                  .save {
+                    text-align: right;
+                    color: darken($coolpurp, 20%);
+                    margin-left: 15px;
+                  }
+
+                  .button:hover {
+                    text-decoration: underline;
+                    cursor: pointer;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .profile-stats {
+        display: grid;
+        grid-template-columns: 50%, 50%;
+        grid-template-columns: 50% 50%;
+        align-items: center;
+        background: white;
+        margin-top: 10px;
+        padding: 12px 10px 10px 10px;
+      }
+
+      .most-liked-cocktails.container {
+        margin-top: 10px;
+
+        .cocktails-list-container {
+          min-width: initial;
+
+          h1 {
+            font-size: 25px;
+            font-weight: 600;
+          }
+
+          img {
+            border-radius: 5px;
+          }
+        }
+
+        .view-more-text {
           text-align: center;
+          color: darken($coolpurp, 20%);
 
           &:hover {
             cursor: pointer;
-            color: white;
-            background: $coolpurp;
+            text-decoration: underline;
           }
-        }
-      }
-
-      .profile-name-and-description {
-        display: grid;
-        grid-template-rows: 33% 67%;
-
-        .username {
-          display: flex;
-          align-items: center;
-          font-size: 35px;
-          margin-left: 11px;
-        }
-
-        .profile-description {
-          .description-display {
-            height: 100%;
-            width: 90%;
-            margin-left: 4%;
-
-            &.edit {
-              .profile-description-editor {
-                width: 100%;
-              }
-
-              .save-cancel-buttons {
-                display: flex;
-                justify-content: flex-end;
-                margin-right: 10px;
-
-                .cancel {
-                  color: darken(red, 10%);
-                }
-
-                .save {
-                  text-align: right;
-                  color: darken($coolpurp, 20%);
-                  margin-left: 15px;
-                }
-
-                .button:hover {
-                  text-decoration: underline;
-                  cursor: pointer;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .profile-stats {
-      display: grid;
-      grid-template-columns: 50%, 50%;
-      grid-template-columns: 50% 50%;
-      align-items: center;
-      background: white;
-      margin-top: 10px;
-      padding: 12px 10px 10px 10px;
-    }
-
-    .most-liked-cocktails.container {
-      margin-top: 10px;
-
-      .cocktails-list-container {
-        min-width: initial;
-
-        h1 {
-          font-size: 25px;
-          font-weight: 600;
-        }
-
-        img {
-          border-radius: 5px;
-        }
-      }
-
-      .view-more-text {
-        text-align: center;
-        color: darken($coolpurp, 20%);
-
-        &:hover {
-          cursor: pointer;
-          text-decoration: underline;
         }
       }
     }

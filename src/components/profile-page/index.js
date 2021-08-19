@@ -36,6 +36,7 @@ class ProfilePage extends React.Component {
       profileDescription: "",
       mostLikedCocktails: [],
       posts: [],
+      isFollowed: false,
     };
   }
 
@@ -192,6 +193,8 @@ class ProfilePage extends React.Component {
   };
 
   toggleShowAllProfilePictures = () => {
+    if (!this.isCurrentUser()) return;
+
     this.setState({ showPicturesModal: !this.state.showPicturesModal });
   };
 
@@ -218,7 +221,12 @@ class ProfilePage extends React.Component {
     try {
       await axiosInstance.post(`users/${username}/follow/`);
 
-      this.setState({ isFollowed: !this.state.isFollowed });
+      const amtChange = this.state.isFollowed ? -1 : 1;
+
+      this.setState({
+        isFollowed: !this.state.isFollowed,
+        followersCount: this.state.followersCount + amtChange,
+      });
     } catch (e) {}
   };
 
@@ -298,76 +306,91 @@ class ProfilePage extends React.Component {
 
     return (
       <div className="profile-page">
-        <div className="profile-content">
-          <div className="edit-icon-container" onClick={this.toggleEditProfile}>
-            {this.isCurrentUser() && <EditIcon className="edit-icon" />}
-          </div>
+        <div className="profile-content-wrapper">
+          <div className="profile-content">
+            <div
+              className="edit-icon-container"
+              onClick={this.toggleEditProfile}
+            >
+              {this.isCurrentUser() && <EditIcon className="edit-icon" />}
+            </div>
 
-          <div className="profile-card container">
-            <div className="profile-image-follow-column">
-              <div className="profile-image-and-uploader">
-                <img
-                  className="profile-picture"
-                  src={this.state.activeProfilePicture || defaultProfilePic}
-                  alt=""
-                  onClick={this.toggleShowAllProfilePictures}
-                />
-                <div className="upload-icon" onClick={this.toggleShowUploader}>
-                  <Tooltip title="Upload a new profile picture" placement="top">
-                    <AddAPhotoIcon />
-                  </Tooltip>
+            <div className="profile-card container">
+              <div className="profile-image-follow-column">
+                <div className="profile-image-and-uploader">
+                  <img
+                    className={`profile-picture ${
+                      this.isCurrentUser() ? "enabled" : "disabled"
+                    }`}
+                    src={this.state.activeProfilePicture || defaultProfilePic}
+                    alt=""
+                    onClick={this.toggleShowAllProfilePictures}
+                  />
+                  {this.isCurrentUser() && (
+                    <div
+                      className="upload-icon"
+                      onClick={this.toggleShowUploader}
+                    >
+                      <Tooltip
+                        title="Upload a new profile picture"
+                        placement="top"
+                      >
+                        <AddAPhotoIcon />
+                      </Tooltip>
+                    </div>
+                  )}
+                </div>
+
+                {!this.isCurrentUser() && (
+                  <span className="follow-button" onClick={this.followUser}>
+                    {!this.state.isFollowed ? "Follow" : "Unfollow"}
+                  </span>
+                )}
+              </div>
+
+              <div className="profile-name-and-description">
+                <div className="username">
+                  <div>{this.state.username}</div>
+                </div>
+                <div className="profile-description">
+                  {this.descriptionElement()}
                 </div>
               </div>
-
-              {!this.isCurrentUser() && (
-                <span className="follow-button" onClick={this.followUser}>
-                  {this.state.isFollowed ? "Follow" : "Unfollow"}
-                </span>
-              )}
             </div>
 
-            <div className="profile-name-and-description">
-              <div className="username">
-                <div>{this.state.username}</div>
-              </div>
-              <div className="profile-description">
-                {this.descriptionElement()}
-              </div>
-            </div>
-          </div>
-
-          <div className="profile-stats container">
-            <div className="followers-stats">
-              <div className="stat">
-                <span className="stat-title">Followers: </span>
-                <span>{this.state.followersCount}</span>
-              </div>
-              <div className="stat">
-                <span className="stat-title">Following: </span>
-                <span>{this.state.followingCount}</span>
-              </div>
-            </div>
-
-            <div className="cocktail-stats">
-              <div className="stat">
-                <span className="stat-title">Liked Cocktails: </span>
-                <span>{this.state.savedCocktailsCount}</span>
-              </div>
-              <div className="stat">
-                <span className="stat-title">Created Cocktails: </span>
-                <span>{this.state.createdCocktailsCount}</span>
-              </div>
-              {this.isCurrentUser() && (
+            <div className="profile-stats container">
+              <div className="followers-stats">
                 <div className="stat">
-                  <span className="stat-title">Viewed Cocktails: </span>
-                  <span>{this.state.viewedCocktailsCount}</span>
+                  <span className="stat-title">Followers: </span>
+                  <span>{this.state.followersCount}</span>
                 </div>
-              )}
-            </div>
-          </div>
+                <div className="stat">
+                  <span className="stat-title">Following: </span>
+                  <span>{this.state.followingCount}</span>
+                </div>
+              </div>
 
-          <div className="most-liked-cocktails container">
-            {this.mostLikedCocktailsList()}
+              <div className="cocktail-stats">
+                <div className="stat">
+                  <span className="stat-title">Liked Cocktails: </span>
+                  <span>{this.state.savedCocktailsCount}</span>
+                </div>
+                <div className="stat">
+                  <span className="stat-title">Created Cocktails: </span>
+                  <span>{this.state.createdCocktailsCount}</span>
+                </div>
+                {this.isCurrentUser() && (
+                  <div className="stat">
+                    <span className="stat-title">Viewed Cocktails: </span>
+                    <span>{this.state.viewedCocktailsCount}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="most-liked-cocktails container">
+              {this.mostLikedCocktailsList()}
+            </div>
           </div>
         </div>
 
