@@ -89,10 +89,7 @@ const PostDisplay = ({
       {title && <div className="title">{title}</div>}
 
       <div className="profile-container">
-        <Link
-          to={`/user/${postedBy.username}/created-cocktails/`}
-          className="posted-by"
-        >
+        <Link to={`/user/${postedBy.username}/`} className="posted-by">
           <ProfileIcon image={profilePicture} />
           {postedBy.username}
         </Link>
