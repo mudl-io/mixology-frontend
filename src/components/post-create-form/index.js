@@ -26,6 +26,8 @@ const PostCreateForm = (props) => {
   });
 
   const handleClickOutside = (event) => {
+    if (!props.isPopup) return;
+
     if (componentRef.current && !componentRef.current.contains(event.target)) {
       props.onClose();
     }
@@ -90,7 +92,10 @@ const PostCreateForm = (props) => {
   };
 
   return (
-    <div className="post-create-form" ref={componentRef}>
+    <div
+      className={`post-create-form ${props.isPopup ? "popup" : "fullscreen"}`}
+      ref={componentRef}
+    >
       <div className="inputs-container">
         <TextField
           className="title input"
