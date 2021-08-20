@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { Button } from "@material-ui/core";
-import { motion, AnimatePresence } from "framer-motion";
 import { get } from "lodash";
 
 import "./styles.scss";
@@ -9,7 +7,6 @@ import PostCreateForm from "../post-create-form";
 import PostDisplay from "../post-display";
 
 const Timeline = () => {
-  const [showPostCreateForm, setShowPostCreateForm] = useState(false);
   const [posts, setPosts] = useState([]);
 
   /**
@@ -50,33 +47,17 @@ const Timeline = () => {
 
   return (
     <div className="timeline-container">
+      <div className="post-create-wrapper">
+        <PostCreateForm isPopup={false} />
+      </div>
       <div className="timeline">
-        <Button
-          className="create-post-button"
-          variant="contained"
-          onClick={() => setShowPostCreateForm(true)}
-        >
-          Create Post
-        </Button>
-
-        <div className="animation-container">
-          <AnimatePresence>
-            {showPostCreateForm && (
-              <motion.div
-                animate={{ x: 35, y: 65 }}
-                transition={{
-                  x: { type: "spring", stiffness: 50 },
-                  default: { duration: 0.4 },
-                }}
-                exit={{ opacity: 0 }}
-              >
-                <PostCreateForm onClose={() => setShowPostCreateForm(false)} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
         <div className="posts-list">{postList()}</div>
+      </div>
+      <div className="user-suggestions-wrapper">
+        <div className="inner-content">
+          <div className="header">Users You May Like</div>
+          {/* //TODO: Create user suggestions list} */}
+        </div>
       </div>
     </div>
   );

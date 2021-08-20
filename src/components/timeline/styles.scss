@@ -1,47 +1,57 @@
 @import "../../utilities/variables";
 
 .timeline-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
   position: absolute;
   width: 100vw;
-  top: 45px;
+  height: 100vh;
+  top: 60px;
+  display: grid;
+  grid-template-columns: 30% 40% 30%;
+
+  .post-create-wrapper {
+    margin-right: 10px;
+    border-right: 1px solid lightgrey;
+    padding-top: 60px;
+
+    .post-create-form {
+      position: sticky;
+      top: 28%;
+      left: 0;
+      height: fit-content;
+
+      .inputs-container {
+        height: initial;
+        padding-top: initial;
+      }
+    }
+  }
 
   .timeline {
-    position: absolute;
-    top: 80px;
-    width: 70vw;
-    min-height: 88vh;
-    padding-left: 10px;
-    padding-right: 10px;
-    overflow: scroll;
-
-    .create-post-button {
-      position: fixed;
-      left: 10%;
-      height: 40px;
-      width: 130px;
-      font-weight: 600;
-      font-family: "Roboto Condensed";
-      letter-spacing: 2px;
-      text-transform: none;
-    }
-
-    .animation-container {
-      position: fixed;
-      width: 100%;
-      z-index: 1;
-    }
-
     .posts-list {
-      position: absolute;
-      top: 65px;
-      width: 100%;
       display: grid;
-      grid-gap: 50px;
+      grid-gap: 20px;
+      margin-top: 50px;
+
+      .post-display {
+        width: 90%;
+      }
+    }
+  }
+
+  .user-suggestions-wrapper {
+    border-left: 1px solid lightgrey;
+    padding-left: 10px;
+
+    .inner-content {
+      position: sticky;
+      top: 11%;
+
+      .header {
+        margin-top: 10%;
+        margin-left: 60%;
+        border-bottom: 1px solid;
+        width: fit-content;
+      }
     }
   }
 }
