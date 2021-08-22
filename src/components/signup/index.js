@@ -52,8 +52,6 @@ class Signup extends React.Component {
           return;
         }
 
-        this.props.dispatch(loginUser(profileCreationResponse.data));
-
         const tokenObtainResponse = await axiosInstance.post("/token/obtain/", {
           username: this.state.username,
           password: this.state.password,
@@ -63,6 +61,8 @@ class Signup extends React.Component {
           "JWT " + tokenObtainResponse.data.access;
         localStorage.setItem("access_token", tokenObtainResponse.data.access);
         localStorage.setItem("refresh_token", tokenObtainResponse.data.refresh);
+
+        this.props.dispatch(loginUser(profileCreationResponse.data));
 
         return profileCreationResponse;
       } catch (e) {
