@@ -193,8 +193,7 @@ class PrimaryNavigationBar extends React.Component {
           </IconButton>
           <nav className="left-nav">
             <Link className="nav-link homepage" to="/">
-              <img className="site-logo-nav" src="/defaultimg.png" alt="" />
-              <span className="logo-text">Cocktail</span>
+              <span className="logo-text">Mudl</span>
             </Link>
             {this.leftNavContent()}
             <span className="cocktail-options-buttons">
