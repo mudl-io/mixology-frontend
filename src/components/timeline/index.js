@@ -43,9 +43,6 @@ const Timeline = () => {
       const newPosts = get(postsRes, "data.results");
       const hasMorePosts = !!get(postsRes, "data.next");
 
-      console.log(page);
-      console.log(postsRes);
-
       setHasMorePosts(hasMorePosts);
       setPage(hasMorePosts ? page + 1 : null);
       setPosts([...posts, ...newPosts], "publicId");
