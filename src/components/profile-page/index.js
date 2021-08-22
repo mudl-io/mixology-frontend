@@ -37,6 +37,7 @@ class ProfilePage extends React.Component {
       mostLikedCocktails: [],
       posts: [],
       isFollowed: false,
+      newProfileDescription: null,
     };
   }
 
@@ -178,7 +179,9 @@ class ProfilePage extends React.Component {
   };
 
   handleProfileDescriptionChange = (event) => {
-    this.setState({ profileDescription: event.target.value });
+    if (this.state.profileDescription.length >= 500) return;
+
+    this.setState({ newProfileDescription: event.target.value });
   };
 
   handleUploadProfilePicture = (profilePicture) => {
@@ -189,6 +192,12 @@ class ProfilePage extends React.Component {
   };
 
   toggleEditProfile = () => {
+    if (this.state.showEditProfile) {
+      this.setState({ newProfileDescription: null });
+    } else {
+      this.setState({ newProfileDescription: this.state.profileDescription });
+    }
+
     this.setState({ showEditProfile: !this.state.showEditProfile });
   };
 
@@ -208,6 +217,13 @@ class ProfilePage extends React.Component {
     try {
       await axiosInstance.patch(`users/${username}/`, {
         profileDescription: this.state.profileDescription,
+      });
+
+      const newDescription = this.state.newProfileDescription;
+
+      this.setState({
+        profileDescription: newDescription,
+        newProfileDescription: null,
       });
     } catch (e) {
     } finally {
@@ -241,7 +257,7 @@ class ProfilePage extends React.Component {
             minRows={5}
             maxRows={5}
             name="profileDescription"
-            value={this.state.profileDescription}
+            value={this.state.newProfileDescription}
             variant="outlined"
             onChange={this.handleProfileDescriptionChange}
           />
