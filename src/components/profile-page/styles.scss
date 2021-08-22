@@ -12,6 +12,7 @@
     border-right: 1px solid lightgrey;
     margin: 0 -25px 0 -25px;
     padding: 0 25px 0 25px;
+    min-height: 100vh;
 
     .profile-content {
       height: fit-content;
@@ -220,5 +221,9 @@
     .stat-title {
       font-weight: 600;
     }
+  }
+
+  .no-posts {
+    text-align: center;
   }
 }

@@ -59,7 +59,10 @@
   .cocktail-button {
     color: white;
     background-color: $coolpurp;
-    font-weight: 600;
+    font-family: "Roboto Condensed";
+    letter-spacing: 3px;
+    text-transform: none;
+    font-weight: 400;
   }
 
   .show-more-cocktails-text {

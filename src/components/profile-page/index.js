@@ -300,7 +300,7 @@ class ProfilePage extends React.Component {
   };
 
   postList = () => {
-    return this.state.posts.map((post) => {
+    const list = this.state.posts.map((post) => {
       return (
         <PostDisplay
           cocktail={post.cocktail}
@@ -313,6 +313,12 @@ class ProfilePage extends React.Component {
         />
       );
     });
+
+    return list.length > 0 ? (
+      list
+    ) : (
+      <h1 className="no-posts">This user has no posts yet!</h1>
+    );
   };
 
   render() {
@@ -378,11 +384,11 @@ class ProfilePage extends React.Component {
               <div className="followers-stats">
                 <div className="stat">
                   <span className="stat-title">Followers: </span>
-                  <span>{this.state.followersCount}</span>
+                  <span>{this.state.followersCount || 0}</span>
                 </div>
                 <div className="stat">
                   <span className="stat-title">Following: </span>
-                  <span>{this.state.followingCount}</span>
+                  <span>{this.state.followingCount || 0}</span>
                 </div>
               </div>
 
