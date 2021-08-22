@@ -73,7 +73,7 @@ const PostCreateForm = (props) => {
         4000
       );
 
-      props.onClose();
+      if (props.isPopup) props.onClose();
     } catch (e) {
       NotificationManager.error(
         "There was an error submitting your post, please sure you fill out at least one of the fields!",

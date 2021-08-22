@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import "./styles.scss";
+
 const InfiniteScroller = (props) => {
   const loaderComponent = useRef(null);
   const loadMore = useCallback(

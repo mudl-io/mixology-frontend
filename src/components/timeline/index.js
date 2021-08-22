@@ -5,9 +5,14 @@ import "./styles.scss";
 import { axiosInstance } from "../../axiosApi";
 import PostCreateForm from "../post-create-form";
 import PostDisplay from "../post-display";
+import InfiniteScroller from "../infinite-scroller";
 
 const Timeline = () => {
   const [posts, setPosts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMoreFollowPosts, setHasMoreFollowPosts] = useState(true);
+  const [hasMorePosts, setHasMorePosts] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   /**
    * TODO:
@@ -20,13 +25,53 @@ const Timeline = () => {
     retrievePosts();
   }, []);
 
-  const retrievePosts = async () => {
-    try {
-      const postsRes = await axiosInstance.get("/posts/");
-      const posts = get(postsRes, "data.results");
+  const retrievePosts = () => {
+    if (hasMoreFollowPosts) {
+      retrieveFollowedPosts();
+    } else {
+      retrieveGenericPosts();
+    }
+  };
 
-      setPosts(posts);
-    } catch (e) {}
+  const retrieveGenericPosts = async () => {
+    setLoading(true);
+
+    try {
+      const postsRes = await axiosInstance.get("/posts/", {
+        params: { default: true, page: page },
+      });
+      const newPosts = get(postsRes, "data.results");
+      const hasMorePosts = !!get(postsRes, "data.next");
+
+      console.log(page);
+      console.log(postsRes);
+
+      setHasMorePosts(hasMorePosts);
+      setPage(hasMorePosts ? page + 1 : null);
+      setPosts([...posts, ...newPosts], "publicId");
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const retrieveFollowedPosts = async () => {
+    setLoading(true);
+
+    try {
+      const postsRes = await axiosInstance.get("/posts/", {
+        params: { page: page },
+      });
+      const newPosts = get(postsRes, "data.results");
+      const hasMoreFollowPosts = !!get(postsRes, "data.next");
+
+      setHasMoreFollowPosts(hasMoreFollowPosts);
+      setPage(hasMoreFollowPosts ? page + 1 : 1);
+      setPosts([...posts, ...newPosts], "publicId");
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   const postList = () => {
@@ -51,7 +96,13 @@ const Timeline = () => {
         <PostCreateForm isPopup={false} />
       </div>
       <div className="timeline">
-        <div className="posts-list">{postList()}</div>
+        <InfiniteScroller
+          canLoadMore={hasMorePosts}
+          isLoading={isLoading}
+          fetchData={retrievePosts}
+        >
+          <div className="posts-list">{postList()}</div>
+        </InfiniteScroller>
       </div>
       <div className="user-suggestions-wrapper">
         <div className="inner-content">
