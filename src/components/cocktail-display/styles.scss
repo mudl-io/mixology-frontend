@@ -63,6 +63,10 @@
     right: 10px;
     bottom: 1px;
     cursor: pointer;
+
+    &:hover {
+      filter: drop-shadow(1px 0px 4px darkred);
+    }
   }
 
   .edit-text {
