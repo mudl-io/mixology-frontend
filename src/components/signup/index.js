@@ -28,46 +28,47 @@ class Signup extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  async handleSubmit(event) {
+  handleSubmit(event) {
     event.preventDefault();
+    this.setState({ hasAttemptedSubmit: true }, async () => {
+      if (!this.validateInput()) return;
 
-    this.setState({ hasAttemptedSubmit: true });
-
-    try {
-      const profileCreationResponse = await axiosInstance.post(
-        "/user/create/",
-        {
-          username: this.state.username,
-          email: this.state.email,
-          password: this.state.password,
-        }
-      );
-
-      if (profileCreationResponse.status === 207) {
-        NotificationManager.error(
-          profileCreationResponse.data,
-          "Signup Error",
-          3000
+      try {
+        const profileCreationResponse = await axiosInstance.post(
+          "/user/create/",
+          {
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password,
+          }
         );
-        return;
+
+        if (profileCreationResponse.status === 207) {
+          NotificationManager.error(
+            profileCreationResponse.data,
+            "Signup Error",
+            3000
+          );
+          return;
+        }
+
+        this.props.dispatch(loginUser(profileCreationResponse.data));
+
+        const tokenObtainResponse = await axiosInstance.post("/token/obtain/", {
+          username: this.state.username,
+          password: this.state.password,
+        });
+
+        axiosInstance.defaults.headers["Authorization"] =
+          "JWT " + tokenObtainResponse.data.access;
+        localStorage.setItem("access_token", tokenObtainResponse.data.access);
+        localStorage.setItem("refresh_token", tokenObtainResponse.data.refresh);
+
+        return profileCreationResponse;
+      } catch (e) {
+        console.log(e);
       }
-
-      this.props.dispatch(loginUser(profileCreationResponse.data));
-
-      const tokenObtainResponse = await axiosInstance.post("/token/obtain/", {
-        username: this.state.username,
-        password: this.state.password,
-      });
-
-      axiosInstance.defaults.headers["Authorization"] =
-        "JWT " + tokenObtainResponse.data.access;
-      localStorage.setItem("access_token", tokenObtainResponse.data.access);
-      localStorage.setItem("refresh_token", tokenObtainResponse.data.refresh);
-
-      return profileCreationResponse;
-    } catch (e) {
-      console.log(e);
-    }
+    });
   }
 
   validateInput = () => {
