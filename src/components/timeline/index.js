@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { get } from "lodash";
 
 import "./styles.scss";
@@ -13,27 +13,10 @@ const Timeline = () => {
   const [hasMoreFollowPosts, setHasMoreFollowPosts] = useState(true);
   const [hasMorePosts, setHasMorePosts] = useState(true);
   const [isLoading, setLoading] = useState(false);
+  const [canLoadNewPosts, setCanLoadNewPosts] = useState(true);
+  const [clickedLoadNewPosts, setClickedLoadNewPosts] = useState(false);
 
-  /**
-   * TODO:
-   * Add a function that periodically pings the API to see if any new posts are available
-   * If there are new posts available set a stateful variable, areNewPosts, to true
-   * Make the useEffect hook dependent upon areNewPosts such that it will rerun when it is
-   * to true
-   */
-  useEffect(() => {
-    retrievePosts();
-  }, []);
-
-  const retrievePosts = () => {
-    if (hasMoreFollowPosts) {
-      retrieveFollowedPosts();
-    } else {
-      retrieveGenericPosts();
-    }
-  };
-
-  const retrieveGenericPosts = async () => {
+  const retrieveGenericPosts = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -50,9 +33,9 @@ const Timeline = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, posts]);
 
-  const retrieveFollowedPosts = async () => {
+  const retrieveFollowedPosts = useCallback(async () => {
     setLoading(true);
 
     try {
@@ -69,6 +52,18 @@ const Timeline = () => {
     } finally {
       setLoading(false);
     }
+  }, [page, posts]);
+
+  const retrievePosts = useCallback(() => {
+    if (hasMoreFollowPosts) {
+      retrieveFollowedPosts();
+    } else {
+      retrieveGenericPosts();
+    }
+  }, [hasMoreFollowPosts, retrieveGenericPosts, retrieveFollowedPosts]);
+
+  const loadNewPosts = () => {
+    setClickedLoadNewPosts(true);
   };
 
   const postList = () => {
@@ -87,6 +82,62 @@ const Timeline = () => {
     });
   };
 
+  /**
+   * * retrieve posts on page load
+   */
+  useEffect(() => {
+    retrievePosts();
+  }, []);
+
+  /**
+   * * polling function that checks for new posts every 20 seconds
+   */
+  useEffect(() => {
+    const pollingInterval = setInterval(async () => {
+      const latestPostTime = get(posts, "0.createdAt");
+
+      if (latestPostTime) {
+        const res = await axiosInstance.get("/posts/has_new_posts/", {
+          params: { time: latestPostTime },
+        });
+
+        const hasNewPosts = get(res, "data.hasNewPosts");
+
+        if (hasNewPosts) {
+          setCanLoadNewPosts(true);
+        }
+      }
+    }, 20 * 1000);
+
+    return () => clearInterval(pollingInterval);
+  });
+
+  /**
+   * * function that retrieves new posts when new posts floating button is clicked on
+   */
+  useEffect(() => {
+    async function fetchPosts() {
+      if (clickedLoadNewPosts) {
+        const postsRes = await axiosInstance.get("/posts/", {
+          params: { page: 1 },
+        });
+
+        const newPosts = get(postsRes, "data.results");
+        const hasMoreFollowPosts = !!get(postsRes, "data.next");
+
+        setPosts(newPosts);
+        setPage(hasMoreFollowPosts ? 2 : 1);
+        setCanLoadNewPosts(false);
+        setClickedLoadNewPosts(false);
+        setHasMoreFollowPosts(hasMoreFollowPosts);
+
+        window.scrollTo(0, 0);
+      }
+    }
+
+    fetchPosts();
+  }, [clickedLoadNewPosts]);
+
   return (
     <div className="timeline-container">
       <div className="post-create-wrapper">
@@ -100,6 +151,12 @@ const Timeline = () => {
         >
           <div className="posts-list">{postList()}</div>
         </InfiniteScroller>
+
+        {canLoadNewPosts && (
+          <div className="load-new-posts-button" onClick={loadNewPosts}>
+            Load new posts
+          </div>
+        )}
       </div>
       <div className="user-suggestions-wrapper">
         <div className="inner-content">
