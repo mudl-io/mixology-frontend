@@ -13,7 +13,7 @@ const Timeline = () => {
   const [hasMoreFollowPosts, setHasMoreFollowPosts] = useState(true);
   const [hasMorePosts, setHasMorePosts] = useState(true);
   const [isLoading, setLoading] = useState(false);
-  const [canLoadNewPosts, setCanLoadNewPosts] = useState(true);
+  const [canLoadNewPosts, setCanLoadNewPosts] = useState(false);
   const [clickedLoadNewPosts, setClickedLoadNewPosts] = useState(false);
 
   const retrieveGenericPosts = useCallback(async () => {
