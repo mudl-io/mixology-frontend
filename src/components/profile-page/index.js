@@ -38,6 +38,7 @@ class ProfilePage extends React.Component {
       posts: [],
       isFollowed: false,
       newProfileDescription: null,
+      followersCount: 0,
     };
   }
 
