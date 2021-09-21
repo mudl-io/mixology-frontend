@@ -62,6 +62,7 @@ class SavedCocktailsDisplay extends React.Component {
           <CocktailsList
             title={"Saved Cocktails"}
             cocktails={this.props.savedCocktails}
+            displayGrid={true}
           />
         </InfiniteScroller>
       </div>

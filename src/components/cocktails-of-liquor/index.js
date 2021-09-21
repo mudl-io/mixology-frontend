@@ -131,6 +131,7 @@ class CocktailsOfLiquor extends React.Component {
             isToggled={this.state.showUserCreatedCocktails}
             title={this.state.title}
             handleToggle={this.handleToggle}
+            displayGrid={true}
           />
         </InfiniteScroller>
       </div>

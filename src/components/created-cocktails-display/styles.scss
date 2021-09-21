@@ -13,38 +13,4 @@
   h1 {
     text-align: center;
   }
-
-  .cocktails-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    grid-gap: 70px;
-    margin-top: 5%;
-
-    .cocktail-detail {
-      display: grid;
-      grid-gap: 15px;
-      padding: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 0 8px 0 rgba(0, 0, 0, 0.2);
-      border-radius: 5px;
-
-      img {
-        height: 150px;
-        width: 150px;
-        margin: auto;
-      }
-
-      .name,
-      .ingredients-list {
-        max-width: 200px;
-        text-align: center;
-      }
-
-      .ingredients-list .ingredients {
-        margin: 0;
-        overflow: visible;
-        white-space: initial;
-      }
-    }
-  }
 }
