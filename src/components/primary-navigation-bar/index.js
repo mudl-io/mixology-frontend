@@ -196,6 +196,11 @@ class PrimaryNavigationBar extends React.Component {
               <span className="logo-text">Mudl</span>
             </Link>
             {this.leftNavContent()}
+            <span className="cocktail-options-buttons">
+              <Link className="nav-link" to="/random/">
+                Random Cocktail
+              </Link>
+            </span>
           </nav>
           <SearchBar
             placeholder="Search for a cocktail"
