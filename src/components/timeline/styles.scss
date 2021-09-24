@@ -44,13 +44,59 @@
 
     .inner-content {
       position: sticky;
-      top: 11%;
+      top: 17%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
       .header {
-        margin-top: 10%;
-        margin-left: 60%;
+        margin-right: 32%;
         border-bottom: 1px solid;
         width: fit-content;
+      }
+
+      .suggested-users-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .suggested-user {
+          a {
+            color: black;
+
+            &:hover {
+              color: darken($coolpurp, 20%);
+            }
+          }
+
+          .pic-and-name {
+            display: flex;
+
+            img {
+              position: relative;
+              top: 15px;
+              height: 30px;
+              width: 30px;
+              border-radius: 5px;
+              margin-right: 10px;
+            }
+
+            .username {
+              font-weight: 600;
+            }
+          }
+
+          .profile-stats {
+            display: flex;
+            margin-left: 40px;
+
+            .follower-stats {
+              margin-right: 20px;
+            }
+          }
+
+          margin: 10px 35px 10px 0;
+        }
       }
     }
   }
