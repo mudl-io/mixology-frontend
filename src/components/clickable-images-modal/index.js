@@ -56,7 +56,7 @@ const ClickableImagesModal = (props) => {
           />
         )}
         {isLoading && <CircularProgress />}
-        <img className={imgClass} src={images[index]} onLoad={didLoad} />
+        <img className={imgClass} src={images[index]} onLoad={didLoad} alt="" />
         {canGoForwards && (
           <NavigateNextIcon
             className="arrow"

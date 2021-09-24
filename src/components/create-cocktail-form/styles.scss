@@ -61,7 +61,12 @@
       border-width: 0;
       position: relative;
       margin-top: 10px;
+      color: white;
       background-color: $coolpurp;
+      font-family: "Roboto Condensed";
+      letter-spacing: 3px;
+      text-transform: none;
+      font-weight: 400;
 
       input:focus {
         outline-width: 0;

@@ -1,0 +1,87 @@
+@import "../../utilities/variables";
+
+.post-display {
+  display: grid;
+  place-self: center;
+  width: 50%;
+  padding: 10px;
+  background: white;
+  // box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 0 8px 0 rgba(0, 0, 0, 0.2);
+  border: 2px solid lightgrey;
+  border-radius: 5px;
+
+  .title {
+    font-size: 25px;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+
+  .profile-container {
+    display: flex;
+
+    .profile-icon {
+      margin-right: 5px;
+    }
+
+    .posted-by {
+      font-weight: 600;
+      color: darken($coolpurp, 20%);
+    }
+  }
+
+  .created-at-container {
+    display: flex;
+
+    .created-at {
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+  }
+
+  .description {
+    text-align: left;
+    margin-bottom: 10px;
+  }
+
+  .cocktail-container {
+    .cocktail-clickable-name {
+      cursor: pointer;
+      color: darken($coolpurp, 20%);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    .cocktail-details {
+      width: 100%;
+      margin: auto;
+      box-shadow: initial;
+
+      a {
+        color: darken($coolpurp, 20%);
+
+        .profile-icon {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    .hide-text {
+      float: right;
+      margin-right: 25px;
+      color: darken($coolpurp, 20%);
+      cursor: pointer;
+      margin-top: 10px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .created-at-container,
+  .description {
+    margin-left: 26px;
+  }
+}

@@ -6,6 +6,7 @@ import "./styles.scss";
 import defaultImg from "../../assets/defaultimg.png";
 import HeartCheckbox from "../heart-checkbox";
 import ConfirmationModal from "../confirmation-modal";
+import ProfileIcon from "../profile-icon";
 
 class CocktailDisplay extends React.PureComponent {
   constructor(props) {
@@ -50,14 +51,8 @@ class CocktailDisplay extends React.PureComponent {
       return (
         <span className="complexity stat">
           Created By:{" "}
-          <Link to={`/user/${createdBy}/created-cocktails/`}>
-            {profilePicture && (
-              <img
-                classname="created-by-profile-picture"
-                src={profilePicture}
-                alt=""
-              />
-            )}
+          <Link to={`/user/${createdBy}/`}>
+            <ProfileIcon image={profilePicture} />
             {createdBy}
           </Link>
         </span>

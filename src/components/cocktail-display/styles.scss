@@ -1,7 +1,13 @@
+@import "../../utilities/variables";
+
 .cocktail-details {
   margin-bottom: 50px;
   width: 500px;
   top: -75px;
+  padding: 10px;
+  height: fit-content;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 0 8px 0 rgba(0, 0, 0, 0.2);
 
   .cocktail-description {
     max-width: 500px;
@@ -16,7 +22,7 @@
       width: auto;
       max-width: 300px;
       max-height: 300px;
-      border-radius: 40px;
+      border-radius: 10px;
     }
   }
 
@@ -25,9 +31,12 @@
     margin-right: 18px;
 
     img {
-      height: 30px;
-      width: 30px;
-      border-radius: 5px;
+      height: 20px;
+      width: 20px;
+    }
+
+    a {
+      color: darken($coolpurp, 20%);
     }
   }
 
@@ -53,6 +62,11 @@
     position: relative;
     right: 10px;
     bottom: 1px;
+    cursor: pointer;
+
+    &:hover {
+      filter: drop-shadow(1px 0px 4px darkred);
+    }
   }
 
   .edit-text {

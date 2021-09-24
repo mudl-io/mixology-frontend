@@ -7,6 +7,8 @@ import CocktailDetail from "../cocktail-detail";
 
 const CocktailsList = (props) => {
   const list = (cocktails) => {
+    if (!cocktails) return;
+
     return (
       <div
         className={`cocktails-list ${props.displayGrid ? "display-grid" : ""}`}
