@@ -1,3 +1,4 @@
+import React from "react";
 import defaultImg from "../../assets/defaultimg.png";
 import "./styles.scss";
 
