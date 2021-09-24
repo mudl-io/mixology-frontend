@@ -1,11 +1,13 @@
 import { useCallback, useState, useEffect } from "react";
 import { get } from "lodash";
+import { Link } from "react-router-dom";
 
 import "./styles.scss";
 import { axiosInstance } from "../../axiosApi";
 import PostCreateForm from "../post-create-form";
 import PostDisplay from "../post-display";
 import InfiniteScroller from "../infinite-scroller";
+import defaultImg from "../../assets/defaultimg.png";
 
 const Timeline = () => {
   const [posts, setPosts] = useState([]);
@@ -15,6 +17,7 @@ const Timeline = () => {
   const [isLoading, setLoading] = useState(false);
   const [canLoadNewPosts, setCanLoadNewPosts] = useState(false);
   const [clickedLoadNewPosts, setClickedLoadNewPosts] = useState(false);
+  const [suggestedUsers, setSuggestedUsers] = useState([]);
 
   const retrieveGenericPosts = useCallback(async () => {
     setLoading(true);
@@ -62,6 +65,18 @@ const Timeline = () => {
     }
   }, [hasMoreFollowPosts, retrieveGenericPosts, retrieveFollowedPosts]);
 
+  const retrieveSuggestedUsers = useCallback(async () => {
+    try {
+      const suggestedUsersRes = await axiosInstance.get("/users/", {
+        params: { suggested: true },
+      });
+
+      const suggestedUsers = get(suggestedUsersRes, "data.results");
+
+      setSuggestedUsers(suggestedUsers);
+    } catch (e) {}
+  }, []);
+
   const loadNewPosts = () => {
     setClickedLoadNewPosts(true);
   };
@@ -82,11 +97,40 @@ const Timeline = () => {
     });
   };
 
+  const suggestedUsersList = () => {
+    return (
+      <div className="suggested-users-list">
+        {suggestedUsers.map((user) => {
+          return (
+            <div className="suggested-user">
+              <Link to={`/user/${user.username}/`}>
+                <div className="pic-and-name">
+                  <img src={user.activeProfilePicture || defaultImg} alt="" />
+                  <div className="username">{user.username}</div>
+                </div>
+
+                <div className="profile-stats">
+                  <div className="follower-stats">
+                    Followers: {user.followersCount}
+                  </div>
+                  <div className="cocktail-stats">
+                    Cocktails Created: {user.createdCocktailsCount}
+                  </div>
+                </div>
+              </Link>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   /**
    * * retrieve posts on page load
    */
   useEffect(() => {
     retrievePosts();
+    retrieveSuggestedUsers();
   }, []);
 
   /**
@@ -164,7 +208,7 @@ const Timeline = () => {
       <div className="user-suggestions-wrapper">
         <div className="inner-content">
           <div className="header">Users You May Like</div>
-          {/* //TODO: Create user suggestions list} */}
+          {suggestedUsersList()}
         </div>
       </div>
     </div>
