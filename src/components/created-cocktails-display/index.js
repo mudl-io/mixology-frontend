@@ -65,7 +65,7 @@ class CreatedCocktailsDisplay extends React.Component {
 
   render() {
     return (
-      <div className="saved-cocktail-display">
+      <div className="created-cocktail-display">
         <InfiniteScroller
           canLoadMore={this.props.canLoadMore}
           isLoading={this.state.isLoading}
@@ -74,6 +74,7 @@ class CreatedCocktailsDisplay extends React.Component {
           <CocktailsList
             title={"Created Cocktails"}
             cocktails={this.props.createdCocktails}
+            displayGrid={true}
           />
         </InfiniteScroller>
       </div>

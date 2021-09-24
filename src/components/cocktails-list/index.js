@@ -10,7 +10,9 @@ const CocktailsList = (props) => {
     if (!cocktails) return;
 
     return (
-      <div className="cocktails-list">
+      <div
+        className={`cocktails-list ${props.displayGrid ? "display-grid" : ""}`}
+      >
         {cocktails.map((cocktail) => {
           return <CocktailDetail cocktail={cocktail} key={cocktail.publicId} />;
         })}

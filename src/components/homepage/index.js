@@ -17,7 +17,7 @@ import CocktailDisplay from "../cocktail-display";
 import ListDropdown from "../list-dropdown";
 import RightCocktailSidenav from "../right-cocktail-sidenav";
 
-class RandomCocktailContainer extends React.Component {
+class Homepage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -286,12 +286,8 @@ class RandomCocktailContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { liquors, ingredients, users } = state;
-  return {
-    liquorOptions: liquors,
-    ingredientOptions: ingredients,
-    user: users.user,
-  };
+  const { liquors, ingredients } = state;
+  return { liquorOptions: liquors, ingredientOptions: ingredients };
 };
 
-export default connect(mapStateToProps)(RandomCocktailContainer);
+export default connect(mapStateToProps)(Homepage);
