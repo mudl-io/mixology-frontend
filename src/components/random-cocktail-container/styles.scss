@@ -7,8 +7,8 @@
   align-items: center;
   text-align: center;
   position: absolute;
+  width: 100vw;
   top: 45px;
-  left: 50%;
 
   .cocktail-display {
     position: absolute;
@@ -17,6 +17,7 @@
     min-height: 88vh;
     padding-left: 10px;
     padding-right: 10px;
+    padding-top: 3px;
   }
 
   .cocktail-options {
@@ -25,6 +26,7 @@
 
     &.active {
       top: -15px;
+      padding-bottom: 500px;
     }
 
     &.inactive {
@@ -46,7 +48,7 @@
     }
 
     &.user-created {
-      width: 245px;
+      width: 238px;
     }
 
     margin-top: 10px;
@@ -55,14 +57,21 @@
   }
 
   .cocktail-button {
-    color: black;
+    color: white;
     background-color: $coolpurp;
-    font-weight: 600;
+    font-family: "Roboto Condensed";
+    letter-spacing: 3px;
+    text-transform: none;
+    font-weight: 400;
   }
 
   .show-more-cocktails-text {
     cursor: pointer;
     color: rgb(6, 69, 173);
     margin-bottom: 20px;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

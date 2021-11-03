@@ -4,14 +4,13 @@
   align-items: center;
   position: relative;
   top: 10%;
-  width: 50%;
   margin: auto;
+
+  img {
+    border-radius: 5px;
+  }
 
   h1 {
     text-align: center;
-  }
-
-  .cocktails-list {
-    margin-top: 10%;
   }
 }

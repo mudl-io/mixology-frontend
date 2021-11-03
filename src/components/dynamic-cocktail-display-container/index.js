@@ -1,11 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
+import { NotificationManager } from "react-notifications";
 
 import { didSaveCocktail } from "../../features/saved-cocktails/savedCocktailsSlice";
 import { didUnsaveCocktail } from "../../features/saved-cocktails/savedCocktailsSlice";
 
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import CocktailDisplay from "../cocktail-display";
 
 class DynamicCocktailDisplayContainer extends React.Component {
@@ -25,7 +26,17 @@ class DynamicCocktailDisplayContainer extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getCocktail();
+  }
+
+  componentDidUpdate(previousProps) {
+    if (previousProps.match.params.id !== this.props.match.params.id) {
+      this.getCocktail();
+    }
+  }
+
+  getCocktail = async () => {
     const cocktailId = this.props.match.params.id;
 
     // try to see if cocktail is in redux store before making a network request
@@ -41,41 +52,57 @@ class DynamicCocktailDisplayContainer extends React.Component {
     this.setState({
       cocktail: displayCocktail,
       cocktailId: cocktailId,
-      name: displayCocktail.name,
-      description: displayCocktail.description,
       complexity: displayCocktail.complexity,
-      image: displayCocktail.image,
       createdBy: displayCocktail.createdBy,
-      instructions: displayCocktail.instructions,
-      liquors: displayCocktail.liquors,
+      description: displayCocktail.description,
+      image: displayCocktail.image,
       ingredients: displayCocktail.ingredients,
+      instructions: displayCocktail.instructions,
       isSaved: displayCocktail.isSaved,
+      liquors: displayCocktail.liquors,
+      name: displayCocktail.name,
       timesSaved: displayCocktail.timesSaved,
+      userCanEdit:
+        displayCocktail.createdBy &&
+        this.props.currentUser &&
+        displayCocktail.createdBy.username === this.props.currentUser.username,
     });
-  }
+  };
+
+  deleteCocktail = async () => {
+    try {
+      await axiosInstance.delete(`/cocktails/${this.state.cocktailId}/`);
+
+      NotificationManager.success(
+        "Successfully deleted your cocktail",
+        "Deletion Success",
+        2000
+      );
+
+      this.props.history.push("/created-cocktails/");
+    } catch (e) {
+      NotificationManager.success(
+        "Failed to delete your cocktail",
+        "Deletion Failure",
+        2000
+      );
+    }
+  };
 
   toggleSaveCocktail = async () => {
     try {
-      if (!this.state.isSaved) {
-        await axiosInstance.post("/cocktails/save_cocktail/", {
-          public_id: this.state.cocktailId,
-        });
+      await axiosInstance.post(
+        `/cocktails/${this.state.cocktailId}/save_cocktail/`
+      );
+      const amtChange = !this.state.isSaved ? 1 : -1;
+      const action = !this.state.isSaved ? didSaveCocktail : didUnsaveCocktail;
 
-        this.setState({ isSaved: true, timesSaved: this.state.timesSaved + 1 });
+      this.setState({
+        isSaved: !this.state.isSaved,
+        timesSaved: this.state.timesSaved + amtChange,
+      });
 
-        this.props.dispatch(didSaveCocktail(this.state.cocktail));
-      } else {
-        await axiosInstance.post("/cocktails/unsave_cocktail/", {
-          public_id: this.state.cocktailId,
-        });
-
-        this.setState({
-          isSaved: false,
-          timesSaved: this.state.timesSaved - 1,
-        });
-
-        this.props.dispatch(didUnsaveCocktail(this.state.cocktailId));
-      }
+      this.props.dispatch(action(this.state.cocktail));
     } catch (e) {
       console.log(e);
     }
@@ -85,6 +112,7 @@ class DynamicCocktailDisplayContainer extends React.Component {
     return (
       <div className="dynamic-cocktail-container">
         <CocktailDisplay
+          cocktailId={this.state.cocktailId}
           name={this.state.name}
           description={this.state.description}
           complexity={this.state.complexity}
@@ -95,6 +123,8 @@ class DynamicCocktailDisplayContainer extends React.Component {
           createdBy={this.state.createdBy}
           isSaved={this.state.isSaved}
           timesSaved={this.state.timesSaved}
+          userCanEdit={this.state.userCanEdit}
+          deleteCocktail={this.deleteCocktail}
           toggleSaveCocktail={this.toggleSaveCocktail}
         />
       </div>
@@ -103,8 +133,9 @@ class DynamicCocktailDisplayContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const savedCocktails = state.savedCocktails;
-  return { savedCocktails: savedCocktails };
+  const savedCocktails = state.savedCocktails.savedCocktails;
+  const { user } = state.users;
+  return { savedCocktails: savedCocktails, currentUser: user };
 };
 
 export default connect(mapStateToProps)(DynamicCocktailDisplayContainer);

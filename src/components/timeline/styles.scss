@@ -1,0 +1,115 @@
+@import "../../utilities/variables";
+
+.timeline-container {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 60px;
+  display: grid;
+  grid-template-columns: 30% 40% 30%;
+
+  .post-create-wrapper {
+    margin-right: 10px;
+    border-right: 1px solid lightgrey;
+    padding-top: 60px;
+
+    .post-create-form {
+      position: sticky;
+      top: 28%;
+      left: 0;
+      height: fit-content;
+
+      .inputs-container {
+        height: initial;
+        padding-top: initial;
+      }
+    }
+  }
+
+  .timeline {
+    .posts-list {
+      display: grid;
+      grid-gap: 20px;
+      margin-top: 50px;
+
+      .post-display {
+        width: 90%;
+      }
+    }
+  }
+
+  .user-suggestions-wrapper {
+    border-left: 1px solid lightgrey;
+    padding-left: 10px;
+
+    .inner-content {
+      position: sticky;
+      top: 17%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .header {
+        margin-right: 32%;
+        border-bottom: 1px solid;
+        width: fit-content;
+      }
+
+      .suggested-users-list {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .suggested-user {
+          a {
+            color: black;
+
+            &:hover {
+              color: darken($coolpurp, 20%);
+            }
+          }
+
+          .pic-and-name {
+            display: flex;
+
+            img {
+              position: relative;
+              top: 15px;
+              height: 30px;
+              width: 30px;
+              border-radius: 5px;
+              margin-right: 10px;
+            }
+
+            .username {
+              font-weight: 600;
+            }
+          }
+
+          .profile-stats {
+            display: flex;
+            margin-left: 40px;
+
+            .follower-stats {
+              margin-right: 20px;
+            }
+          }
+
+          margin: 10px 35px 10px 0;
+        }
+      }
+    }
+  }
+
+  .load-new-posts-button {
+    position: fixed;
+    top: 7%;
+    left: 47%;
+    background-color: $coolpurp;
+    padding: 3px 13px;
+    border-radius: 18px;
+    color: white;
+    cursor: pointer;
+    filter: drop-shadow(0px 3px 6px lightgrey);
+  }
+}

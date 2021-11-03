@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import { NotificationManager } from "react-notifications";
 
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import "./styles.scss";
 
 // redux actions
@@ -28,28 +28,47 @@ class Signup extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  async handleSubmit(event) {
+  handleSubmit(event) {
     event.preventDefault();
+    this.setState({ hasAttemptedSubmit: true }, async () => {
+      if (!this.validateInput()) return;
 
-    this.setState({ hasAttemptedSubmit: true });
+      try {
+        const profileCreationResponse = await axiosInstance.post(
+          "/user/create/",
+          {
+            username: this.state.username,
+            email: this.state.email,
+            password: this.state.password,
+          }
+        );
 
-    try {
-      const response = await axiosInstance.post("/user/create/", {
-        username: this.state.username,
-        email: this.state.email,
-        password: this.state.password,
-      });
+        if (profileCreationResponse.status === 207) {
+          NotificationManager.error(
+            profileCreationResponse.data,
+            "Signup Error",
+            3000
+          );
+          return;
+        }
 
-      if (response.status === 207) {
-        NotificationManager.error(response.data, "Signup Error", 3000);
-        return;
+        const tokenObtainResponse = await axiosInstance.post("/token/obtain/", {
+          username: this.state.username,
+          password: this.state.password,
+        });
+
+        axiosInstance.defaults.headers["Authorization"] =
+          "JWT " + tokenObtainResponse.data.access;
+        localStorage.setItem("access_token", tokenObtainResponse.data.access);
+        localStorage.setItem("refresh_token", tokenObtainResponse.data.refresh);
+
+        this.props.dispatch(loginUser(profileCreationResponse.data));
+
+        return profileCreationResponse;
+      } catch (e) {
+        console.log(e);
       }
-
-      this.props.dispatch(loginUser(response.data));
-      return response;
-    } catch (e) {
-      console.log(e);
-    }
+    });
   }
 
   validateInput = () => {

@@ -1,13 +1,19 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { get } from "lodash";
 
 import "./styles.scss";
+import defaultImg from "../../assets/defaultimg.png";
 import HeartCheckbox from "../heart-checkbox";
+import ConfirmationModal from "../confirmation-modal";
+import ProfileIcon from "../profile-icon";
 
 class CocktailDisplay extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       image: "",
+      showDeleteConfirmation: false,
     };
   }
 
@@ -23,7 +29,7 @@ class CocktailDisplay extends React.PureComponent {
       return (
         <ul className="ingredients-list">
           {ingredients.map((ingredient) => (
-            <li key={`${ingredient.public_id}-${ingredient.name}`}>
+            <li key={`${ingredient.publicId}-${ingredient.name}`}>
               <span>
                 {ingredient.name} - {ingredient.amount} {ingredient.unit}
               </span>
@@ -36,9 +42,19 @@ class CocktailDisplay extends React.PureComponent {
 
   createdBy = () => {
     if (this.props.createdBy) {
+      const createdBy = this.props.createdBy.username;
+      const profilePicture = get(
+        this.props.createdBy,
+        "activeProfilePicture.image"
+      );
+
       return (
         <span className="complexity stat">
-          Created By: {this.props.createdBy.username}
+          Created By:{" "}
+          <Link to={`/user/${createdBy}/`}>
+            <ProfileIcon image={profilePicture} />
+            {createdBy}
+          </Link>
         </span>
       );
     }
@@ -49,14 +65,20 @@ class CocktailDisplay extends React.PureComponent {
       return this.props.image.image;
     }
 
-    return "http://localhost:8000/static/defaultimg.png";
+    return defaultImg;
+  };
+
+  toggleConfirmDelete = () => {
+    this.setState({
+      showDeleteConfirmation: !this.state.showDeleteConfirmation,
+    });
   };
 
   cocktailDetails = () => {
     return (
       <div className="cocktail-details">
         <div className="img-and-stats">
-          <img src={this.getImage()} />
+          <img src={this.getImage()} alt="" />
           <h2>{this.props.name}</h2>
           <span className="heart-checkbox">
             <HeartCheckbox
@@ -73,6 +95,14 @@ class CocktailDisplay extends React.PureComponent {
           </span>
           {this.createdBy()}
         </div>
+        {this.props.userCanEdit && (
+          <div className="edit-text">
+            <Link to={`edit/`}>Edit</Link>
+            <span className="delete-text" onClick={this.toggleConfirmDelete}>
+              Delete
+            </span>
+          </div>
+        )}
         <div>
           <h3 className="header">Description</h3>
           <p className="content">{this.props.description}</p>
@@ -85,6 +115,16 @@ class CocktailDisplay extends React.PureComponent {
           <h3 className="header">Instructions</h3>
           <p className="content">{this.props.instructions}</p>
         </div>
+
+        <ConfirmationModal
+          cancelText="Cancel"
+          confirmClass="deletion"
+          confirmText="Delete"
+          open={this.state.showDeleteConfirmation}
+          question="Are you sure you want to delete this cocktail?"
+          handleConfirm={this.props.deleteCocktail}
+          handleClose={this.toggleConfirmDelete}
+        />
       </div>
     );
   };

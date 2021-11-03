@@ -1,11 +1,12 @@
 {
   "name": "frontend",
-  "homepage": "https://ofrusch.github.io/mixology-frontend/",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8000/",
   "dependencies": {
     "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
     "@reduxjs/toolkit": "^1.5.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
@@ -30,12 +31,11 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm rebuild node-sass && npm run build"
   },
   "eslintConfig": {
     "extends": [
@@ -56,6 +56,11 @@
     ]
   },
   "devDependencies": {
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "framer-motion": "^4.1.17"
+  },
+  "engines": {
+    "node": "14.15.5",
+    "npm": "7.5.4"
   }
 }

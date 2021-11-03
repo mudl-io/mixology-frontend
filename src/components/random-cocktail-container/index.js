@@ -12,12 +12,12 @@ import { didSaveCocktail } from "../../features/saved-cocktails/savedCocktailsSl
 import { didUnsaveCocktail } from "../../features/saved-cocktails/savedCocktailsSlice";
 
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import { axiosInstance } from "../../axiosApi";
 import CocktailDisplay from "../cocktail-display";
 import ListDropdown from "../list-dropdown";
 import RightCocktailSidenav from "../right-cocktail-sidenav";
 
-class Homepage extends React.Component {
+class RandomCocktailContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,7 +42,7 @@ class Homepage extends React.Component {
     // only make network request to get liquors and ingredients if the store is not already filled
     try {
       if (
-        this.props.ingredientOptions.length === 0 &&
+        this.props.ingredientOptions.length === 0 ||
         this.props.liquorOptions.length === 0
       ) {
         const [ingredients, liquors] = await Promise.all([
@@ -105,9 +105,7 @@ class Homepage extends React.Component {
           error: "",
         });
 
-        axiosInstance.post("cocktails/viewed_cocktail/", {
-          public_id: cocktail.publicId,
-        });
+        axiosInstance.post(`cocktails/${cocktail.publicId}/viewed_cocktail/`);
       }
     } catch (e) {
       this.setState({
@@ -128,26 +126,18 @@ class Homepage extends React.Component {
     }
 
     try {
-      if (!this.state.isSaved) {
-        await axiosInstance.post("/cocktails/save_cocktail/", {
-          public_id: this.state.cocktailId,
-        });
+      await axiosInstance.post(
+        `/cocktails/${this.state.cocktailId}/save_cocktail/`
+      );
+      const amtChange = !this.state.isSaved ? 1 : -1;
+      const action = !this.state.isSaved ? didSaveCocktail : didUnsaveCocktail;
 
-        this.setState({ isSaved: true, timesSaved: this.state.timesSaved + 1 });
+      this.setState({
+        isSaved: !this.state.isSaved,
+        timesSaved: this.state.timesSaved + amtChange,
+      });
 
-        this.props.dispatch(didSaveCocktail(this.state.cocktail));
-      } else {
-        await axiosInstance.post("/cocktails/unsave_cocktail/", {
-          public_id: this.state.cocktailId,
-        });
-
-        this.setState({
-          isSaved: false,
-          timesSaved: this.state.timesSaved - 1,
-        });
-
-        this.props.dispatch(didUnsaveCocktail(this.state.cocktailId));
-      }
+      this.props.dispatch(action(this.state.cocktail));
     } catch (e) {
       console.log(e);
     }
@@ -296,8 +286,12 @@ class Homepage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { liquors, ingredients } = state;
-  return { liquorOptions: liquors, ingredientOptions: ingredients };
+  const { liquors, ingredients, users } = state;
+  return {
+    liquorOptions: liquors,
+    ingredientOptions: ingredients,
+    user: users.user,
+  };
 };
 
-export default connect(mapStateToProps)(Homepage);
+export default connect(mapStateToProps)(RandomCocktailContainer);

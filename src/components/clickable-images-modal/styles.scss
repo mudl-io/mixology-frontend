@@ -1,0 +1,50 @@
+@import "../../utilities/variables";
+
+.clickable-images-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .content {
+    outline: none;
+
+    .MuiSvgIcon-root {
+      cursor: pointer;
+    }
+
+    img {
+      height: 720px;
+      width: 720px;
+      border-radius: 35px;
+    }
+
+    .visible {
+      visibility: visible;
+    }
+
+    .hide {
+      visibility: hidden;
+    }
+
+    .MuiCircularProgress-root {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+    }
+
+    .arrow {
+      font-size: 3.1875rem;
+    }
+
+    .set-active-text {
+      display: flex;
+      justify-content: center;
+      width: 285px;
+      margin: 10px auto;
+      border: 1px solid white;
+      border-radius: 9px;
+      background-color: $coolpurp;
+      cursor: pointer;
+    }
+  }
+}

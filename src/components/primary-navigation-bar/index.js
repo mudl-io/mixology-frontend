@@ -2,9 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Dropdown, DropdownButton } from "react-bootstrap";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import MenuOpenIcon from "@material-ui/icons/MenuOpen";
+import { get } from "lodash";
 
 import "./styles.scss";
-import axiosInstance from "../../axiosApi";
+import history from "../../history";
+import { axiosInstance } from "../../axiosApi";
+import LeftLiquorsSidenav from "../left-liquors-sidenav";
+import SearchBar from "../search-bar";
 
 // redux actions
 import { logoutUser } from "../../features/users/usersSlice";
@@ -12,6 +19,16 @@ import { logoutUser } from "../../features/users/usersSlice";
 class PrimaryNavigationBar extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      drawerOpen: false,
+      pauseSearchTimer: null,
+      searchResults: [],
+    };
+  }
+
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
   }
 
   logout = async () => {
@@ -25,6 +42,8 @@ class PrimaryNavigationBar extends React.Component {
       axiosInstance.defaults.headers["Authorization"] = null;
 
       this.props.dispatch(logoutUser());
+
+      window.location.href = "/login/";
     } catch (e) {
       console.log(e);
     } finally {
@@ -58,11 +77,19 @@ class PrimaryNavigationBar extends React.Component {
           variant="Secondary"
           title={this.props.user.username}
         >
-          <Dropdown.Item>Profile</Dropdown.Item>
-          <Dropdown.Item as={Link} to={"/saved-cocktails/"}>
+          <Dropdown.Item as={Link} to={`/user/${this.props.user.username}`}>
+            Profile
+          </Dropdown.Item>
+          <Dropdown.Item
+            as={Link}
+            to={`/user/${this.props.user.username}/saved-cocktails`}
+          >
             Saved Cocktails
           </Dropdown.Item>
-          <Dropdown.Item as={Link} to={"/created-cocktails/"}>
+          <Dropdown.Item
+            as={Link}
+            to={`/user/${this.props.user.username}/created-cocktails`}
+          >
             Created Cocktails
           </Dropdown.Item>
           <Dropdown.Divider />
@@ -85,19 +112,110 @@ class PrimaryNavigationBar extends React.Component {
     return content;
   };
 
+  handleClickOutside = (event) => {
+    if (event.target.className === "liquor-type") {
+      setTimeout(() => {
+        this.setState({ drawerOpen: false });
+      }, 100);
+    }
+  };
+
+  handleDrawerOpen = () => {
+    this.setState({ drawerOpen: !this.state.drawerOpen });
+  };
+
+  handleSearchBarChange = (inputValue) => {
+    return inputValue.trim();
+  };
+
+  handleSearchSelect = (selectedValue) => {
+    const cocktailId = get(selectedValue, "value.publicId");
+
+    if (cocktailId) {
+      history.push(`/cocktail/${cocktailId}/`);
+    }
+  };
+
+  callSearch = (inputValue) => {
+    clearTimeout(this.state.pauseSearchTimer);
+
+    this.setState({
+      pauseSearchTimer: setTimeout(() => {
+        this.getSearchResults(inputValue);
+      }, 300),
+    });
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(this.state.searchResults);
+      }, 400);
+    });
+  };
+
+  getSearchResults = async (inputValue) => {
+    if (inputValue.length < 3) return;
+
+    try {
+      const searchRes = await axiosInstance.get("/cocktails/", {
+        params: {
+          action: "search",
+          search_value: inputValue,
+        },
+      });
+
+      const searchData = get(searchRes, "data.results") || [];
+
+      const searchResults = searchData.map((cocktail) => {
+        return { value: cocktail, label: cocktail.name };
+      });
+
+      this.setState({ searchResults });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  drawerStateIcon = () => {
+    return this.state.drawerOpen ? <MenuOpenIcon /> : <MenuIcon />;
+  };
+
   render() {
     return (
-      <div className="primary-navigation-bar">
-        <nav>
-          <Link className="nav-link homepage" to="/">
-            <img className="site-logo-nav" src="/defaultimg.png" />
-            <span>Mixed In</span>
-          </Link>
-          {this.leftNavContent()}
-          {this.rightNavContent()}
-        </nav>
+      <div>
+        <div className="primary-navigation-bar">
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={this.handleDrawerOpen}
+            edge="start"
+          >
+            {this.drawerStateIcon()}
+          </IconButton>
+          <nav className="left-nav">
+            <Link className="nav-link homepage" to="/">
+              <span className="logo-text">Mudl</span>
+            </Link>
+            {this.leftNavContent()}
+            <span className="cocktail-options-buttons">
+              <Link className="nav-link" to="/random/">
+                Random Cocktail
+              </Link>
+            </span>
+          </nav>
+          <SearchBar
+            placeholder="Search for a cocktail"
+            loadOptions={this.callSearch}
+            onInputChange={this.handleSearchBarChange}
+            handleSelect={this.handleSearchSelect}
+          />
+          <nav className="right-nav">{this.rightNavContent()}</nav>
+        </div>
+        <div>
+          <LeftLiquorsSidenav open={this.state.drawerOpen} />
+        </div>
       </div>
     );
   }
 }
+
 export default connect()(PrimaryNavigationBar);
