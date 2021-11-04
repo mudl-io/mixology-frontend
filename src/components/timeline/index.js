@@ -8,7 +8,6 @@ import { axiosInstance } from "../../axiosApi";
 import PostCreateForm from "../post-create-form";
 import PostDisplay from "../post-display";
 import InfiniteScroller from "../infinite-scroller";
-import defaultImg from "../../assets/defaultimg.png";
 
 const Timeline = () => {
   const [posts, setPosts] = useState([]);
@@ -106,7 +105,13 @@ const Timeline = () => {
             <div className="suggested-user">
               <Link to={`/user/${user.username}/`}>
                 <div className="pic-and-name">
-                  <img src={user.activeProfilePicture || defaultImg} alt="" />
+                  <img
+                    src={
+                      user.activeProfilePicture ||
+                      `${process.env.PUBLIC_URL}/defaultimg.png`
+                    }
+                    alt=""
+                  />
                   <div className="username">{user.username}</div>
                 </div>
 

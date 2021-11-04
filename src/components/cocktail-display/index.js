@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { get } from "lodash";
 
 import "./styles.scss";
-import defaultImg from "../../assets/defaultimg.png";
 import HeartCheckbox from "../heart-checkbox";
 import ConfirmationModal from "../confirmation-modal";
 import ProfileIcon from "../profile-icon";
@@ -65,7 +64,7 @@ class CocktailDisplay extends React.PureComponent {
       return this.props.image.image;
     }
 
-    return defaultImg;
+    return `${process.env.PUBLIC_URL}/defaultimg.png`;
   };
 
   toggleConfirmDelete = () => {
