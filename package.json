@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "homepage": ".",
+  "homepage": "https://618354c302e386000790e851--mudl.netlify.app",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:8000/",
@@ -21,7 +21,6 @@
     "react-bootstrap": "^1.5.0",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
-    "react-images-upload": "^1.2.8",
     "react-notifications": "^1.7.2",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",

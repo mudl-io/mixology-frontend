@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import "./styles.scss";
-import defaultImg from "../../assets/defaultimg.png";
 
 /**
  *
@@ -18,7 +17,7 @@ const allIngredientsToString = (ingredients) => {
 
 const getImage = (props) => {
   if (!props.cocktail.image) {
-    return defaultImg;
+    return `${process.env.PUBLIC_URL}/defaultimg.png`;
   }
 
   return props.cocktail.image.image;

@@ -10,7 +10,6 @@ import TextField from "@material-ui/core/TextField";
 import "./styles.scss";
 import history from "../../history";
 import { axiosInstance, axiosImageInstance } from "../../axiosApi";
-import defaultProfilePic from "../../assets/cocktail-silhouette.png";
 import ImageUploadModal from "../image-upload-modal";
 import ClickableImagesModal from "../clickable-images-modal";
 import CocktailsList from "../cocktails-list";
@@ -37,7 +36,7 @@ class ProfilePage extends React.Component {
       mostLikedCocktails: [],
       posts: [],
       isFollowed: false,
-      newProfileDescription: null,
+      newProfileDescription: "",
       followersCount: 0,
     };
   }
@@ -217,7 +216,7 @@ class ProfilePage extends React.Component {
 
     try {
       await axiosInstance.patch(`users/${username}/`, {
-        profileDescription: this.state.profileDescription,
+        profileDescription: this.state.newProfileDescription,
       });
 
       const newDescription = this.state.newProfileDescription;
@@ -345,7 +344,10 @@ class ProfilePage extends React.Component {
                     className={`profile-picture ${
                       this.isCurrentUser() ? "enabled" : "disabled"
                     }`}
-                    src={this.state.activeProfilePicture || defaultProfilePic}
+                    src={
+                      this.state.activeProfilePicture ||
+                      `${process.env.PUBLIC_URL}/cocktail-silhouette.png`
+                    }
                     alt=""
                     onClick={this.toggleShowAllProfilePictures}
                   />
