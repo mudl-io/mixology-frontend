@@ -36,7 +36,7 @@ class ProfilePage extends React.Component {
       mostLikedCocktails: [],
       posts: [],
       isFollowed: false,
-      newProfileDescription: null,
+      newProfileDescription: "",
       followersCount: 0,
     };
   }
@@ -216,7 +216,7 @@ class ProfilePage extends React.Component {
 
     try {
       await axiosInstance.patch(`users/${username}/`, {
-        profileDescription: this.state.profileDescription,
+        profileDescription: this.state.newProfileDescription,
       });
 
       const newDescription = this.state.newProfileDescription;
