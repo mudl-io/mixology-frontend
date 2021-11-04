@@ -1,12 +1,11 @@
 import React from "react";
-import defaultImg from "../../assets/defaultimg.png";
 import "./styles.scss";
 
 const ProfileIcon = ({ image = "", classname = "" }) => {
   return (
     <img
       className={`profile-icon ${classname}`}
-      src={image || defaultImg}
+      src={image || `${process.env.PUBLIC_URL}/defaultimg.png`}
       alt="profile-icon"
     />
   );

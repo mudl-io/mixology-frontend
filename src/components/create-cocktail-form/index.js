@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import Select from "react-select";
 import { NotificationManager } from "react-notifications";
 import Checkbox from "@material-ui/core/Checkbox";
-import ImageUploader from "react-images-upload";
+// import ImageUploader from "react-images-upload";
 import { connect } from "react-redux";
 import { find, sortBy, uniqBy } from "lodash";
 
@@ -517,7 +517,7 @@ class CreateCocktailForm extends React.Component {
               placement="top"
             />
           </label>
-          <ImageUploader
+          {/* <ImageUploader
             buttonText="Upload Cocktail Image"
             onChange={this.onUploadImage}
             imgExtension={[".jpg", ".gif", ".png", ".gif"]}
@@ -525,7 +525,7 @@ class CreateCocktailForm extends React.Component {
             singleImage={true}
             withIcon={true}
             withPreview={true}
-          />
+          /> */}
           <div className="private-cocktail-checkbox">
             <Checkbox
               checked={this.state.isPrivate}

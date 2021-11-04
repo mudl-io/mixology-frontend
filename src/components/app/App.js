@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { NotificationContainer } from "react-notifications";
 
@@ -22,7 +22,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="app-container">
-        <Router history={history}>
+        <BrowserRouter history={history}>
           <PrimaryNavigationBar user={this.props.user} />
           <Switch>
             <Route exact path="/">
@@ -83,7 +83,7 @@ class App extends React.Component {
               <Redirect to="/" />
             </Route>
           </Switch>
-        </Router>
+        </BrowserRouter>
 
         <NotificationContainer />
       </div>
