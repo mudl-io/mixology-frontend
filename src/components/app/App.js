@@ -22,7 +22,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="app-container">
-        <BrowserRouter history={history}>
+        <BrowserRouter history={history} basename={process.env.PUBLIC_URL}>
           <PrimaryNavigationBar user={this.props.user} />
           <Switch>
             <Route exact path="/">
