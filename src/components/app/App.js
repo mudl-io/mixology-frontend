@@ -20,6 +20,16 @@ import Timeline from "../timeline";
 
 class App extends React.Component {
   render() {
+    const PrivateRoute = ({ component, path, exact = False }) => {
+      const isLoggedIn = this.props.user;
+
+      return isLoggedIn ? (
+        <Route path={path} component={component} />
+      ) : (
+        <Redirect to="/login/" />
+      );
+    };
+
     return (
       <div className="app-container">
         <BrowserRouter history={history}>
@@ -48,8 +58,8 @@ class App extends React.Component {
               path="/reset-password/"
               component={ResetPasswordForm}
             />
-            <Route
-              exact
+            <PrivateRoute
+              exact={true}
               path="/create-cocktail/"
               component={CreateCocktailForm}
             />
@@ -58,7 +68,7 @@ class App extends React.Component {
               path="/cocktail/:id"
               component={DynamicCocktailDisplayContainer}
             />
-            <Route
+            <PrivateRoute
               exact
               path="/cocktail/:id/edit"
               component={CreateCocktailForm}
@@ -69,7 +79,7 @@ class App extends React.Component {
               component={CocktailsOfLiquor}
             />
             <Route exact path="/user/:username" component={ProfilePage} />
-            <Route
+            <PrivateRoute
               exact
               path="/user/:username/saved-cocktails"
               component={SavedCocktailsDisplay}
