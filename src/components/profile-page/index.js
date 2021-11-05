@@ -179,7 +179,7 @@ class ProfilePage extends React.Component {
   };
 
   handleProfileDescriptionChange = (event) => {
-    if (this.state.profileDescription.length >= 500) return;
+    if (event.target.value.length >= 125) return;
 
     this.setState({ newProfileDescription: event.target.value });
   };
