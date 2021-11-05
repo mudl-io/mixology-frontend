@@ -2,13 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Drawer from "@material-ui/core/Drawer";
-import { filter, sortBy } from "lodash";
+import { sortBy } from "lodash";
 
 import "./styles.scss";
 import { axiosInstance } from "../../axiosApi";
 
 // redux actions
-import { didGetLiquors } from "../../features/liquors/liquorsSlice";
+import { didGetDefaultLiquors } from "../../features/liquors/defaultLiquorsSlice";
 
 class LeftLiquorsSidenav extends React.Component {
   async componentDidMount() {
@@ -17,7 +17,8 @@ class LeftLiquorsSidenav extends React.Component {
         const res = await axiosInstance.get("/liquors/", {
           params: { default: true },
         });
-        this.props.dispatch(didGetLiquors(res.data));
+
+        this.props.dispatch(didGetDefaultLiquors(res.data));
       } catch (e) {
         console.log(e);
       }
@@ -52,8 +53,8 @@ class LeftLiquorsSidenav extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { liquors } = state;
-  return { liquors: liquors };
+  const { defaultLiquors } = state;
+  return { liquors: defaultLiquors };
 };
 
 export default connect(mapStateToProps)(LeftLiquorsSidenav);
