@@ -14,7 +14,9 @@ class LeftLiquorsSidenav extends React.Component {
   async componentDidMount() {
     if (this.props.liquors.length === 0) {
       try {
-        const res = await axiosInstance.get("/liquors/");
+        const res = await axiosInstance.get("/liquors/", {
+          params: { default: true },
+        });
         this.props.dispatch(didGetLiquors(res.data));
       } catch (e) {
         console.log(e);
@@ -23,10 +25,7 @@ class LeftLiquorsSidenav extends React.Component {
   }
 
   render() {
-    const liquors = sortBy(
-      filter(this.props.liquors, (liquor) => !liquor.createdBy),
-      ["name"]
-    );
+    const liquors = sortBy(this.props.liquors, ["name"]);
 
     return (
       <Drawer anchor="left" variant="persistent" open={this.props.open}>
