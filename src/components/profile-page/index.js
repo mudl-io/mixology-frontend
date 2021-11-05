@@ -202,7 +202,7 @@ class ProfilePage extends React.Component {
   };
 
   toggleShowAllProfilePictures = () => {
-    if (!this.isCurrentUser()) return;
+    if (!this.isCurrentUser() || !this.state.activeProfilePicture) return;
 
     this.setState({ showPicturesModal: !this.state.showPicturesModal });
   };
