@@ -24,10 +24,15 @@ const dropdown = (props) => {
             color: "black",
             borderWidth: "1px",
             borderColor: !props.error ? "hsl(0, 0%, 80%)" : "red",
+            height: "56px",
           }),
           option: (provided) => ({
             ...provided,
             color: "black",
+          }),
+          menu: (provided) => ({
+            ...provided,
+            zIndex: 2,
           }),
         }}
         name={props.name}

@@ -6,6 +6,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 // import ImageUploader from "react-images-upload";
 import { connect } from "react-redux";
 import { find, sortBy, uniqBy } from "lodash";
+import TextField from "@material-ui/core/TextField";
 
 // redux actions
 import {
@@ -426,12 +427,13 @@ class CreateCocktailForm extends React.Component {
       <div className="create-cocktail-container">
         <form className="create-cocktail-form" onSubmit={this.handleSubmit}>
           <label className="cocktail-name-input">
-            <div className="input-name">Name*:</div>
-            <input
+            <TextField
+              required
+              className="cocktail-name-input"
+              label="Name"
               name="cocktailName"
-              className={this.state.cocktailNameValid ? "" : "invalid"}
-              type="text"
               value={this.state.cocktailName}
+              variant="outlined"
               onChange={this.handleChange}
             />
           </label>
@@ -482,21 +484,29 @@ class CreateCocktailForm extends React.Component {
             />
           </div>
           <label className="input-text-area">
-            <div className="input-name">Instructions*:</div>
-            <textarea
+            <TextField
+              required
+              multiline
+              minRows={5}
+              maxRows={5}
+              className="instructions-input"
+              label="Instructions"
               name="instructions"
-              className={this.state.instructionsValid ? "" : "invalid"}
-              type="textarea"
               value={this.state.instructions}
+              variant="outlined"
               onChange={this.handleChange}
             />
           </label>
-          <label className="input-text-area">
-            <div className="input-name">Description:</div>
-            <textarea
+          <label className="input-text-area instructions">
+            <TextField
+              multiline
+              minRows={5}
+              maxRows={5}
+              className="instructions-input"
+              label="Description"
               name="description"
-              type="textarea"
               value={this.state.description}
+              variant="outlined"
               onChange={this.handleChange}
             />
           </label>
