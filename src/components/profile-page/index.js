@@ -342,7 +342,9 @@ class ProfilePage extends React.Component {
                 <div className="profile-image-and-uploader">
                   <img
                     className={`profile-picture ${
-                      this.isCurrentUser() ? "enabled" : "disabled"
+                      this.isCurrentUser() && this.state.activeProfilePicture
+                        ? "enabled"
+                        : "disabled"
                     }`}
                     src={
                       this.state.activeProfilePicture ||
