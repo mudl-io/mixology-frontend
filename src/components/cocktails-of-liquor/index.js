@@ -89,10 +89,10 @@ class CocktailsOfLiquor extends React.Component {
       (liquor) => liquor.publicId === liquorId
     ).name;
 
-    const userCocktails = filter(cocktails, (cocktail) => cocktail.createdBy);
+    const userCocktails = filter(cocktails, (cocktail) => !cocktail.isDefault);
     const platformCocktails = filter(
       cocktails,
-      (cocktail) => !cocktail.createdBy
+      (cocktail) => cocktail.isDefault
     );
 
     this.setState({

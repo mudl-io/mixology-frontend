@@ -179,7 +179,7 @@ class ProfilePage extends React.Component {
   };
 
   handleProfileDescriptionChange = (event) => {
-    if (this.state.profileDescription.length >= 500) return;
+    if (event.target.value.length >= 125) return;
 
     this.setState({ newProfileDescription: event.target.value });
   };
@@ -202,7 +202,7 @@ class ProfilePage extends React.Component {
   };
 
   toggleShowAllProfilePictures = () => {
-    if (!this.isCurrentUser()) return;
+    if (!this.isCurrentUser() || !this.state.activeProfilePicture) return;
 
     this.setState({ showPicturesModal: !this.state.showPicturesModal });
   };
@@ -342,7 +342,9 @@ class ProfilePage extends React.Component {
                 <div className="profile-image-and-uploader">
                   <img
                     className={`profile-picture ${
-                      this.isCurrentUser() ? "enabled" : "disabled"
+                      this.isCurrentUser() && this.state.activeProfilePicture
+                        ? "enabled"
+                        : "disabled"
                     }`}
                     src={
                       this.state.activeProfilePicture ||
