@@ -119,13 +119,7 @@
 
           .profile-description {
             .description-display {
-              display: -webkit-box;
               max-width: 200 px;
-              -webkit-line-clamp: 4;
-              -webkit-box-orient: vertical;
-              overflow: hidden;
-
-              width: 90%;
               margin-left: 4%;
 
               &.edit {
